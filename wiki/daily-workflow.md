@@ -15,6 +15,11 @@ This supersedes waiting for her to attach CSVs. The daily routine is now:
    entry, edit End Date to now, tick CSV, Run, wait for SUCCESS, download.
 3. Run the normal refresh pipeline (below) using those two freshly-downloaded
    files, exactly as if Kriti had attached them.
+4. Append the ingest entry to `log.md` (and update any other wiki page that
+   changed), then **commit and push the wiki to GitHub** — see `schema.md` for
+   the exact command and the Keychain-backed auth setup. This is now a
+   standing instruction too (Kriti, 2026-10-08: "yes keep the wiki synced
+   automatically") — every ingest ends with a push, not just a local edit.
 
 Both flows are proven working (confirmed live 2026-10-08, see `log.md`).
 If Kriti ever attaches files herself instead, use those — don't re-pull over

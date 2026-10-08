@@ -113,3 +113,35 @@ wasn't meaningfully more forward-matching data available to move it. The
 "worth investigating if still stuck" flag from the prior entry should be
 re-evaluated once Oct8 itself is much further along (e.g. the 5pm or 10pm
 scheduled run), not based on this one.
+
+---
+
+**2026-10-08, afternoon — this wiki is now a GitHub repo.** Kriti asked to
+host the project on GitHub. Walked her through: `brew install gh` (she ran
+this herself), then she created the repo manually on github.com
+(`krititlovespets/supertails-cx-analytics`, private) and generated a classic
+Personal Access Token rather than using `gh auth login`. Added a `.gitignore`
+(blocks all `*.json`/`*.csv`/credentials/data-export patterns before they can
+ever be committed), `git init`, committed the 9 wiki files + `.gitignore`.
+
+**Auth hiccup worth remembering**: the interactive terminal password prompt
+(`git push` asking for username/password) failed TWICE with an identical
+doubled-token artifact (`ghp_xxxghp_xxx` typed as a stray shell command after
+auth failed) — looked like a paste-duplication quirk in the terminal relay,
+not user error. **Fixed by bypassing the interactive prompt entirely**: used
+`git credential approve` via a heredoc (through Bash, not the interactive
+terminal) to seed the token directly into `osxkeychain`, then `git push`
+authenticated silently with zero prompts. **This is now the standard way to
+authenticate this repo going forward** — don't retry the interactive
+terminal-prompt flow if a push ever needs fresh auth, go straight to
+`git credential approve` with the Keychain helper.
+
+Initial push succeeded: https://github.com/krititlovespets/supertails-cx-analytics,
+10 files (9 wiki `.md` + `.gitignore`), nothing sensitive included.
+
+**Immediate follow-up — Kriti: "yes keep the wiki synced automatically."**
+New standing instruction (documented in `schema.md` and `daily-workflow.md`):
+every ingest now ends with `git add -A && git commit && git push`, not just a
+local file edit. This log entry + the schema.md/daily-workflow.md edits
+documenting the instruction are themselves the first real test of that new
+step — committed and pushed immediately after this entry was written.

@@ -16,6 +16,23 @@ session, and periodically **linted** for staleness/contradictions.
 - **Ingest** = after a productive session (a refresh, a new feature, a bug fix),
   update the relevant topic page(s) with what changed, and append one line to
   `log.md`. Don't wait to batch multiple sessions into one ingest.
+- **This wiki is a git repo, hosted at
+  https://github.com/krititlovespets/supertails-cx-analytics (set up
+  2026-10-08).** STANDING INSTRUCTION, per Kriti: after every ingest (i.e.
+  every time a wiki `.md` file changes), commit and push —
+  `git -C /Users/kritituteja/Claude/supertails-cx-analytics add -A && git commit -m "..." && git push`.
+  Do this as the last step of every ingest, not as a separate manual ask.
+  Only the `wiki/` directory and `.gitignore` are tracked — the `.gitignore`
+  already blocks credentials/CSVs/data exports from ever being committed by
+  accident; don't weaken it without thinking through why first.
+  Auth is stored in macOS Keychain (`git config credential.helper osxkeychain`
+  was set locally in this repo) so pushes are non-interactive — no token
+  prompt should appear. If a push ever fails with an auth error, the Keychain
+  entry may have expired/been revoked; flag it to Kriti rather than trying to
+  re-prompt for a token repeatedly (see `log.md` 2026-10-08 for the paste-
+  duplication issue that happened in the interactive terminal flow the first
+  time — avoid re-triggering that by preferring the Keychain-backed
+  non-interactive push).
 - **Lint** = periodically (user-triggered, or when a page feels stale) re-read a
   topic page against current reality (the live Google Sheet, the current scripts)
   and fix contradictions, remove resolved TODOs, flag orphaned claims.
