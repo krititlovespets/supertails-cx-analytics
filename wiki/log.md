@@ -184,3 +184,67 @@ the GitHub push). **Recreated all 4 scheduled cron jobs** (same
 to edit their prompts) so each one now also pushes to this artifact — same
 pattern used when the GitHub-sync step was added. Remember cron jobs are
 session-only and auto-expire after 7 days regardless.
+
+---
+
+**2026-10-08, later afternoon — "can you update dashboard now," and a real
+scratch-dir recovery problem.** Kriti asked for a fresh refresh. Pulled both
+exports live via browser automation (Nugget: 5,630 tickets to 3:26pm; Ameyo:
+18,552 rows Oct1-8 to 3:21pm — per-day counts for Oct1-7 matched the
+previously-confirmed 2097/2267/2337/2496/2690/2519/2551 exactly, validating
+the pull). Then hit a real problem: the actual pipeline scripts (merge,
+build, write) referenced throughout this wiki never lived anywhere but
+ephemeral per-session scratch dirs, and those were long gone — nothing to
+copy forward. Also discovered the 36-email DOCTORS list (needed for Transfer
+Done/Doctor Called/Transfer%) wasn't recoverable from the wiki, the Sheet, or
+anywhere on disk — asked Kriti directly, she provided it. Saved to
+`~/Documents/Supertails work/doctors_emails.txt` (NOT in this repo — public
+repo, internal staff PII).
+
+Rebuilt the Main Dashboard computation from scratch using `definitions.md`,
+cross-validated against the Sheet's own existing Oct7 values and its
+"October Avg" column math (reverse-engineered: count rows = SUM across
+tracked days, percent rows = weighted sum(num)/sum(denom), AHT/FRT Avg =
+weighted by underlying call count, the three "Needed"/"To Do" rows = the
+formula applied to Oct-aggregate totals, not summed daily outputs — all
+confirmed to reproduce the existing October Avg column exactly before
+trusting the new Oct8 numbers). FRT Avg for Oct7 matched the published value
+exactly (00:29:42); Transfer%/Connect% differed from the previously-published
+Oct7 (expected and documented — these are any-time matches that keep rising
+as more forward Ameyo data folds in, and this pull had much more Oct8
+afternoon data folded in than Oct7's last refresh did).
+
+**Wrote Oct1-8 to Main Dashboard** (full day-by-day recompute, not just an
+Oct8 append — consistent with how this system is designed to work) for:
+Valid Leads, Transfer Total/%/Done, Doctor Called, Absolute Transfer To Do,
+Connect/%/Needed, AHT, FRT Valid Leads/Avg, UCJ Bangalore Customer, Booking
+Done/%/Needed. Booking Done pulled fresh from the Clinic Dashboard sheet for
+Oct8 (=3); Oct1-7 Booking Done values reused as-is (not an any-time-match
+metric, doesn't need re-pulling). **Did NOT touch**: Avg Talk Time per Agent
+/ Agents Available (no persisted TEAM10 roster) or the 3 Vet Follow-up rows
+(needs full Sept1→ history, out of scope for a same-day refresh) — left
+blank for Oct8, explicitly flagged to Kriti rather than guessed.
+
+Pushed the same Oct1-8 numbers to the **dashboard artifact**
+(https://claude.ai/artifact/MGn5rtRUyLPn1v8g2P6bXo) via `ArtifactData`.
+Vet Follow-up Repeat% in the artifact's "Other metrics" grid still shows
+Oct7's value (9.3%, carried forward) since it wasn't recomputed — a known,
+flagged gap, not silently stale data.
+
+**Fixed the root cause, not just today's symptom**: persisted
+`scripts/compute_main_dashboard.py` and `scripts/write_main_dashboard.py` in
+this repo (see "Script pipeline" in `daily-workflow.md`) so future refreshes
+never again depend on an ephemeral scratch dir surviving between sessions.
+The DOCTORS list is read from the external file at runtime, never embedded
+in the committed script. `computed.json` (real business numbers) stays
+excluded via the existing blanket `*.json` gitignore rule.
+
+Also iterated on the artifact's design this session per Kriti's feedback: KPI
+tiles now show October month totals/averages as the headline number (not
+just the latest day) with a separate "Today" row below for daily snapshots;
+the Valid Leads bar chart was redesigned (thin bars + hover tooltips instead
+of thick near-touching bars with a label on every one — her exact words were
+"this graph... such block"); a sparkline that was overlapping its own
+sub-text was removed entirely after a screenshot caught it visually broken
+(root cause: it was absolutely-positioned and the sub-text had grown to two
+lines, so they drew on top of each other) rather than just repositioned.

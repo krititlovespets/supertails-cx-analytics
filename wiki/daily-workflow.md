@@ -126,12 +126,49 @@ them yourself:
   Prediction Model's `banked_dates` until it's actually complete (folding a
   half-day count into the forecast average distorts it).
 
-## Script pipeline (per scratch refresh dir, e.g. `oct8_refresh/`)
+## Script pipeline
 
-Always **copy the previous day's scratch dir forward** (`cp prior_dir/*.py
-new_dir/`) and `sed` the paths/dates, rather than rebuilding logic from scratch —
-this has been the pattern since 2026-10-02 and works well, but see the TODO in
-`schema.md` about eventually moving the canonical scripts out of scratch dirs.
+**As of 2026-10-08, the Main Dashboard pipeline scripts live in this repo**,
+not a scratch dir: [`scripts/compute_main_dashboard.py`](../scripts/compute_main_dashboard.py)
++ [`scripts/write_main_dashboard.py`](../scripts/write_main_dashboard.py).
+This replaces the old "copy the previous day's scratch dir forward" pattern
+for Main Dashboard specifically — **the scratch-dir approach turned out to be
+a real liability**: on 2026-10-08, asked to "update dashboard now," the
+previous scripts were unrecoverable because they'd only ever lived in an
+ephemeral per-session scratchpad that was already gone, forcing a full
+from-scratch rebuild (see `log.md` for the full story, including the DOCTORS
+list recovery). Keep using these persisted scripts going forward; extend them
+rather than reverting to one-off scratch copies.
+
+**Usage:**
+```
+python3 scripts/compute_main_dashboard.py <nugget_csv> <ameyo_csv> 2026-10-01 2026-10-02 ... 2026-10-08
+python3 scripts/write_main_dashboard.py '{"2026-10-01": 5, ..., "2026-10-08": 3}'
+```
+The second arg to `write_main_dashboard.py` is that day's Booking Done counts
+(from the Clinic Dashboard sheet, see `external-sources.md`) — pull it fresh
+for any NEW date, but already-tracked dates' values can just be resent as-is
+(Booking Done isn't an any-time-match metric, it doesn't drift like
+Transfer/Connect do).
+
+**What these two scripts do NOT yet cover** (left untouched by design —
+don't guess at these, they need more than just the current month's exports):
+- **Avg Talk Time per Agent / Agents Available** rows — need the TEAM10
+  10-agent roster, which isn't persisted anywhere yet (only the 12-agent
+  `NAME_TO_EMAIL` roster is derivable, from the "Agent Productivity" tab).
+- **Vet Follow-up rows (20-22)** — the 15-day-repeat computation needs the
+  FULL Sept1→latest ticket history (not just the current month's exports),
+  per `vet-followup.md`. A day tracked via these two scripts will show blank
+  Oct cells for these 3 rows until a fuller rebuild restores this.
+- **Ticket Categories, Valid Leads Log, Prediction Model, Callback
+  Adherence** tabs — entirely separate, not rebuilt by these scripts at all.
+
+**The DOCTORS list** (36 internal staff emails, needed for Transfer
+Done/Doctor Called/Transfer%) is **not embedded in this repo** (public repo,
+internal PII) — it's read from `~/Documents/Supertails work/doctors_emails.txt`
+(one email per line, outside git entirely). If that file is ever missing,
+ask Kriti for the list again rather than guessing — getting this wrong
+silently corrupts a real business metric.
 
 1. `01_merge.py` — loads Sept (frozen) + latest nugget/Ameyo files, filters to
    tracked dates, pickles `merged.pkl`. **Always source every previously-tracked
