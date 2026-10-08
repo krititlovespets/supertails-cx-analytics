@@ -287,3 +287,36 @@ the only one that updates `vet_repeat_pct` in the artifact. Documented in
 daily-workflow.md's new "Vet Follow-up rows (20-22) — 5pm run only" section.
 The Vet Follow-up numbers computed this session were NOT written anywhere —
 the next 5pm run (or a later one) does that for real.
+
+---
+
+**2026-10-08, 5pm scheduled run — BLOCKED on Ameyo, nothing written.** Fired
+as the first scheduled run meant to also do the Vet Follow-up refresh (per
+the section above). Nugget pull worked fine (queued an Oct1-to-date export,
+5,897 tickets) and real wall-clock time had moved on substantially since the
+prior manual refresh in this same session (Nugget showed "today at 9:12 PM"
+by the time this run started, several hours after the ~4pm work earlier
+today — the conversation session stayed open across that gap).
+
+Ameyo (`emergeapp5.ameyoemerge.in`) was logged out — hit its login screen on
+two separate navigation attempts (Live Monitoring and the Reports URL both
+redirected to it), so this isn't a one-off render glitch, the session
+genuinely expired. **Did not attempt to log in** — no credentials were
+available to this run, and this is a real production account, not a
+test/dev context where that would be appropriate. Per this run's own
+instructions ("note any such concern in log.md rather than blocking on a
+question"), stopping here rather than guessing at Ameyo data or writing a
+partial/incomplete refresh.
+
+**Nothing was written to Main Dashboard or the dashboard artifact this
+run** — both need matching Ameyo data for Connect/Transfer/AHT/FRT, which
+isn't available. The Sheet and artifact still show the ~4:10pm numbers from
+earlier today. Vet Follow-up wasn't attempted at all (blocked on the same
+Ameyo login before Nugget's September pull was even needed).
+
+**For Kriti**: Ameyo needs a fresh login in the browser Claude automates
+(the Claude in Chrome extension's profile) before the next scheduled run can
+pull data — worth checking before 10pm if you want that run to go through
+cleanly. This queued Nugget export (Oct1-8, 5,897 tickets) is now just
+sitting unused in your inbox/Downloads; safe to ignore, the next successful
+run will pull its own fresh one.
