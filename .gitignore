@@ -1,0 +1,24 @@
+# Credentials — never commit these
+*.json
+!wiki/**/*.json
+**/kriti-project-*.json
+**/*service-account*.json
+**/*credentials*.json
+*.pem
+*.key
+.env
+.env.*
+
+# Data exports — these can contain real customer data, never commit them
+*.csv
+*.xls
+*.xlsx
+
+# OS / editor noise
+.DS_Store
+__pycache__/
+*.pyc
+
+# Scratch/working dirs if ever copied in by mistake
+scratch/
+*_refresh/
