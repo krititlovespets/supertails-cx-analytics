@@ -15,7 +15,10 @@ This supersedes waiting for her to attach CSVs. The daily routine is now:
    entry, edit End Date to now, tick CSV, Run, wait for SUCCESS, download.
 3. Run the normal refresh pipeline (below) using those two freshly-downloaded
    files, exactly as if Kriti had attached them.
-4. Append the ingest entry to `log.md` (and update any other wiki page that
+4. Push the same numbers to the **live dashboard artifact** (see
+   "Live dashboard artifact" section below) — this is the thing Kriti actually
+   looks at, so it must stay current every refresh, not just the Sheet.
+5. Append the ingest entry to `log.md` (and update any other wiki page that
    changed), then **commit and push the wiki to GitHub** — see `schema.md` for
    the exact command and the Keychain-backed auth setup. This is now a
    standing instruction too (Kriti, 2026-10-08: "yes keep the wiki synced
@@ -24,6 +27,52 @@ This supersedes waiting for her to attach CSVs. The daily routine is now:
 Both flows are proven working (confirmed live 2026-10-08, see `log.md`).
 If Kriti ever attaches files herself instead, use those — don't re-pull over
 ones she just gave you.
+
+## Live dashboard artifact (added 2026-10-08)
+
+Kriti's explicit request, 2026-10-08: **"okay so can i get like somewhere i can
+publish numbers and i dont want it to be sheet."** She wants to look at numbers
+somewhere other than the Sheet. Built a Claude Artifact for this:
+
+- **URL:** https://claude.ai/artifact/MGn5rtRUyLPn1v8g2P6bXo — "Supertails CX
+  Pulse." Private artifact (owner + anyone Kriti shares it with).
+- It is a plain HTML page using the Artifact `db` runtime capability — NOT a
+  new spreadsheet, NOT a static snapshot. The page reads
+  `db.doc("dashboard/latest")` on load and re-renders live; it also ships a
+  real embedded fallback snapshot so it never opens empty.
+- **Every refresh, after the Sheet is updated, write the same numbers to this
+  doc** using the `ArtifactData` tool (load via `ToolSearch` first — it's
+  deferred):
+  ```
+  ArtifactData(action: "set", url: "https://claude.ai/artifact/MGn5rtRUyLPn1v8g2P6bXo",
+    collection: "dashboard", doc_id: "latest", data: { ...same shape as below... })
+  ```
+  Shape of the doc (all arrays are Oct-to-date, one entry per tracked day, same
+  order as `dates`):
+  ```json
+  {
+    "dates": ["2026-10-01", ...],
+    "valid_leads": [393, ...],
+    "transfer_pct": [30.8, ...],
+    "connect_pct": [56.2, ...],
+    "frt_avg": ["01:29:41", ...],
+    "booking_pct": [4.7, ...],
+    "aht": ["00:04:56", ...],
+    "vet_repeat_pct": [2.1, ...],
+    "sept": {"valid_leads": 12168, "transfer_pct": 22.6, "connect_pct": 57.1},
+    "oct_to_date": {"valid_leads": 2673, "transfer_pct": 27.2, "connect_pct": 57.9},
+    "updated_at": "<ISO timestamp of this refresh>"
+  }
+  ```
+- Pull these exact numbers from the just-updated Main Dashboard tab (same
+  source the Sheet itself used) — don't recompute separately, so the Sheet and
+  the dashboard artifact can never disagree.
+- The page shows an alert callout when the latest day's Transfer % is still
+  below 20% (the "freshly-tracked day opens low" pattern — see
+  `definitions.md`); no action needed there, it's automatic from the data.
+- If the artifact's `db` doc doesn't exist yet or a write fails, the page just
+  keeps showing its last-known data — not a blocking failure, but still flag
+  it to Kriti if a write genuinely fails repeatedly.
 
 ## Scheduled runs (set up 2026-10-08)
 

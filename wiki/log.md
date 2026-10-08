@@ -145,3 +145,42 @@ every ingest now ends with `git add -A && git commit && git push`, not just a
 local file edit. This log entry + the schema.md/daily-workflow.md edits
 documenting the instruction are themselves the first real test of that new
 step — committed and pushed immediately after this entry was written.
+
+---
+
+**2026-10-08, evening — made the repo public and built a GitHub Pages docs
+site** (Docsify, `index.html` at repo root + `.nojekyll` + `wiki/_sidebar.md`)
+after Kriti asked how to "host presentations on GitHub" — flagged first that
+Pages needs a public repo on the free tier (`AskUserQuestion`), she chose to
+make it public. Live at
+https://krititlovespets.github.io/supertails-cx-analytics/. She then clarified
+she expected to see live numbers there, not documentation — confirmed
+directly: no, it's process docs, not data.
+
+---
+
+**2026-10-08, evening — built the live dashboard artifact Kriti actually
+asked for.** Her words: **"okay so can i get like somewhere i can publish
+numbers and i dont want it to be sheet."** The Pages site answered a different
+question (how to read the process) — this answers the real one (where to see
+the numbers).
+
+Built a Claude Artifact, "Supertails CX Pulse":
+https://claude.ai/artifact/MGn5rtRUyLPn1v8g2P6bXo — plain HTML page using the
+Artifact `db` runtime capability (`capabilities: {db: {}, user: {}}`), not a
+spreadsheet. Shows Valid Leads, Transfer %, Connect %, FRT Avg, AHT, Booking %,
+and Vet Follow-up Repeat % for Oct 1-7, pulled from the live Main Dashboard tab
+via `fetch_dashboard_snapshot.py`-style gspread read, then seeded into the
+artifact's own database (`ArtifactData action: "set"`, `dashboard/latest`) so
+the page renders live rather than from a hardcoded snapshot. Flags Oct 7's
+Transfer % (15.8%, still the lowest of the week) as a callout directly on the
+page since it's been a recurring watch item in this log.
+
+Documented the write pattern (exact doc shape, which tool, which URL) in
+daily-workflow.md's new "Live dashboard artifact" section, and added it as
+step 4 of the standing per-refresh routine (between running the pipeline and
+the GitHub push). **Recreated all 4 scheduled cron jobs** (same
+8:04am/12:08pm/5:06pm/10:02pm cadence, new IDs since the old ones were deleted
+to edit their prompts) so each one now also pushes to this artifact — same
+pattern used when the GitHub-sync step was added. Remember cron jobs are
+session-only and auto-expire after 7 days regardless.
