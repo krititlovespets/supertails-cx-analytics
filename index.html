@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Supertails CX Analytics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta name="description" content="Supertails CX analytics project wiki">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <style>
+    :root {
+      --theme-color: #6c5ce7;
+    }
+    .sidebar {
+      border-right: 1px solid #eee;
+    }
+    .app-name-link img { height: 28px; }
+    .markdown-section code {
+      background-color: #f3f1fb;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">Loading...</div>
+  <script>
+    window.$docsify = {
+      name: 'Supertails CX Analytics',
+      repo: 'krititlovespets/supertails-cx-analytics',
+      basePath: 'wiki/',
+      homepage: 'index.md',
+      loadSidebar: '_sidebar.md',
+      loadNavbar: false,
+      subMaxLevel: 2,
+      auto2top: true,
+      search: {
+        maxAge: 86400000,
+        placeholder: 'Search the wiki...',
+        noData: 'No results.',
+        depth: 4
+      },
+      copyCode: {
+        buttonText: 'Copy',
+        errorText: 'Error',
+        successText: 'Copied'
+      },
+      pagination: {
+        previousText: 'Previous',
+        nextText: 'Next',
+        crossChapter: true
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination@2/dist/docsify-pagination.min.js"></script>
+</body>
+</html>
