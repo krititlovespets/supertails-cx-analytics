@@ -347,3 +347,23 @@ into Ameyo).** Kriti: "ok I logged in, try again." Confirmed the login held
 This is the first fully clean end-to-end run of the new split cadence (Main
 Dashboard every run, Vet Follow-up 5pm-only) — confirms the whole pipeline
 built earlier today works in practice, not just in the dry run.
+
+---
+
+**2026-10-08, 10pm scheduled run — clean, Main Dashboard only.** Ameyo
+session held from the 5pm login (no re-login needed). Pulled fresh Oct1-to-
+date Nugget (5,947 tickets) + Ameyo (through 22:34), ran
+`compute_main_dashboard.py` + `write_main_dashboard.py` as usual.
+
+**Oct 8 is now a complete day**: 395 valid leads, finally exceeding Oct7's
+347 — the first fully-elapsed October day since this refresh cycle started
+tracking it this afternoon. Oct7 itself held exactly steady from the 5pm run
+(Transfer% 23.9%, Connect% 66.3%, unchanged to the decimal) — no new Ameyo
+data happened to match back to Oct7's ticket phones in the last ~5 hours,
+plausible and not concerning on its own.
+
+Pushed to the artifact via `ArtifactData update` (not `set`) specifically so
+`vet_repeat_pct` and `sept` stay untouched, per this run's standing
+instruction not to run the Vet Follow-up pipeline — confirmed in the
+read-back that both were preserved across the write. Skipped
+`compute_vet_followup.py` / `write_vet_followup.py` entirely, as instructed.
