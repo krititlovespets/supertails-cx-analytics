@@ -170,6 +170,39 @@ internal PII) — it's read from `~/Documents/Supertails work/doctors_emails.txt
 ask Kriti for the list again rather than guessing — getting this wrong
 silently corrupts a real business metric.
 
+## Vet Follow-up rows (20-22) — 5pm run only (added 2026-10-08)
+
+[`scripts/compute_vet_followup.py`](../scripts/compute_vet_followup.py) +
+[`scripts/write_vet_followup.py`](../scripts/write_vet_followup.py) now cover
+Main Dashboard rows 20-22 (Vet Follow-up Transferred / 15-Day Repeat /
+Repeat %), day-by-day plus the Sept Avg / Sept16-30 Avg / Oct Avg columns —
+see `vet-followup.md` for the exact rule these implement.
+
+**Kriti's explicit instruction, 2026-10-08: only run this as part of the
+5pm scheduled refresh, not all 4.** It needs a full Sept1→latest pull (both
+Nugget — two exports, since Nugget's UI caps a single export at 1 month +
+1 day — and Ameyo, one pull covering the whole range worked fine), which is
+meaningfully slower (~5-10 min of export-queue waiting vs under a minute for
+the Oct-only pulls the other 3 runs use) and a much bigger computation. The
+8am/12pm/10pm runs stay Main-Dashboard-only, exactly as documented above.
+
+**Usage** (5pm run adds this after the normal Main Dashboard steps):
+```
+# Nugget: two exports (Sept1 00:00 -> Oct1 00:00, then Oct1 00:00 -> now;
+# the UI's "max 1 month and 1 day" range cap forces the split)
+# Ameyo: one export, Sept1 00:00 -> now, worked in a single pull
+python3 scripts/compute_vet_followup.py <nugget_sept_csv> <nugget_oct_csv> <ameyo_full_csv> 2026-10-08
+python3 scripts/write_vet_followup.py
+```
+The last arg to `compute_vet_followup.py` is the latest tracked date — it's
+used to decide whether a ticket's 15-day window is "Closed" (fully resolved)
+or "Open" (still accumulating); see `vet-followup.md`'s scope caveat.
+
+Push the resulting `repeat` percentage for the latest date into the
+dashboard artifact's `vet_repeat_pct` array same as the other metrics — it
+was being carried forward unrefreshed before this existed (see `log.md`,
+2026-10-08).
+
 1. `01_merge.py` — loads Sept (frozen) + latest nugget/Ameyo files, filters to
    tracked dates, pickles `merged.pkl`. **Always source every previously-tracked
    date fresh from the latest file** — never carry forward an old date's cached

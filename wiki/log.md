@@ -248,3 +248,42 @@ of thick near-touching bars with a label on every one — her exact words were
 sub-text was removed entirely after a screenshot caught it visually broken
 (root cause: it was absolutely-positioned and the sub-text had grown to two
 lines, so they drew on top of each other) rather than just repositioned.
+
+---
+
+**2026-10-08, later — refreshed Main Dashboard twice more (16:10, matching
+Nugget/Ameyo through ~16:20) and built the Vet Follow-up pipeline.** Kriti
+asked "update for 8th oct also and i am still surprised how come 7th oct is
+not increasing" — pulled fresh data again; Oct7 Transfer%/Connect% HAD moved
+(20.2%→21.0%, 61.1%→62.8%), just by a small amount since only ~40 min had
+passed since the prior pull with modest Oct8 volume growth in between —
+exactly the documented any-time-matching behavior, not a bug.
+
+Also added a "D-1" row to the artifact (Kriti: "show me in the artifact d-1
+day box also like for 7th oct and for 8th oct as an example") — sits below
+"Today," mirrors it but for the second-to-last tracked date, so Today vs D-1
+can be compared at a glance.
+
+While investigating the "why isn't it increasing" question, found and fixed
+a real bug in the dashboard artifact: `db.doc(...).get()` returns a snapshot
+object whose body lives behind a `.data()` method call, not directly on the
+snapshot — the live-fetch code was checking `doc.dates` directly, which is
+always `undefined`, so the artifact's live-update path had silently never
+worked since it was first built (Kriti: "my point is why artifact does not
+change?"). Fixed (`snap.data()` now called correctly), and also updated the
+page's embedded FALLBACK snapshot to current numbers as defense in depth.
+
+Built `scripts/compute_vet_followup.py` + `scripts/write_vet_followup.py`
+for Main Dashboard rows 20-22, needing a full Sept1→latest history pull (two
+Nugget exports due to the 1-month+1-day UI cap, one Ameyo export covering
+the whole range — 64,781 rows, worked fine in a single pull). Computed
+successfully (Sept 10.0%, Sept16-30 8.9%, Oct 4.9% Repeat%) but **Kriti said
+stop before it was written to the Sheet** — she wants this folded into the
+automation but only refreshed on the 5pm run, not all 4 (it's a much bigger,
+slower pull than the other 3 runs need: ~5-10 min of export-queue waiting vs
+under a minute). Recreated all 4 cron jobs accordingly: 8am/12pm/10pm stay
+Main-Dashboard-only, 5pm additionally runs the Vet Follow-up pipeline and is
+the only one that updates `vet_repeat_pct` in the artifact. Documented in
+daily-workflow.md's new "Vet Follow-up rows (20-22) — 5pm run only" section.
+The Vet Follow-up numbers computed this session were NOT written anywhere —
+the next 5pm run (or a later one) does that for real.
