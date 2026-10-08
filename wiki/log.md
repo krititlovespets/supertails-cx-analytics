@@ -320,3 +320,30 @@ pull data — worth checking before 10pm if you want that run to go through
 cleanly. This queued Nugget export (Oct1-8, 5,897 tickets) is now just
 sitting unused in your inbox/Downloads; safe to ignore, the next successful
 run will pull its own fresh one.
+
+---
+
+**2026-10-08, ~9:40pm — 5pm run completed (retried after Kriti logged back
+into Ameyo).** Kriti: "ok I logged in, try again." Confirmed the login held
+(Reports page loaded without redirect) and re-ran the full pipeline:
+
+- **Main Dashboard**: fresh Oct1-to-date pull (Nugget 5,897 tickets, Ameyo
+  matching range), `compute_main_dashboard.py` + `write_main_dashboard.py`.
+  Oct7's numbers moved again on this pass (Transfer% 21.0%→23.9%, Connect%
+  62.8%→66.3%) — same any-time-matching behavior as every prior refresh
+  today, now with ~5.5 more hours of Oct8 data folded into the pool. Oct8
+  itself is now a nearly-complete day (349 valid leads, close to Oct7's 347).
+- **Vet Follow-up**: fresh Sept1→date Nugget (two pulls, 24,756 + 5,897
+  tickets) + Ameyo (one pull, 93,924 rows total covering the full range) —
+  `compute_vet_followup.py` + `write_vet_followup.py`. Wrote all 38 date
+  columns (Sept1-Oct8) plus Sept/Sept16-30/Oct Avg. Final: Sept 10.0%,
+  Sept16-30 8.9%, Oct 5.1% repeat rate — consistent with the dry-run numbers
+  computed earlier this session (Sept/Sept16-30 identical; Oct moved
+  4.9%→5.1% with more data).
+- Pushed everything to the artifact (both the live `db` doc and the embedded
+  FALLBACK snapshot) — `vet_repeat_pct` is now a real per-date array through
+  Oct8, no longer carrying forward a stale value.
+
+This is the first fully clean end-to-end run of the new split cadence (Main
+Dashboard every run, Vet Follow-up 5pm-only) — confirms the whole pipeline
+built earlier today works in practice, not just in the dry run.
