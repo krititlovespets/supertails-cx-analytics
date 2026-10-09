@@ -466,3 +466,41 @@ checking next refresh before re-pulling.
 it's been logged out all afternoon; (2) if that Windows machine is shared
 with Ravindra, scheduled refreshes may keep colliding with his active
 session — worth knowing if that's expected or if something's misconfigured.
+
+## 2026-10-09 10pm refresh — completed
+
+Recovered cleanly after the 5pm block: browser reconnected to Kriti's
+correct session this time (verified via her Gmail inbox and `KT Kriti`
+avatar in Nugget before doing anything). The 5pm run's Nugget export had
+actually completed server-side (6435 tickets, confirmed in her inbox) but
+was 5 hours stale by 10pm, so pulled a fresh one instead: Oct 1 00:00 →
+Oct 9 ~10:35 PM, 6618 tickets, all fields. Verified the downloaded CSV
+directly (6618 rows, channels {Unified Customer Journey: 4861, UCJ Booking
+Campaigns: 931, UCJ SC Chat Assistance: 826}, dates Oct1-9) before using it.
+
+Ameyo: Kriti had logged in since the 5pm attempt (Live Monitoring showed her
+session active). Re-ran CALL Details with End Date bumped to 10:40 PM —
+22024 rows, Oct1-7 counts exactly matching previously-tracked values
+(2097/2267/2337/2496/2690/2519/2551), Oct8 now complete (2582, up from the
+partial 746 seen mid-day 10-08), Oct9 at 2485 (full-day).
+
+Ran `compute_main_dashboard.py` + `write_main_dashboard.py`. Booking Done:
+reused Oct1-8 values straight from the Sheet (unchanged since last write:
+5/5/4/6/4/3/4/4) but Oct9 showed 0, which looked like an unfetched
+placeholder rather than a true zero this late in the day — pulled fresh
+from the Clinic Dashboard sheet and got 1, used that instead. Cross-check
+`transfer_done + doctor_called == transfer_total` passed for all 9 dates.
+
+Expected any-time-matching drift continued: Oct8 Transfer% 18.3%→23.1%,
+Connect% 43.2%→59.4%; Oct9 (first full-day pull) Transfer% 12.7%→21.1%,
+Connect% 36.6%→50.3%, Valid Leads 134→336 (was still a partial-day count at
+the 12pm run). None of this is a bug — see `definitions.md`.
+
+Pushed to the dashboard artifact via `ArtifactData action: "update"`
+(if_version 6→7). No new date column this run (Oct9 was already tracked
+from earlier today), so no array-padding was needed — `vet_repeat_pct` and
+`sept` were left untouched and preserved by the merge, per Kriti's
+2026-10-09 instruction that Vet Follow-up only refreshes on the 8am run.
+
+Did NOT run `compute_vet_followup.py` / `write_vet_followup.py` on this run
+(correct per the new 8am-only schedule).
