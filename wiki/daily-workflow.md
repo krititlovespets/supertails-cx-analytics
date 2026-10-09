@@ -68,21 +68,22 @@ somewhere other than the Sheet. Built a Claude Artifact for this:
   source the Sheet itself used) — don't recompute separately, so the Sheet and
   the dashboard artifact can never disagree.
 - **All arrays must stay the same length as `dates`, always** (found as a real
-  bug 2026-10-09 when Oct9 was first tracked outside a 5pm run). The
-  non-5pm runs don't recompute `vet_repeat_pct`, so when `dates` grows by a
-  new day, `vet_repeat_pct` would otherwise be one entry short — that's an
-  out-of-bounds read in `renderMetricGrid` (`d.vet_repeat_pct[last_i]`), not
-  just a stale-looking number. **Always pad it** by carrying forward the
+  bug 2026-10-09 when Oct9 was first tracked outside the Vet Follow-up run).
+  The non-Vet-Follow-up runs don't recompute `vet_repeat_pct`, so when `dates`
+  grows by a new day, `vet_repeat_pct` would otherwise be one entry short —
+  that's an out-of-bounds read in `renderMetricGrid` (`d.vet_repeat_pct[last_i]`),
+  not just a stale-looking number. **Always pad it** by carrying forward the
   previous day's value for the new date before writing, on any run that adds
-  a new date column. The 5pm run replaces the padded values with real ones
-  the same day.
+  a new date column. The 8am run (which now owns Vet Follow-up — moved from
+  5pm, see below, 2026-10-09) replaces the padded values with real ones the
+  same day.
 - Prefer `ArtifactData action: "update"` (merge) over `"set"` (replace) for
   routine refreshes — pass only the fields this run actually recomputed
-  (Main Dashboard fields on 8am/12pm/10pm runs) and the untouched ones
+  (Main Dashboard fields on 12pm/5pm/10pm runs) and the untouched ones
   (`vet_repeat_pct`, `sept`) are preserved automatically, so there's no risk
   of accidentally overwriting them with stale local data. Still needs
   `if_version` — `get` the doc first, pass its version back. `"set"` is only
-  for a full rebuild (e.g. after a 5pm run that touches everything).
+  for a full rebuild (e.g. after an 8am run that touches everything).
 - The page shows an alert callout when the latest day's Transfer % is still
   below 20% (the "freshly-tracked day opens low" pattern — see
   `definitions.md`); no action needed there, it's automatic from the data.
@@ -107,6 +108,13 @@ still active and re-create them if not** — don't assume they're still running
 just because they were set up once. There's no reliable way to check this
 across sessions other than noticing the 8am/12pm/5pm/10pm refreshes have
 stopped showing up in `log.md`, or Kriti mentioning the dashboard looks stale.
+
+**2026-10-09: Vet Follow-up moved from the 5pm slot to the 8am slot** (Kriti:
+"so like at 8 am update do the vet follow up") — see the "Vet Follow-up rows"
+section below for the full rationale. When re-creating these 4 jobs after an
+expiry, the 8am job is now the heavier one (Main Dashboard + Vet Follow-up)
+and 12pm/5pm/10pm are Main-Dashboard-only — don't recreate them with the old
+5pm-is-heavy assumption.
 
 ## What "update the dashboard" vs "update all the sheets" means
 
@@ -186,7 +194,7 @@ internal PII) — it's read from `~/Documents/Supertails work/doctors_emails.txt
 ask Kriti for the list again rather than guessing — getting this wrong
 silently corrupts a real business metric.
 
-## Vet Follow-up rows (20-22) — 5pm run only (added 2026-10-08)
+## Vet Follow-up rows (20-22) — 8am run only (added 2026-10-08, moved to 8am 2026-10-09)
 
 [`scripts/compute_vet_followup.py`](../scripts/compute_vet_followup.py) +
 [`scripts/write_vet_followup.py`](../scripts/write_vet_followup.py) now cover
@@ -194,15 +202,22 @@ Main Dashboard rows 20-22 (Vet Follow-up Transferred / 15-Day Repeat /
 Repeat %), day-by-day plus the Sept Avg / Sept16-30 Avg / Oct Avg columns —
 see `vet-followup.md` for the exact rule these implement.
 
-**Kriti's explicit instruction, 2026-10-08: only run this as part of the
-5pm scheduled refresh, not all 4.** It needs a full Sept1→latest pull (both
-Nugget — two exports, since Nugget's UI caps a single export at 1 month +
-1 day — and Ameyo, one pull covering the whole range worked fine), which is
-meaningfully slower (~5-10 min of export-queue waiting vs under a minute for
-the Oct-only pulls the other 3 runs use) and a much bigger computation. The
-8am/12pm/10pm runs stay Main-Dashboard-only, exactly as documented above.
+**Kriti's explicit instruction, 2026-10-08: only run this as part of one
+scheduled refresh, not all 4** — originally the 5pm run, **moved to the 8am
+run on 2026-10-09** ("so like at 8 am update do the vet follow up") so the
+Vet Follow-up numbers are fresh earlier in the day instead of only from 5pm
+onward. It needs a full Sept1→latest pull (both Nugget — two exports, since
+Nugget's UI caps a single export at 1 month + 1 day — and Ameyo, one pull
+covering the whole range worked fine), which is meaningfully slower (~5-10
+min of export-queue waiting vs under a minute for the Oct-only pulls the
+other 3 runs use) and a much bigger computation. The 12pm/5pm/10pm runs stay
+Main-Dashboard-only, exactly as documented above. (Note: `write_vet_followup.py`'s
+own module docstring still says "5pm" as of this edit — the code itself
+doesn't care which cron slot calls it, so this is a documentation-only
+mismatch, not a functional one; update the docstring next time that file is
+touched for another reason.)
 
-**Usage** (5pm run adds this after the normal Main Dashboard steps):
+**Usage** (8am run adds this after the normal Main Dashboard steps):
 ```
 # Nugget: two exports (Sept1 00:00 -> Oct1 00:00, then Oct1 00:00 -> now;
 # the UI's "max 1 month and 1 day" range cap forces the split)

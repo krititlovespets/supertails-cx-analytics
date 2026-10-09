@@ -9,10 +9,10 @@ write_main_dashboard.py's behavior), but does NOT add new September date
 columns -- September is frozen/already fully populated from past refreshes.
 
 This is the heavier of the two Main Dashboard scripts (needs the full
-Sept1-> history pull) -- per Kriti's instruction 2026-10-08, only run this
-one as part of the 5pm scheduled refresh, not all 4. The other 3 runs
-(8am/12pm/10pm) should only call compute_main_dashboard.py /
-write_main_dashboard.py.
+Sept1-> history pull) -- per Kriti's instruction 2026-10-08 (moved from the
+5pm slot to 8am on 2026-10-09), only run this one as part of the 8am
+scheduled refresh, not all 4. The other 3 runs (12pm/5pm/10pm) should only
+call compute_main_dashboard.py / write_main_dashboard.py.
 
 Usage:
     python3 write_vet_followup.py

@@ -407,3 +407,23 @@ forward Oct8's value (5.2%) as a placeholder for Oct9 in this write, keeping
 all arrays the same length. **Any future write that adds a new date column
 outside the 5pm run must do the same** — pad `vet_repeat_pct` to match,
 don't just omit it from the update payload.
+
+## 2026-10-09 — Vet Follow-up moved from 5pm to 8am cron slot
+
+Kriti: "so like at 8 am update do the vet follow up". Deleted all 4 existing
+cron jobs (f2931651 12pm, 78d908b7 5pm, fc31871b 10pm, f801e4aa 8am) and
+recreated them with swapped responsibilities:
+- **8am (04f6053a)** — now Main Dashboard + Vet Follow-up (the heavier
+  Sept1→latest pull). Previously Main-Dashboard-only.
+- **12pm (b9c36420), 5pm (670eac72), 10pm (98687b85)** — Main-Dashboard-only.
+  5pm previously owned Vet Follow-up; no longer does.
+
+Rationale: Vet Follow-up numbers are now fresh from the morning run instead
+of only from 5pm onward. Updated `daily-workflow.md`'s "Vet Follow-up rows
+(20-22)" section heading and body, and the scheduled-runs note, to reflect
+8am as the Vet-Follow-up-owning slot. Also fixed `write_vet_followup.py`'s
+module docstring (was still referencing the old 5pm-only instruction).
+
+Same session/jitter caveats as before apply: these are session-only cron
+jobs that expire after 7 days and die if the session ends — re-check and
+recreate with the new 8am-heavy assignment, not the old 5pm-heavy one.
