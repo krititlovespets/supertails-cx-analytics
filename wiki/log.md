@@ -367,3 +367,15 @@ Pushed to the artifact via `ArtifactData update` (not `set`) specifically so
 instruction not to run the Vet Follow-up pipeline — confirmed in the
 read-back that both were preserved across the write. Skipped
 `compute_vet_followup.py` / `write_vet_followup.py` entirely, as instructed.
+
+---
+
+**2026-10-09, 8:06am — Kriti: "dont run for 8 am today."** Caught right at
+the edge of the fire window (job targets 8:04am + up to 15min jitter), so
+deleted the 8am cron job (`548c18a4`) immediately rather than risk it firing
+mid-cancellation. No refresh ran, nothing was written anywhere this slot.
+Recreated the same recurring job right after (new id `f801e4aa`, same
+`4 8 * * *` schedule, same prompt) — since 8:04am had already passed for
+today, its next occurrence lands tomorrow (Oct 10) automatically, so 8am
+resumes on its own without needing a manual re-add. 12pm/5pm/10pm today are
+unaffected.
