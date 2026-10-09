@@ -427,3 +427,42 @@ module docstring (was still referencing the old 5pm-only instruction).
 Same session/jitter caveats as before apply: these are session-only cron
 jobs that expire after 7 days and die if the session ends — re-check and
 recreate with the new 8am-heavy assignment, not the old 5pm-heavy one.
+
+## 2026-10-09 5pm refresh — blocked, not completed
+
+Started normally: Nugget filters set (3 channels: Unified Customer Journey,
+UCJ Booking Campaigns, UCJ SC Chat Assistance), date range Oct 1 00:00 →
+Oct 9 ~5:41 PM (6435 tickets), all fields selected, export request submitted
+successfully ("Request submitted successfully!" confirmed). Checked Ameyo —
+session had already expired (fresh login page), asked Kriti in chat to log
+in; no response received before the run stalled.
+
+**What went wrong**: while waiting ~10+ min for the Nugget export-ready
+email (this was a much larger export than prior runs — all fields selected
+this time, not a subset — so it may just be slow; the UI itself warns up to
+15-20 min), the Claude-in-Chrome browser connection dropped and reconnected
+several times. Most reconnects landed back on the correct tab group (Kriti's
+logged-in Gmail/Nugget/Ameyo tabs). But at least twice, a reconnect instead
+created a **fresh tab on the same paired Windows machine logged in as a
+different team member (Ravindra), not Kriti** — i.e. the shared/remote
+browser's active Chrome session had changed hands. Confirmed via
+`list_connected_browsers`: same device ID and connection timestamp as
+Kriti's session throughout, so this isn't a different machine — someone else
+was actively using that same remote browser.
+
+**Action taken**: did not interact with the Ravindra-session tabs beyond a
+read-only navigation to confirm whose session it was (no exports, no filter
+changes, no data pulled). Did not proceed with Ameyo (still needs Kriti's
+login) or the Main Dashboard scripts (no fresh Ameyo file, and the Nugget
+export's arrival couldn't be confirmed once Kriti's tabs were gone).
+
+**Net result**: Sheet and dashboard artifact were NOT updated this run — no
+risk of bad data, just stale (last-good numbers from the 12pm run stand).
+The Nugget export request Kriti's account submitted may still complete
+server-side and land in her inbox regardless of browser state; worth
+checking next refresh before re-pulling.
+
+**Flagging for Kriti**: (1) please log into Ameyo when you get a chance —
+it's been logged out all afternoon; (2) if that Windows machine is shared
+with Ravindra, scheduled refreshes may keep colliding with his active
+session — worth knowing if that's expected or if something's misconfigured.
