@@ -67,6 +67,22 @@ somewhere other than the Sheet. Built a Claude Artifact for this:
 - Pull these exact numbers from the just-updated Main Dashboard tab (same
   source the Sheet itself used) — don't recompute separately, so the Sheet and
   the dashboard artifact can never disagree.
+- **All arrays must stay the same length as `dates`, always** (found as a real
+  bug 2026-10-09 when Oct9 was first tracked outside a 5pm run). The
+  non-5pm runs don't recompute `vet_repeat_pct`, so when `dates` grows by a
+  new day, `vet_repeat_pct` would otherwise be one entry short — that's an
+  out-of-bounds read in `renderMetricGrid` (`d.vet_repeat_pct[last_i]`), not
+  just a stale-looking number. **Always pad it** by carrying forward the
+  previous day's value for the new date before writing, on any run that adds
+  a new date column. The 5pm run replaces the padded values with real ones
+  the same day.
+- Prefer `ArtifactData action: "update"` (merge) over `"set"` (replace) for
+  routine refreshes — pass only the fields this run actually recomputed
+  (Main Dashboard fields on 8am/12pm/10pm runs) and the untouched ones
+  (`vet_repeat_pct`, `sept`) are preserved automatically, so there's no risk
+  of accidentally overwriting them with stale local data. Still needs
+  `if_version` — `get` the doc first, pass its version back. `"set"` is only
+  for a full rebuild (e.g. after a 5pm run that touches everything).
 - The page shows an alert callout when the latest day's Transfer % is still
   below 20% (the "freshly-tracked day opens low" pattern — see
   `definitions.md`); no action needed there, it's automatic from the data.

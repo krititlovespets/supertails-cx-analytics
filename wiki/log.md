@@ -379,3 +379,31 @@ Recreated the same recurring job right after (new id `f801e4aa`, same
 today, its next occurrence lands tomorrow (Oct 10) automatically, so 8am
 resumes on its own without needing a manual re-add. 12pm/5pm/10pm today are
 unaffected.
+
+---
+
+**2026-10-09, ~12:55pm — 12pm refresh, run manually.** The scheduled 12pm
+cron job (`f2931651`) hadn't fired yet when Kriti checked at 12:07 ("did you
+start at 12 pm, i dont think so") — confirmed via `CronList` + the Sheet's
+unchanged header that it genuinely hadn't run. She then said "so now its
+12:12 run it now," so ran the Main-Dashboard-only pipeline by hand instead
+of waiting for the jittered cron fire.
+
+Hit fresh logins on both Nugget and Ameyo — this was a brand-new browser tab
+group (new session/context), so neither service's cookies carried over from
+yesterday's tabs. Asked Kriti to log in to each; she did both (Nugget needed
+a TOTP code, which only she could provide).
+
+**Oct 9 is now tracked for the first time** (partial day so far: 134 valid
+leads, 12:53pm cutoff). Oct 8 moved again on this pass (Transfer% 16.7%→
+18.3%, Connect% 40.3%→43.2%, Valid Leads 395→389) — same any-time-matching
+drift as every prior refresh, not a bug.
+
+**New thing to watch**: adding Oct9 to the artifact meant `vet_repeat_pct`
+(8 entries, last updated at 5pm yesterday) was now one shorter than `dates`
+(9 entries) — would have broken `d.vet_repeat_pct[last_i]` in
+`renderMetricGrid` (index out of bounds). Fixed by explicitly carrying
+forward Oct8's value (5.2%) as a placeholder for Oct9 in this write, keeping
+all arrays the same length. **Any future write that adds a new date column
+outside the 5pm run must do the same** — pad `vet_repeat_pct` to match,
+don't just omit it from the update payload.
