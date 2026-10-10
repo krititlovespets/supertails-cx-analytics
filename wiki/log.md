@@ -504,3 +504,48 @@ from earlier today), so no array-padding was needed — `vet_repeat_pct` and
 
 Did NOT run `compute_vet_followup.py` / `write_vet_followup.py` on this run
 (correct per the new 8am-only schedule).
+
+## 2026-10-10 manual refresh — Kriti provided files directly
+
+Kriti attached both files herself instead of a scheduled pull (no cron jobs
+are active right now — all 4 were stopped yesterday at her explicit request,
+see below). Files used as given, not re-pulled:
+- Nugget: `db509nn5e8qs73ed5et0.csv` — 7006 rows, channels {Unified Customer
+  Journey: 5151, UCJ Booking Campaigns: 994, UCJ SC Chat Assistance: 861},
+  dates Oct1-10.
+- Ameyo: `CALL_Details_2026-10-10_14_57_49(...).csv` — 23478 rows, Oct1-8
+  match previously-tracked full-day counts, Oct9 at 2488 (was 2485, tiny
+  any-time drift), **Oct10 at 1451 — a partial day** (pull was ~2:57pm per
+  filename). Kriti explicitly asked to update "till now time," so tracked
+  Oct10 as a new (partial) date column per the day-rollover exception in
+  daily-workflow.md, same pattern as Oct5/Oct7 earlier in the month.
+
+Ran `compute_main_dashboard.py` + `write_main_dashboard.py` for Oct1-10.
+Cross-check `transfer_done + doctor_called == transfer_total` passed for all
+10 dates. Booking Done: reused Oct1-9 from the Sheet (unchanged), pulled
+Oct10 fresh from the Clinic Dashboard sheet (5).
+
+Pushed to the dashboard artifact via `ArtifactData action: "update"`
+(if_version 7→8). This run added a new date column (Oct10), so padded
+`vet_repeat_pct` (9→10 entries, carried forward the last value 5.2 for
+Oct10) per the array-length rule — Vet Follow-up itself was not recomputed
+this run (that only happens on the 8am scheduled run, which is currently
+stopped — see below).
+
+## 2026-10-10 — all 4 scheduled cron jobs stopped at Kriti's request
+
+Mid-way through the 8am scheduled refresh (while setting up the Vet
+Follow-up Sept1→Oct1 Nugget export date range), Kriti sent: "lets stop this
+updated likr at 8 am and every time i told you", then after a clarifying
+question, "lets do it when i ask you to do" / "please stop all of this".
+
+**All 4 cron jobs were deleted** (8am `04f6053a`, 12pm `b9c36420`, 5pm
+`670eac72`, 10pm `98687b85`) and the in-progress 8am run was halted
+immediately — no exports were pulled or submitted in that run, nothing was
+written to the Sheet or artifact from it (the browser was only mid-way
+through setting a date-range filter when stopped).
+
+**New standing behavior**: no more automatic scheduled refreshes. Kriti will
+ask explicitly (in chat, or by attaching files directly, as she did for this
+very refresh) whenever she wants the dashboard/sheets updated. Don't
+recreate the cron jobs unless she asks for scheduling again.

@@ -1,10 +1,28 @@
 # Daily Refresh Workflow
 
-## STANDING INSTRUCTION (as of 2026-10-08): pull both exports yourself
+## STANDING INSTRUCTION (as of 2026-10-10): NO automatic scheduled refreshes — wait for Kriti to ask
+
+**Kriti's explicit instruction, 2026-10-10: "lets stop this updated likr at 8
+am and every time i told you" → "lets do it when i ask you to do" → "please
+stop all of this".** This **supersedes the 2026-10-08 "pull it yourself every
+day" instruction below** (kept for historical reference and for the mechanics
+of the pull flow, which are still correct when a refresh IS requested).
+
+All 4 `CronCreate` scheduled jobs were deleted 2026-10-10 mid-refresh and
+must NOT be recreated unless Kriti explicitly asks for scheduling again.
+Going forward, only refresh the dashboard/sheets when Kriti asks in chat —
+either by requesting a refresh directly, or by attaching Nugget/Ameyo CSVs
+herself (use her files as-is, don't re-pull over them — see `log.md`
+2026-10-10 for an example of a manual refresh done this way).
+
+## Historical: 2026-10-08 "pull it yourself" instruction (superseded 2026-10-10)
 
 **Kriti's explicit instruction, 2026-10-08: "so now every day your third step
 should be to take both the downloads and update the dashboard and sheets."**
-This supersedes waiting for her to attach CSVs. The daily routine is now:
+This supersedes waiting for her to attach CSVs — **but is itself now
+superseded by the 2026-10-10 instruction above: don't run this automatically
+or on a schedule.** The pull mechanics below are still the correct way to do
+a refresh whenever Kriti does ask for one:
 
 1. Pull the **Nugget ticket export** via browser automation (see
    `external-sources.md` for the exact click-by-click flow) — set the date
@@ -91,11 +109,16 @@ somewhere other than the Sheet. Built a Claude Artifact for this:
   keeps showing its last-known data — not a blocking failure, but still flag
   it to Kriti if a write genuinely fails repeatedly.
 
-## Scheduled runs (set up 2026-10-08)
+## Scheduled runs — STOPPED 2026-10-10, do not recreate without being asked
 
 Kriti asked for this to run automatically at **8am, 12pm, 5pm, and 10pm every
-day**. Set up as 4 recurring `CronCreate` jobs in that day's session. **Two
-hard constraints to know about:**
+day**, set up 2026-10-08 as 4 recurring `CronCreate` jobs. **On 2026-10-10 she
+asked to stop all of it** (see the STANDING INSTRUCTION at the top of this
+page and `log.md` 2026-10-10) — all 4 jobs were deleted and must NOT be
+recreated unless she explicitly asks for scheduling again. The mechanics
+below are kept for reference in case scheduling is ever turned back on.
+
+Two hard constraints to know about, if scheduling is ever re-enabled:
 - Cron jobs in this tool are **session-only** — they stop the moment the
   Claude session that created them ends (app closed, session killed, etc.).
   They are NOT a durable background service.
