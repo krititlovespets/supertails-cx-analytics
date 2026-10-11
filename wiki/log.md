@@ -604,3 +604,18 @@ CSV's own "User Name"/"User ID" columns, not guessed.
 browser automation into her Gmail/Nugget/Ameyo requires her permission
 every single time, not a standing yes — always ask first, never resume
 on a prior answer. See memory for the fuller incident.
+
+## 2026-10-11 — Oct10 Booking Done was stale, fixed
+
+Kriti flagged Booking Done looked wrong right after the Oct8-10 refresh
+above. She was right: Oct10's Booking Done (row 17) was still showing 5 —
+the value pulled yesterday when Oct10 was a partial day. Re-pulled from the
+Clinic Dashboard sheet: it had grown to 9 (full day now). **Lesson: Booking
+Done isn't an any-time-match metric like Transfer/Connect, but it still
+needs a fresh pull whenever a day moves from partial to complete** — reusing
+a day's earlier Booking Done value is only safe once that day is fully
+closed, not while it's still "today."
+
+Fixed: Sheet row17/18/19 col AS (Oct10) → Booking Done 9, Booking% 7.9%
+(was 4.4%), Bookings Needed -2. Dashboard artifact `booking_pct[9]` updated
+to 7.9 (if_version 9→10).
