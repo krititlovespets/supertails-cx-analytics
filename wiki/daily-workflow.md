@@ -200,9 +200,16 @@ Transfer/Connect do).
 
 **What these two scripts do NOT yet cover** (left untouched by design —
 don't guess at these, they need more than just the current month's exports):
-- **Avg Talk Time per Agent / Agents Available** rows — need the TEAM10
-  10-agent roster, which isn't persisted anywhere yet (only the 12-agent
-  `NAME_TO_EMAIL` roster is derivable, from the "Agent Productivity" tab).
+- **Avg Talk Time per Agent / Agents Available** rows — `compute_main_dashboard.py`
+  doesn't compute these yet, but the formula and roster are now confirmed
+  (see `definitions.md`'s `TEAM10` entry, validated 2026-10-11) and both are
+  daily-only metrics computable straight from a single day's Ameyo file (no
+  Sept history needed). Not yet wired into the script — until it is, compute
+  by hand the same way the 2026-10-11 refresh did (see `log.md` for the
+  exact approach) and write directly, being careful to use the right date
+  columns (a column-offset mistake happened here once already — always
+  verify the column letter against the live header before writing, don't
+  assume row/column position from memory).
 - **Vet Follow-up rows (20-22)** — the 15-day-repeat computation needs the
   FULL Sept1→latest ticket history (not just the current month's exports),
   per `vet-followup.md`. A day tracked via these two scripts will show blank

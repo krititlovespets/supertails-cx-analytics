@@ -549,3 +549,58 @@ through setting a date-range filter when stopped).
 ask explicitly (in chat, or by attaching files directly, as she did for this
 very refresh) whenever she wants the dashboard/sheets updated. Don't
 recreate the cron jobs unless she asks for scheduling again.
+
+## 2026-10-11 manual refresh — Oct8-10 only (partial Nugget file)
+
+Kriti attached two files directly: Nugget `db5fmlv5e8qs73dfnk8g.csv` (2144
+rows, 3 correct channels) and Ameyo `CALL_Details_2026-10-11_08_29_40(...).csv`
+(24848 rows, Oct1-11, Oct10 now complete at 2646, Oct11 just starting at
+175). **Caught before running anything**: the Nugget file only covered
+Oct8-10, not the full Oct1-11 range the Ameyo file had — asked Kriti how to
+handle it rather than guessing; she said refresh just Oct8-10, leave Oct1-7
+and Oct11 alone (no Oct11 column added — would need Nugget ticket data for
+that date, which this file doesn't have).
+
+Ran `compute_main_dashboard.py` scoped to just Oct8/9/10. **Important
+catch**: `write_main_dashboard.py`'s normal behavior writes whatever
+`oct_avg` it computes to column D ("October Avg") unconditionally — but
+since this run only covered 3 of the 10 October dates, that aggregate would
+have been wrong (a 3-day average overwriting the true 10-day one). Wrote the
+Oct8/9/10 date columns by hand instead (same ROWS mapping, same ArtifactData
+pattern) and explicitly skipped column D. Booking Done reused from the
+Sheet's existing Oct8/9/10 values (4/1/5, unchanged — not an any-time-match
+metric). Cross-check `transfer_done + doctor_called == transfer_total`
+passed for all 3 dates.
+
+Numbers moved as expected with more Ameyo matching: Oct8 Transfer%
+23.1%→23.1% (stable), Oct9 24.5%→27.0%, Oct10 (now a full day, was partial
+before) valid_leads 202→399, Transfer% 20.3%→25.6%, Connect% 48.0%→53.9%,
+Booking% 9.6%→4.4% (denominator UCJ Bangalore Customer grew from 52→114 as
+the rest of the day's tickets came in — percentage dropping as the day
+completes is expected, not a bug).
+
+Pushed to the dashboard artifact via `ArtifactData action: "update"`
+(if_version 8→9), only touching the 3 affected date-indexed array slots
+(valid_leads/transfer_pct/connect_pct/frt_avg/booking_pct/aht) — left
+`vet_repeat_pct`, `sept`, and `oct_to_date` untouched since they weren't
+recomputed this run (no full-month Nugget data available).
+
+**Earlier the same session**: separately recovered from a mistake made
+2026-10-10 (see below) where Avg Talk Time per Agent / Agents Available
+values were accidentally written to the Sept7-9 columns instead of Oct8-10.
+Sept7-9 cells were cleared (left blank, not restored — no backup of the
+original values was recoverable; Drive revision history wasn't accessible
+to the service account) and the correct Oct8/9/10 values were written to
+the right columns (AQ/AR/AS) instead, using a TEAM10 roster Kriti provided
+and validated against 7 known historical "Agents Available" values before
+writing (exact match on all 7). **Confirmed TEAM10 roster (9 people, not
+10 despite the label)**: Raisa Qureshi, Hammad Vaseem Shaikh, Shazali
+Sanober, Arjun L, Riddi P, Alan Joel, Dhanush S, Abdul Rahman, Mohammed
+Roohulla — NOT Ganashree D or Daksha K (they're part of the 12-person
+`NAME_TO_EMAIL` roster but not `TEAM10`). Emails resolved from the Ameyo
+CSV's own "User Name"/"User ID" columns, not guessed.
+
+**Standing note going forward**: Kriti has been explicit (2026-10-10) that
+browser automation into her Gmail/Nugget/Ameyo requires her permission
+every single time, not a standing yes — always ask first, never resume
+on a prior answer. See memory for the fuller incident.

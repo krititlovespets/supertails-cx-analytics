@@ -10,9 +10,27 @@ re-implements one of these must match this exactly — drift between tabs is a b
   script; see any `0X_build_*.py` in a recent scratch refresh dir for the literal set).
 - `LANGUAGE_KEYWORDS` = `{english, telugu, tamil, kannada, kanada, hindi}`
 - `TRANSFER_TARGETS` = `DOCTORS | LANGUAGE_KEYWORDS`
-- `TEAM10` — the 10 core agent emails (used for Team Talk Time / Avg Talk Time per Agent)
-- `NAME_TO_EMAIL` — 12-agent roster (TEAM10 + Ganashree D + Daksha K), used for
-  Agent Productivity-style breakdowns
+- `TEAM10` — confirmed 2026-10-11 to be exactly these 9 emails (the "10" in
+  the name is historical/nominal, not a current literal count — validated by
+  exact match against 7 known historical "Agents Available" values before
+  being written anywhere):
+  ```
+  raisa.qlovespets@supertails.in        (Raisa Qureshi)
+  hammad.shaikhlovespets@supertails.in  (Hammad Vaseem Shaikh)
+  shazali.snlovespets@supertails.in     (Shazali Sanober)
+  arjun.llovespets@supertails.in        (Arjun L)
+  riddi.plovespets@supertails.in        (Riddi P)
+  alan.jlovespets@supertails.in         (Alan Joel)
+  dhanush.slovespets@supertails.com     (Dhanush S -- note .com not .in)
+  abdul.rahmanlovespets@supertails.in   (Abdul Rahman)
+  mohammed.rolovespets@supertails.in    (Mohammed Roohulla)
+  ```
+  Source: emails resolved from the Ameyo CALL Details CSV's own "User
+  Name"/"User ID" columns (never guessed) after Kriti supplied the 11-name
+  list (TEAM10 + Ganashree D + Daksha K) in chat, 2026-10-10/11.
+- `NAME_TO_EMAIL` — 12-agent roster (TEAM10 + Ganashree D + Daksha K =
+  `ganashree.dlovespets@supertails.in` + `daksha.klovespets@supertails.in`),
+  used for Agent Productivity-style breakdowns
 - **Core 4 Booking Agents**: Mohammed Roohulla ("Rooh"), Alan Joel, Dhanush S,
   Abdul Rahman — the dedicated UCJ-Booking/Bangalore team.
 
@@ -110,7 +128,16 @@ iterations (15-min-after-first-touch threshold, not calendar-day).
 
 ## Agent Productivity-style row conventions (where still live)
 
-- "Avg Talk Time per Agent" = Team Talk Time (TEAM10) / Agents Available.
+- **"Agents Available"** (Main Dashboard row 15) = count of distinct
+  `TEAM10` emails with >=1 Ameyo call row on that date. Validated 2026-10-11
+  by exact match against 7 known historical values.
+- **"Avg Talk Time per Agent"** (Main Dashboard row 12) = sum of `User Talk
+  Time` across all `TEAM10` agents' Ameyo calls that date, divided by
+  "Agents Available" for that date (NOT divided by 10 or by headcount —
+  divided by however many of the 9 actually had activity). Validated
+  2026-10-11 the same way, exact match on all 7 known dates. Both are daily
+  metrics computed straight from a single day's Ameyo file — no September
+  history needed, unlike Vet Follow-up.
 - "Attendance %" = adjusted days present / 25 expected working days (30 - 4
   weekly-off - 1 Ganesh Chaturthi holiday), capped at 100% display-wise for
   agents who exceed it (e.g. "room"/Mohammed Roohulla).
