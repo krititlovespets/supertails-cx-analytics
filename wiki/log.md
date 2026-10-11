@@ -723,3 +723,51 @@ Did not touch Ticket Categories / Valid Leads Log / Callback Adherence /
 Prediction Model this run — Kriti's instruction was "update the sheets and
 dashboard," read as Main Dashboard + artifact (the usual meaning of "the
 dashboard"), not the full "all the sheets" scope from yesterday.
+
+## 2026-10-11 night — Ticket Categories, Valid Leads Log, Callback Adherence, Prediction Model (Oct11 + a bug fix)
+
+Kriti confirmed she wanted the other 4 tabs updated too, same scope as the
+2026-10-10 "all the sheets" session.
+
+**Bug caught and fixed**: while extending Ticket Categories to Oct11,
+validation flagged that the live sheet's Oct10 TOTAL Count (324) didn't
+match a fresh recomputation (621). Root cause: the 2026-10-10 Ticket
+Categories build used `db509nn5e8qs73ed5et0.csv` for Oct8-10, but that file
+had only captured Oct10 as a PARTIAL day (384 raw tickets, pulled before
+Oct10 closed) — unlike the Main Dashboard refresh the same day, which had
+correctly switched to a fuller same-day file for exactly this reason. The
+Ticket Categories script never got that same fix. Confirmed via raw ticket
+counts: `db509nn5e8qs73ed5et0.csv` has 384 Oct10 rows, `db5fmlv5e8qs73dfnk8g.csv`
+and today's `db5ssin5e8qs73fh738g.csv` both have the true 760. Verified
+Oct8/Oct9 were unaffected (identical raw counts, 723/661, across all three
+files) before concluding only Oct10 needed correcting. **Lesson for next
+time: when a script reads a Nugget export file by filename, sanity-check
+that file's per-date row counts for the specific dates being written, not
+just trust the filename/date-range label** — a file genuinely covering the
+range can still have an incomplete LATEST day inside that range.
+
+Corrected Oct10 (324→621 TOTAL Count) and added Oct11 (624), recomputed the
+October aggregate (col C) over the now-correct Oct1-11 data: 6525 (verified
+as the exact sum of all 11 day columns). September untouched.
+
+**Valid Leads Log**: Oct8-10 had already used the correct full-day file
+(no bug here) — just appended 398 new Oct11 rows, matching Main Dashboard's
+Oct11 Valid Leads exactly.
+
+**Callback Adherence + Dump**: full rebuild again, Oct Nugget now merged
+from 3 files (base + two overlapping refinements, latest wins) to get
+genuine Oct1-11 coverage; Oct Ameyo swapped to today's fullest pull.
+Validation (Scheduled Callbacks + /-30min window counts, both
+time-invariant) passed exactly on all 5 known July/Aug/Sept rows. October
+row: 466 → 475 scheduled callbacks.
+
+**Prediction Model**: `banked_dates` extended to Oct1-11 (Oct11's Ameyo
+pull was near-complete, 2432 rows at 23:29, close enough to end-of-day to
+bank). New forecast: 11 banked days = 4187 leads / 1167 transfers (27.9%),
+forecast total Oct = 11800, need 31.2% on the remaining 20 days to still
+hit 30% cumulative.
+
+**Cross-checks after writing**: Valid Leads Log Oct11 (398) matches Main
+Dashboard Oct11 Valid Leads exactly. Ticket Categories TOTAL Count
+correctly higher than Valid Leads for every one of Oct8-11 (621/624 >
+399/398), as expected given its broader category scope.
