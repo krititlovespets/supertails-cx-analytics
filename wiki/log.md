@@ -693,3 +693,33 @@ Scratch build scripts for this session live in
 build_write_prediction_model.py) plus two one-off scripts used for Ticket
 Categories/Valid Leads Log — none committed to the repo (all hardcode
 today's specific Downloads filenames, not reusable).
+
+## 2026-10-11 night refresh — Oct8-11 (Oct11 now tracked)
+
+Kriti attached two files: Nugget `db5ssin5e8qs73fh738g.csv` (2882 rows,
+Oct8-11, correct 3 channels) and Ameyo `CALL_Details_2026-10-11_23_29_41(...).csv`
+(27105 rows, Oct1-11, Oct11 at 2432 — near-complete, end-of-day pull).
+Explicit instruction: update dashboard/sheets but skip Vet Repeat %.
+
+Ran `compute_main_dashboard.py` scoped to Oct8-11. Cross-check
+`transfer_done + doctor_called == transfer_total` passed all 4 dates.
+Booking Done: reused Oct8/9/10 from the Sheet (4/1/9, unchanged), pulled
+Oct11 fresh from Clinic Dashboard (1 — likely still settling, worth a
+re-check next refresh).
+
+Wrote Main Dashboard by hand again (not the generic write script) to avoid
+touching column D — this run only covers 4 of 11 October dates. Oct11 added
+as a new column; Oct8/9/10 refreshed in place.
+
+Pushed to the dashboard artifact (if_version 10→11): `dates` extended to
+include Oct11, valid_leads/transfer_pct/connect_pct/frt_avg/booking_pct/aht
+updated for Oct8-11. **`vet_repeat_pct` explicitly NOT recomputed per
+Kriti's instruction** — padded from 10 to 11 entries by carrying forward
+the last value (5.2) to keep array lengths in sync with `dates`, per the
+standing array-length rule. Still waiting on the September dump for an
+actual Vet Follow-up refresh.
+
+Did not touch Ticket Categories / Valid Leads Log / Callback Adherence /
+Prediction Model this run — Kriti's instruction was "update the sheets and
+dashboard," read as Main Dashboard + artifact (the usual meaning of "the
+dashboard"), not the full "all the sheets" scope from yesterday.
