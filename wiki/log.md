@@ -619,3 +619,77 @@ closed, not while it's still "today."
 Fixed: Sheet row17/18/19 col AS (Oct10) → Booking Done 9, Booking% 7.9%
 (was 4.4%), Bookings Needed -2. Dashboard artifact `booking_pct[9]` updated
 to 7.9 (if_version 9→10).
+
+## 2026-10-11 — "update all the sheets" (Ticket Categories, Valid Leads Log, Callback Adherence, Prediction Model)
+
+Kriti asked to update all the sheets (Prediction Model, Valid Leads Log,
+"and what not"). These 4 tabs (plus Main Dashboard, already current) hadn't
+been touched since **2026-10-08** — a 3-day gap, confirmed stale on
+inspection (Ticket Categories' own NOTE cell said "day-by-day columns run
+Sept 1 - Oct 4", live data actually ran through Oct7; Callback Adherence's
+October row showed 373 scheduled, clearly outdated).
+
+**Key recovery**: the 2026-10-08 scratch build scripts (`oct8c_refresh/`)
+were still present in this session's scratchpad (hadn't expired), so the
+original, battle-tested classify/matching logic could be reused verbatim
+instead of reconstructed from scratch. Also recovered the original frozen
+source files still sitting in `~/Downloads` from when they were first
+pulled: September Nugget (`dauuegbkeinc73durekg.csv`, Sept1-30, verified),
+September Ameyo (`CALL_Details_2026-10-01_10_24_49(...).csv`, Sept1-Oct1,
+verified), and July+August Nugget/Ameyo (`damfs9ld509s73e7soi0.csv`,
+`damg09dd509s73fs4uag.csv`, `CALL_Details_2026-09-18_14_31_48(...).csv`).
+
+**Ticket Categories**: scoped patch, not full rebuild — validated the
+classify()/matching logic reproduces the known Oct1-7 TOTAL Count exactly
+(589/627/602/594/581/571/557) before writing anything. Added Oct8/9/10 date
+columns (615/544/324 TOTAL Count) and recomputed the "October" aggregate
+column (was Oct1-7 only = stale, now Oct1-10 = 5604). Left September
+aggregate and all Sept1-30/Oct1-7 day columns completely untouched.
+
+**Valid Leads Log**: append-only by design (one row per ticket) — appended
+1118 new Oct8-10 rows (389+330+399, matching Main Dashboard's Valid Leads
+row digit-for-digit, the documented cross-check) without touching any
+existing row. 14842 → 15960 total rows.
+
+**Callback Adherence + Callback Adherence Dump**: full rebuild (these two
+tabs are always clear+rewrite, not append/patch) using July+Aug frozen +
+recovered Sept + current Oct data (merged/deduped two Oct Nugget files,
+preferring the fuller Oct8-10 pull for overlapping ticket IDs; used the
+fullest available Oct Ameyo file, Oct1-11). **Validation caught something
+real**: raw validation against the known Oct8 July/Aug/Sept numbers
+initially "failed" on the Anytime/Transferred columns — investigated rather
+than overriding blindly. Two legitimate causes, not bugs: (1) "Anytime"
+matching is unbounded-forward, so having Ameyo data through Oct11 now
+(vs Oct4 at the last build) surfaces new matches for old scheduled
+callbacks — same any-time-drift pattern documented everywhere else in this
+project; (2) `doctors_emails.txt` has genuinely changed since Oct8 (diffed
+against the old script's frozen inline list: 5 doctors added, 5 removed —
+real roster turnover), which is the current correct roster, not a bug to
+avoid. Confirmed the two inputs that SHOULD be time-invariant (Scheduled
+Callbacks count, and the +/-30min-window counts, both fixed to a historical
+moment) matched the known values exactly on all 5 rows before writing.
+October row: 373 → 466 scheduled callbacks (now reflects Oct1-10).
+
+**Prediction Model**: full rebuild, `banked_dates` extended from Oct1-7 to
+Oct1-10 (Oct10 confirmed complete, Oct11 excluded as still in progress per
+the day-rollover rule). Valid Leads/Transfer Total for the banked days
+pulled directly from the live Main Dashboard sheet (just-refreshed,
+authoritative) rather than re-derived from any CSV snapshot. New forecast:
+banked 10 days = 3789 leads / 1037 transfers (27.4%), forecast total Oct =
+11746, need 31.3% on remaining 21 days to still hit 30% cumulative.
+
+**Cross-checks after writing**: Valid Leads Log Oct8/9/10 counts
+(389/330/399) match Main Dashboard's Valid Leads row exactly, digit for
+digit, as required. Ticket Categories TOTAL Count is correctly higher
+(615/544/324 — includes Pharmacy True/Bangalore/Source Call tickets that
+Valid Lead excludes), not a discrepancy.
+
+**Not done this session**: Vet Follow-up Callback / Dump tabs, and Main
+Dashboard rows 20-22 — Kriti said she'd send Sept data for that separately
+("sept i will give you afterwards").
+
+Scratch build scripts for this session live in
+`<scratchpad>/oct11_refresh/` (build_callback_adherence.py,
+build_write_prediction_model.py) plus two one-off scripts used for Ticket
+Categories/Valid Leads Log — none committed to the repo (all hardcode
+today's specific Downloads filenames, not reusable).
