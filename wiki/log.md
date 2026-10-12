@@ -815,3 +815,48 @@ file for an "any-time" matching rebuild (Callback Adherence, Vet Follow-up,
 etc.), always check the file's own date coverage against what's being
 replaced — a file can look like "the latest pull" by timestamp while
 actually covering a narrower date window than what it's superseding.
+
+## 2026-10-12 — Fixed stale "October Avg" column (Main Dashboard col D)
+
+Kriti asked me to check whether the October average was correct. It
+wasn't: column D hadn't been recomputed since before Oct10 was corrected
+and before Oct11 was ever tracked — every refresh since the 2026-10-09 10pm
+run had explicitly skipped column D because no single run had full Oct1-11
+data in hand at once. Confirmed by comparing column D's stale numbers
+against a fresh sum of the actual Oct1-11 day columns (e.g. Valid Leads:
+col D said 3592, actual sum is 4177).
+
+**Fix**: merged all 4 available Oct Nugget exports (deduped by ticket_id,
+latest wins) and the two most recent Oct Ameyo exports (Oct1-9 from the
+2026-10-11 pull, Oct10-11 from the 2026-10-12 pull — non-overlapping date
+split) into one combined Oct1-11 dataset, ran `compute_main_dashboard.py`
+once across the full window to get a properly-weighted `oct_avg` (this
+matters for AHT/FRT avg specifically — those are weighted averages, not
+a mean of the daily values), and wrote all 16 affected column-D cells:
+
+| Metric | Was | Now |
+|---|---|---|
+| Valid Leads | 3592 | 4177 |
+| Transfer Total | 968 | 1173 |
+| Transfer % | 26.9% | 28.1% |
+| Connect | 2136 | 2521 |
+| Connect % | 59.5% | 60.4% |
+| Booking Done | 41 | 46 |
+| Booking % | 4.1% | 3.8% |
+
+Also caught and fixed rows 12/15 (Avg Talk Time per Agent / Agents
+Available), whose October Avg was even more obviously stale (Agents
+Available showed 46, impossible for a 9-person team). Recomputed properly:
+all 9 TEAM10 agents were active at some point in Oct1-11, total team talk
+time 217:27:05 over the period → Avg Talk Time per Agent (period) =
+217:27:05 / 9 = **24:09:41**, Agents Available (period) = **9**.
+
+**Standing lesson, now doubly confirmed**: whenever a refresh is scoped to
+only some dates (no full-month data on hand), explicitly skip column D
+rather than guess — but don't forget to circle back and recompute it once
+full-range data becomes available. It's easy for this column to silently
+go stale for days if nobody asks.
+
+Did not touch Ticket Categories' October aggregate (col C) — that one has
+been correctly recomputed every refresh this whole time and was already
+accurate (6525).
