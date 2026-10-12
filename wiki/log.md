@@ -948,3 +948,13 @@ Ganashree D 6.8%/28.7% (Transfer % of Attempted / of Connected).
 Used `valueInputOption: RAW` for the whole write this time (not just a
 follow-up fix) and dropped the leading "===" from the section-header text,
 avoiding the formula-misparse bug hit on the first version of this table.
+
+## 2026-10-12 — Table 5: same dual Transfer % breakdown, Sept 17-30 window
+
+Kriti asked for the same Table 4 numbers narrowed to Sept 17-30. Added as
+Table 5 (rows 67-82) rather than replacing Table 4, same 12-agent roster
+and definitions. Notable shifts vs the full-month Table 4: Raisa Qureshi's
+Transfer % of Connected rose from 35.7% (full month) to 36.0% (back half)
+but her call volume dropped sharply (1715→445, suggesting she had much
+lower volume specifically in the back half of Sept); Dhanush S's of-Connected
+rate rose from 30.1%→33.2%.
