@@ -896,3 +896,42 @@ been sitting there since Vet Follow-up was last run:
 
 Did not touch the artifact's `sept` block (Valid Leads/Transfer/Connect
 aggregate, unrelated to Vet Follow-up) — out of scope for this ask.
+
+## 2026-10-12 — New Table 4 in Agent Productivity: dual Transfer % (unique phones, TEAM10, Sept)
+
+Kriti asked for a new per-agent breakdown: total calls taken, total
+transfers, total connected -- not scoped to Valid Lead at all -- with TWO
+Transfer % figures (one from total attempted, one from total connected),
+for Sept 1-30. Clarified two ambiguities before building: "unique" means
+deduped by customer phone number (same convention as Transfer/Connect
+everywhere else in this workbook), and scope is the 9 TEAM10 agents (not
+the full 12-person roster used in Tables 1-3).
+
+This is close to existing Table 2 ("All-Calls-Scoped") but with narrower
+scope (Sept-only, TEAM10-only vs Sept1-Oct2, 12-agent) and phone-dedup
+throughout (Table 2's own "Total Calls" looks to be a raw call-row count,
+not phone-deduped, going by the gap between its numbers and this table's
+for the same agents) -- added as a new **Table 4** in the existing "Agent
+Productivity" tab (rows 50-62) rather than overwriting Table 2 or creating
+a new tab, since it's genuinely a different scope/definition, not a
+replacement.
+
+Computed from the full Sept Ameyo dataset (same merged file built for the
+Vet Follow-up refresh earlier today). Per agent: Total Calls = distinct
+phones with any call; Total Connected = distinct phones with >=1 call
+where User Talk Time>=30s; Total Transferred = distinct phones with >=1
+qualifying Transfer Done (Doctor Called doesn't apply here, no TEAM10
+member is a doctor). Transfer % (of Attempted) = Transferred/Total Calls;
+Transfer % (of Connected) = Transferred/Connected.
+
+Results ranged from Abdul Rahman (7.0% of attempted, 14.9% of connected)
+to Hammad Vaseem Shaikh (20.6% / 39.9%) -- the "of Connected" version is
+consistently much higher than "of Attempted" across every agent, as
+expected since a transfer can only happen on a call that already connected.
+
+**Bug caught and fixed immediately**: the "=== TABLE 4... ===" label cell
+got misread as a Sheets formula (starts with "="), showing `#ERROR!`.
+Fixed by rewriting that one cell with `valueInputOption: RAW` instead of
+USER_ENTERED -- same gotcha the Prediction Model script already has a
+standing workaround for; worth remembering for any future ad-hoc write
+that uses a "===" section-header convention.
