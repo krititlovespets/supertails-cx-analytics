@@ -771,3 +771,47 @@ hit 30% cumulative.
 Dashboard Oct11 Valid Leads exactly. Ticket Categories TOTAL Count
 correctly higher than Valid Leads for every one of Oct8-11 (621/624 >
 399/398), as expected given its broader category scope.
+
+## 2026-10-12 morning — Oct10-11 refresh (no new date; all sheets)
+
+Kriti attached Nugget `db66dmn5e8qs73c4i040.csv` (1498 rows, Oct10-11 only,
+correct 3 channels) and Ameyo `CALL_Details_2026-10-12_10_20_51(...).csv`
+(5506 rows, Oct10-12, Oct12 just starting at 428 rows). No Nugget data for
+Oct12, so no new date column added this run — scoped to refreshing
+Oct10/Oct11 across all tabs.
+
+**Main Dashboard + artifact**: ran scoped to Oct10-11. Cross-check passed
+both dates. Oct11 valid_leads drifted 398→388 (10-ticket channel-drift,
+within the normal 1-20/refresh range, not alarming). Booking Done for
+Oct10/11 reconfirmed unchanged (9, 1) now that both days are fully closed.
+Artifact pushed if_version 11→12, only the Oct10/11 array slots touched.
+
+**Ticket Categories**: refreshed Oct10/Oct11 values in place (no new
+column) and recomputed the October aggregate — TOTAL Count unchanged
+(621/624, as expected since ticket population is now stable for closed
+days), minor AHT/Talk-Time drift from continued any-time Ameyo matching.
+Validated Oct1-9 still match the live sheet exactly before writing.
+
+**Valid Leads Log**: no changes (append-only by date; no new Oct12 date to
+add, and already-appended Oct10/11 rows aren't re-touched by convention).
+
+**Callback Adherence + Dump**: full rebuild. **Caught a real gap before
+running**: today's Ameyo file only covers Oct10-12, NOT Oct1-9 — naively
+swapping it in as the sole Oct Ameyo source would have silently dropped
+Oct1-9's forward call-matching data entirely. Fixed by splitting into two
+non-overlapping date ranges: yesterday's fuller file for Oct1-9, today's
+fresher pull for Oct10 onward. Validation (Scheduled Callbacks + /-30min
+window) passed on all 5 known rows. October row: 475→472 scheduled (small
+drop, 3 tickets — plausible from re-pulled/corrected ticket data, same
+order of magnitude as routine channel drift elsewhere).
+
+**Prediction Model**: banked_dates unchanged (Oct1-11, still no Oct12
+data), refreshed with updated Oct10/11 transfer totals. New forecast: 4177
+leads / 1168 transfers (28.0%), forecast total Oct = 11772, need 31.1% on
+remaining 20 days.
+
+**Process note for future refreshes**: when swapping in a fresher Ameyo
+file for an "any-time" matching rebuild (Callback Adherence, Vet Follow-up,
+etc.), always check the file's own date coverage against what's being
+replaced — a file can look like "the latest pull" by timestamp while
+actually covering a narrower date window than what it's superseding.
