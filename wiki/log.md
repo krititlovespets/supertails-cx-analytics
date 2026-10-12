@@ -860,3 +860,39 @@ go stale for days if nobody asks.
 Did not touch Ticket Categories' October aggregate (col C) — that one has
 been correctly recomputed every refresh this whole time and was already
 accurate (6525).
+
+## 2026-10-12 — Vet Follow-up refreshed with full Sept data (first time since 2026-10-08)
+
+Kriti sent the Sept dump she'd promised: Nugget `db66lgv5e8qs73ee2e50.csv`
+(24756 rows, full Sept1-30, correct 3 channels) and Ameyo
+`CALL_Details_2026-10-12_10_37_42(...).csv` (43360 rows). **Caught before
+running**: the Ameyo file was missing Sept30 entirely (dates ran Sept1-29
+only). Filled the gap using the previously-recovered
+`CALL_Details_2026-10-01_10_24_49(...).csv` (2711 Sept30 rows, verified
+count matches what was confirmed when that file was first used back on
+2026-10-08) rather than blocking on it.
+
+Built a combined Ameyo file (Sept1-29 new + Sept30 old + Oct1-11 from
+today's already-merged Oct dataset) and a combined Oct Nugget file (all 4
+available Oct exports, deduped by ticket_id) to feed
+`compute_vet_followup.py` with `nugget_sept` + `nugget_oct` + the combined
+`ameyo_full`, latest_tracked_date=2026-10-11.
+
+Wrote all 41 date columns (Sept1-30 + Oct1-11) to Main Dashboard rows
+20-22, plus Sept/Sept16-30/Oct aggregate columns B/C/D. No new date
+columns needed (Oct11 already existed). Sept aggregate (closed-window-ish,
+blended with recent provisional dates): 3628 transferred, 369 repeat,
+**10.2%** — in the same ballpark as the 10.3-10.5% "closed window" figure
+noted in `vet-followup.md`, reasonable given this aggregate blends in
+some still-recent Sept dates. Oct aggregate: 1539 transferred, 88 repeat,
+**5.7%** (expect this to climb on future refreshes — most of October's
+15-day windows are still open per the scope caveat in `vet-followup.md`).
+
+Pushed the dashboard artifact's `vet_repeat_pct` with the real per-date
+values for Oct1-11 (if_version 13→14), replacing the carried-forward
+placeholder (5.2% repeated across every date since 2026-10-08) that had
+been sitting there since Vet Follow-up was last run:
+`[2.8, 7.5, 7.6, 6.1, 4.8, 3.4, 7.6, 8.8, 5.7, 3.7, 6.0]` for Oct1-11.
+
+Did not touch the artifact's `sept` block (Valid Leads/Transfer/Connect
+aggregate, unrelated to Vet Follow-up) — out of scope for this ask.
