@@ -935,3 +935,16 @@ Fixed by rewriting that one cell with `valueInputOption: RAW` instead of
 USER_ENTERED -- same gotcha the Prediction Model script already has a
 standing workaround for; worth remembering for any future ad-hoc write
 that uses a "===" section-header convention.
+
+## 2026-10-12 — Table 4 expanded from TEAM10 (9) to the full 12-agent roster
+
+Kriti pasted the full `NAME_TO_EMAIL` 12-agent list and asked for the dual
+Transfer % table for all of them, not just TEAM10's 9. Recomputed adding
+Nikhil Singh, Daksha K, Ganashree D and rewrote Table 4 (now rows 50-65,
+was 50-62). Same definitions as before (phone-deduped, Sept1-30, no Valid
+Lead filtering). New agents: Nikhil Singh 6.9%/19.1%, Daksha K 10.7%/29.8%,
+Ganashree D 6.8%/28.7% (Transfer % of Attempted / of Connected).
+
+Used `valueInputOption: RAW` for the whole write this time (not just a
+follow-up fix) and dropped the leading "===" from the section-header text,
+avoiding the formula-misparse bug hit on the first version of this table.
