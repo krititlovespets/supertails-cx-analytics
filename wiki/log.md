@@ -958,3 +958,61 @@ Transfer % of Connected rose from 35.7% (full month) to 36.0% (back half)
 but her call volume dropped sharply (1715→445, suggesting she had much
 lower volume specifically in the back half of Sept); Dhanush S's of-Connected
 rate rose from 30.1%→33.2%.
+
+## 2026-10-13 morning — Oct12 added across all sheets; Ameyo-coverage near-miss caught
+
+Kriti attached Nugget `db6qah699t0s73f7rpe0.csv` (2225 rows, Oct10-12,
+correct 3 channels) and Ameyo `CALL_Details_2026-10-13_08_59_03(...).csv`
+(4822 rows, Oct11-13, Oct13 just starting at 197 rows).
+
+**Caught before writing anything**: running `compute_main_dashboard.py` for
+Oct10-12 with this Ameyo file produced Oct10 Transfer%=4.8%, Connect%=14.5%
+— a catastrophic drop from yesterday's correct 30.3%/62.4%. Root cause:
+this Ameyo file only covers Oct11-13, NOT Oct10 at all, so Oct10's
+call-matching was computed against almost no data. Caught by eyeballing the
+computed output against known prior values before writing (the
+`transfer_done+doctor_called==transfer_total` structural check alone
+wouldn't have caught this, since it's self-consistent even when the
+underlying numbers are wrong from a data-coverage gap) — re-scoped the
+Main Dashboard run to Oct11-12 only, leaving Oct10 untouched (its correct
+value from yesterday stands).
+
+**Main Dashboard + artifact**: Oct12 added (397 valid leads, 23.4%
+transfer, 51.9% connect), Oct11 refreshed in place. Artifact if_version
+14→15, `vet_repeat_pct` padded (12th entry, carried forward 6.0).
+
+**October Avg (column D) fixed properly this time, immediately** (not left
+stale) -- learned from the 2026-10-12 incident. Built a single verified
+Oct1-12 Nugget merge (5 files deduped by ticket_id) and Ameyo merge
+(stitching Oct1-9 base + the correct Oct10 source + Oct11-12 latest),
+validated Oct10 reproduced 30.3%/62.4% from this merge before trusting the
+aggregate, then wrote column D: Valid Leads 4573, Transfer Total 1265 (wait,
+oct_avg computed 1274 at write time, Prediction Model's later independent
+pull from the sheet read 1265 after the Oct11/Transfer_total mid-stream
+revision -- both are correct for their respective moments, small
+same-session any-time drift), Transfer % 27.9%, Connect % 59.8%. Also fixed
+rows 12/15 (Agent Talk Time/Agents Available) October Avg: 9 active TEAM10
+agents, 25:46:23 avg per agent (Oct1-12 total 231:57:27 / 9).
+
+**Ticket Categories**: Oct12 added (599), October aggregate recomputed to
+7124 (verified as exact sum of all 12 days). Validated against all 11
+known Oct1-11 values before writing.
+
+**Valid Leads Log**: 397 new Oct12 rows appended, matches Main Dashboard
+exactly.
+
+**Callback Adherence + Dump**: full rebuild using the now-verified merged
+Oct1-12 Ameyo and the full verified Sept Nugget dump (switched from the
+older recovered Sept Nugget file to Kriti's proper 2026-10-12 dump for
+this rebuild). Validation passed on all 5 known rows. October: 472→523
+scheduled callbacks.
+
+**Prediction Model**: banked_dates extended to Oct1-12. New forecast: 4573
+leads / 1265 transfers (27.7%), forecast total Oct = 11814, need 31.5% on
+the remaining 19 days.
+
+**Reusable artifacts from today's merges** (in case needed again before
+Oct13 data arrives): `/tmp/merged_oct1_12_nugget.csv`,
+`/tmp/merged_oct1_12_ameyo.csv` -- both verified against live Main
+Dashboard numbers. Not committed anywhere permanent (temp files, gone on
+reboot) -- note only for same-session reuse.
