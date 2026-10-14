@@ -1061,3 +1061,40 @@ consistently starts one day later than the Nugget pull's start date. Worth
 checking Ameyo's date range FIRST, before even running compute, as a
 standing habit rather than discovering it from a corrupted-looking output
 each time.
+
+## 2026-10-14 — Follow-up: filled in Avg Talk Time/Agents Available and Vet Repeat % that got missed
+
+Kriti caught two gaps from the morning refresh: Main Dashboard rows 12/15
+(Avg Talk Time per Agent / Agents Available) had their October Avg (col D)
+fixed but NOT the per-date Oct11-13 cells, and rows 20-22 (Vet Follow-up)
+hadn't been recomputed since the Sept-data run days ago (stuck at Oct1-11).
+
+Fixed both:
+- **Rows 12/15, Oct11-13**: computed from the already-merged Oct1-13 Ameyo
+  file. Oct11=5 agents/03:44:38, Oct12=5 agents/02:54:04, Oct13=8
+  agents/03:03:50 (lower agent counts on 11/12 look like normal
+  attendance variation, not a data issue -- not every TEAM10 agent works
+  every day).
+- **Rows 20-22, full Vet Follow-up rebuild through Oct13**: extended the
+  Sept+Oct merged Ameyo file through Oct13 and re-ran
+  `compute_vet_followup.py`/`write_vet_followup.py`. All 43 date columns
+  rewritten (Sept1-30 + Oct1-13). Oct8-13: 9.2%/6.4%/4.9%/7.1%/6.2%/3.4%.
+  Noted Oct1-7 also drifted slightly from their last-known values (e.g.
+  Oct2 7.6%→7.9%) -- expected, same any-time-matching drift as every other
+  metric in this workbook, not a bug.
+- Dashboard artifact `vet_repeat_pct` replaced with the fresh full 13-date
+  array read back from the just-updated Sheet (if_version 16→17), rather
+  than recomputing independently, to guarantee the Sheet and artifact
+  can't disagree.
+
+**Standing lesson**: when a refresh run is scoped to "just fix column D"
+or "just add Oct1-13 to Ticket Categories," that's easy to mentally close
+out as "done" without checking whether OTHER rows that depend on the same
+underlying data (rows 12/15, rows 20-22) also need the new dates filled
+in. Main Dashboard isn't just one script's output -- it's several
+independently-maintained row groups (core metrics via
+`compute_main_dashboard.py`, Agent Talk Time computed by hand, Vet
+Follow-up via its own heavier pipeline) that can silently drift out of
+sync with each other if only one gets refreshed. Worth a habit: after any
+refresh, scan ALL of Main Dashboard's row groups for the newest date
+column, not just the one(s) just touched.
