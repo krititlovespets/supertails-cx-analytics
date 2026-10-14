@@ -1171,3 +1171,19 @@ disagreement this whole pipeline is built to avoid. Any time a date's
 numbers get revised after the fact (not just extended with a new date),
 double-check BOTH the Sheet and the artifact got the correction, not just
 whichever one happened to be open at the time.
+
+## 2026-10-14 — Dashboard artifact: "This month" KPI row changed
+
+Kriti asked to change the "This month" KPI bucket row: drop Valid Leads
+(October total), replace with Booking % (October avg), and reorder to
+Transfer % → Connect % → Booking %. Also dropped the "vs Sept avg" delta
+comparison from all three on her clarification ("not sept bhai oct") --
+the row is now purely October-focused (value + target + latest day),
+no cross-month comparison.
+
+Pushed `oct_to_date.booking_pct` (3.7%, computed the same way as the
+Sheet's Booking % October Avg -- booking_done sum / ucj_bangalore_customer
+sum) to the artifact's `db` doc, then republished the page with the
+updated `renderKPIs()` function. Valid Leads total is still shown
+elsewhere (the day-by-day bar chart panel still exists) -- just removed
+from the top KPI row per the request.
