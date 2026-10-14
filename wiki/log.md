@@ -1098,3 +1098,38 @@ Follow-up via its own heavier pipeline) that can silently drift out of
 sync with each other if only one gets refreshed. Worth a habit: after any
 refresh, scan ALL of Main Dashboard's row groups for the newest date
 column, not just the one(s) just touched.
+
+## 2026-10-14 night — Oct14 added (Main Dashboard scope, per explicit request)
+
+Kriti attached Nugget `db7r8lppuqpc73asac2g.csv` (2160 rows, Oct12-14,
+correct 3 channels) and Ameyo `CALL_Details_2026-10-14_22_27_54(...).csv`
+(9869 rows, Oct11-14, Oct14 now a full day at 2588). Explicit ask: "update
+the dashboard for 14th" -- scoped to Main Dashboard + artifact only, not
+the other 4 sheets this time.
+
+Oct14: 389 valid leads, 19.3% transfer, 42.2% connect (both notably lower
+than recent days -- Oct14 is freshly tracked so some of this may still be
+any-time-matching catch-up in coming refreshes, same pattern as every
+other newly-tracked day).
+
+Applied the row12/15 lesson from this morning immediately: filled Avg Talk
+Time/Agents Available for Oct14 too (7 agents, 02:39:28 avg) in the same
+pass, not as an afterthought.
+
+**October Avg fixed again** (fourth day running): rebuilt a verified
+Oct1-14 merge. **Notable finding**: Oct13's per-date Transfer%/Connect%
+jumped significantly on this recompute (23.1%→29.7%, 45.0%→62.2%) --
+expected, not a bug: Oct13 was only tracked yesterday with zero forward
+days of Ameyo data to match against; today's refresh gives it its first
+full forward day (Oct14), which is exactly when a freshly-tracked day's
+numbers jump the most per the established any-time-matching pattern.
+Updated the artifact's Oct11-14 slots to reflect this (didn't touch
+Oct1-10, whose drift this round was negligible). Wrote October Avg:
+Valid Leads 5356, Transfer % 28.1%, Connect % 60.3%. Rows 12/15: 9 active
+agents, 30:33:49 avg per agent.
+
+**Did not refresh** Ticket Categories / Valid Leads Log / Callback
+Adherence / Prediction Model or re-run Vet Follow-up this round -- Kriti's
+ask was specifically "the dashboard," read as Main Dashboard + artifact
+only this time, consistent with how "dashboard" vs "all the sheets" has
+been distinguished throughout this project.
