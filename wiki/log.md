@@ -1016,3 +1016,48 @@ Oct13 data arrives): `/tmp/merged_oct1_12_nugget.csv`,
 `/tmp/merged_oct1_12_ameyo.csv` -- both verified against live Main
 Dashboard numbers. Not committed anywhere permanent (temp files, gone on
 reboot) -- note only for same-session reuse.
+
+## 2026-10-14 morning — Oct13 added across all sheets; same Ameyo-coverage gap as yesterday, caught again
+
+Kriti attached Nugget `db7dtnppuqpc739jd5g0.csv` (2994 rows, Oct10-13,
+correct 3 channels) and Ameyo `CALL_Details_2026-10-14_07_17_28(...).csv`
+(7325 rows, Oct11-14, Oct14 just starting at 44 rows). **Same pattern as
+yesterday**: the Ameyo file didn't cover Oct10 again. Caught immediately
+this time (checked date coverage before computing, not after) and scoped
+the Main Dashboard run to Oct11-13 only, leaving Oct10 untouched.
+
+**Main Dashboard + artifact**: Oct13 added (398 valid leads, 23.1%
+transfer, 45.0% connect -- lower Connect% than recent days, within normal
+day-to-day variation, not flagged as a concern). Oct11/12 refreshed in
+place with continued any-time drift. Artifact if_version 15→16, 13th
+`vet_repeat_pct` entry padded (carried forward 6.0).
+
+**October Avg (column D) fixed immediately again** (third day running this
+discipline has held) -- built a verified Oct1-13 merge (yesterday's
+Oct1-12 files + today's Oct10-13 Nugget pull + today's Oct11-14 Ameyo
+pull, non-overlapping date splice), validated Oct10 reproduced the known
+30.3%/63.9% before trusting it, then wrote: Valid Leads 4968, Transfer
+Total 1398, Transfer % 28.1%, Connect % 60.4%, Booking Done 55 (3.8%).
+Rows 12/15: 9 active agents, 28:29:47 avg (Oct1-13 total 231:57:27+... /9,
+recomputed fresh each time, not incremented).
+
+**Ticket Categories**: Oct13 added (616), October aggregate 7740 (verified
+exact sum, 7124 Oct1-12 + 616). Validated against all 12 known Oct1-12
+values first.
+
+**Valid Leads Log**: 398 new Oct13 rows, matches Main Dashboard exactly.
+
+**Callback Adherence + Dump**: full rebuild, October 523→525 scheduled.
+Noticed a new "December (future-scheduled)" row (1 ticket) -- a
+customer's callback got scheduled that far out; not a bug, just the
+natural long tail of `cf_callback_ucj` values.
+
+**Prediction Model**: banked_dates → Oct1-13. 4968 leads / 1389 transfers
+(28.0%), forecast total Oct = 11847, need 31.5% on the remaining 18 days.
+
+**Process note**: the Ameyo-missing-Oct10 pattern has now repeated two
+days running (2026-10-13 and 2026-10-14) -- Kriti's daily Ameyo pull
+consistently starts one day later than the Nugget pull's start date. Worth
+checking Ameyo's date range FIRST, before even running compute, as a
+standing habit rather than discovering it from a corrupted-looking output
+each time.
