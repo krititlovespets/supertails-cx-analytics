@@ -1187,3 +1187,21 @@ sum) to the artifact's `db` doc, then republished the page with the
 updated `renderKPIs()` function. Valid Leads total is still shown
 elsewhere (the day-by-day bar chart panel still exists) -- just removed
 from the top KPI row per the request.
+
+## 2026-10-14 — Dashboard artifact: green "good" coloring added
+
+Kriti asked for a green box on metrics that are doing well, same visual
+treatment as the existing baby-pink "below target" styling. Added
+`--good-bg`/`--good-ink` tokens (light + both dark variants) and a
+`.good-target` CSS class, then changed `valueClass()` from a binary
+pink-or-plain function to pink-or-green (every colored KPI now gets one
+or the other, no neutral state).
+
+**Important nuance from Kriti**: the green threshold isn't always the
+same as the stated target. Transfer's official target is 30%, but she
+wants it to color green from **28%** -- a more realistic/achievable bar
+given October's own average is hovering right around there, so a decent
+day still reads as "good" rather than always red. Connect (60%) and
+Booking (6.5%) keep their original target as the coloring threshold too
+(unchanged). Applied to all three KPI rows (This month / Today / D-1),
+9 call sites total.
