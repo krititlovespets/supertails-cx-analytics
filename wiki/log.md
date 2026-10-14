@@ -1133,3 +1133,41 @@ Adherence / Prediction Model or re-run Vet Follow-up this round -- Kriti's
 ask was specifically "the dashboard," read as Main Dashboard + artifact
 only this time, consistent with how "dashboard" vs "all the sheets" has
 been distinguished throughout this project.
+
+## 2026-10-14 night (cont'd) — full catch-up: Ticket Categories, Valid Leads Log, Callback Adherence, Prediction Model, Vet Follow-up
+
+Kriti confirmed she wanted the rest caught up too. Ran all 4 remaining
+sheets plus Vet Follow-up through Oct14, reusing the already-verified
+Oct1-14 merge from the October Avg fix earlier.
+
+**Bug caught mid-stream and fixed**: Prediction Model's banked leads total
+(5357) was 1 off from Main Dashboard's October Avg (5356) -- traced it to
+a real gap: when Oct13's numbers got corrected during the October Avg fix
+earlier tonight (23.1%→29.7% transfer, 45.0%→62.2% connect, the
+"freshly-tracked day's first forward day" jump), the correction only made
+it into the dashboard artifact, never back into the Main Dashboard SHEET
+itself. Sheet was still showing Oct13's stale pre-correction values while
+the artifact had the right ones -- a real Sheet/artifact disagreement,
+exactly the failure mode the whole "pull from the same source" discipline
+exists to prevent. Fixed by writing the correct Oct13 row (all 13 metric
+fields + Booking %/Needed) back to the Sheet from the same computed.json
+used for the artifact fix.
+
+- **Ticket Categories**: Oct14 added (585), October aggregate 8325
+  (verified exact sum: 7740 + 585). Validated Oct1-13 unchanged first.
+- **Valid Leads Log**: 389 new Oct14 rows, matches Main Dashboard exactly.
+- **Callback Adherence + Dump**: full rebuild, October 553 scheduled (was
+  525).
+- **Prediction Model**: banked_dates → Oct1-14. 5357 leads / 1464
+  transfers (27.3%), forecast total Oct = 11862, need 32.2% on the
+  remaining 17 days.
+- **Vet Follow-up**: rebuilt through Oct14 (44 date columns, Sept1-30 +
+  Oct1-14). Oct14: 3.7%. Dashboard artifact `vet_repeat_pct` synced from
+  the Sheet (if_version 18→19).
+
+**New standing lesson**: when a mid-refresh correction only gets applied
+to one of {Sheet, artifact}, it creates exactly the kind of silent
+disagreement this whole pipeline is built to avoid. Any time a date's
+numbers get revised after the fact (not just extended with a new date),
+double-check BOTH the Sheet and the artifact got the correction, not just
+whichever one happened to be open at the time.
