@@ -1205,3 +1205,40 @@ day still reads as "good" rather than always red. Connect (60%) and
 Booking (6.5%) keep their original target as the coloring threshold too
 (unchanged). Applied to all three KPI rows (This month / Today / D-1),
 9 call sites total.
+
+## 2026-10-15 — New Table 6: October Agent Productivity, ticket-level with multi-agent attribution
+
+Kriti described a genuinely new counting model for Agent Productivity,
+scoped to October Valid Lead tickets:
+- **Tickets Dialled** = ticket-level count (not phone-deduped across
+  agents, not raw call rows) -- if 2 different agents both called the same
+  ticket's phone, that ticket counts in BOTH of their buckets (no
+  cross-agent dedup, only deduped once per agent even if they called
+  multiple times).
+- **Connected** = per-agent: did THIS agent's own call(s) to that phone
+  have User Talk Time >= 30s (not "was it connected by anyone").
+- **Transferred** = at most one agent per ticket (matches the global
+  "Transfer Total, deduplicated per ticket" rule), but the ATTRIBUTION
+  logic is new: a direct Transfer Done (live, on-call) credits whoever's
+  on that call; an indirect Doctor Called (the doctor rang back
+  separately, not handed off live) credits the LAST agent who called that
+  phone before the doctor's call -- "keep that transfer for the last
+  agent who called," not whoever's formally assigned to the ticket.
+
+Scope: all 12 `NAME_TO_EMAIL` agents (matching the 2026-10-12 Table 4/5
+expansion), October 1-14 valid leads (current tracked range).
+
+**Validated before writing**: summing per-agent Transferred across all 12
+agents + the 11 unattributed (no preceding agent call to credit) gives
+1503 -- exactly matching the Main Dashboard October aggregate
+`transfer_total` for the same window, confirming the new per-ticket
+attribution logic is consistent with the existing global Transfer
+definition, just re-sliced by agent.
+
+**Noted, not a bug**: Nikhil Singh shows 0 across the board -- confirmed
+via a direct grep that he has zero Ameyo call rows anywhere in the Oct1-14
+dataset (he was active in September per Tables 4/5), so this is a real
+gap in his activity, not a matching error.
+
+Written as **Table 6** (rows 84-99) in "Agent Productivity", not
+replacing any existing table.
