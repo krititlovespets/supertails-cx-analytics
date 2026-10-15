@@ -1242,3 +1242,9 @@ gap in his activity, not a matching error.
 
 Written as **Table 6** (rows 84-99) in "Agent Productivity", not
 replacing any existing table.
+
+## 2026-10-15 — Table 6: removed Nikhil Singh (0 October activity)
+
+Kriti confirmed the dialled/transfer attribution logic was right, and
+asked to drop Nikhil Singh's row since he has zero October activity.
+Cleared row 99 (his row). Table 6 now has 11 agents, ending at Alan Joel.
