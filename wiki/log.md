@@ -1248,3 +1248,160 @@ replacing any existing table.
 Kriti confirmed the dialled/transfer attribution logic was right, and
 asked to drop Nikhil Singh's row since he has zero October activity.
 Cleared row 99 (his row). Table 6 now has 11 agents, ending at Alan Joel.
+
+## 2026-10-17 → 2026-10-25 — Daily refresh cadence (Oct16 → Oct25), no methodology changes
+
+Ten straight days of "update dashboard and sheets," each following the
+exact pipeline in `daily-workflow.md`/HANDOFF.md section 8: check file
+coverage, merge, `compute_main_dashboard.py` + `write_main_dashboard.py`
+(full Oct1→latest range every time), hand-computed Avg Talk Time/Agent +
+Agents Available (verify column letter against live header every time —
+this stayed a real risk the whole period), then Ticket Categories / Valid
+Leads Log / Callback Adherence / Prediction Model / Vet Follow-up / Agent
+Productivity Table 6 copied-forward-and-patched from the previous day's
+scratch script, then the dashboard artifact synced last. Recurring,
+expected patterns confirmed again and again in this stretch, not bugs:
+- **Partial-pull subsets**: a "newer" file showing a LOWER count for an
+  already-tracked date (Oct15/17/19/20/21/23 all hit this at least once) —
+  verified via ticket-ID overlap each time, kept the larger verified count.
+- **Any-time-match drift**: Oct21's Transfer%/Connect% alone moved
+  22.6%→26.1%→26.6%→29.1%→28.0%→... across five consecutive days'
+  refreshes as more forward Ameyo data landed. Expected; never "fixed" by
+  reverting to an earlier value.
+- **Chat sheet lag**: "Chat - Agent Summary" sat 1-3 days behind Main
+  Dashboard's latest tracked date on most refreshes — carried forward
+  until superseded (see the self-compute fix below, which now avoids this
+  entirely going forward).
+- **October Avg correctly recomputed every single day** (col D) by
+  rerunning `write_main_dashboard.py` over the FULL date range, not just
+  the new day — confirmed this stayed correct throughout, no repeat of
+  the earlier go-stale incidents from before Oct16.
+
+**One retroactive correction during this stretch**: the "October Avg"
+formula for row 12 (Avg Talk Time per Agent) was wrong the whole time up
+to ~Oct22 — it was computing `sum(all talk time across every day) /
+9 (fixed roster count)`, which grows unbounded as more days accumulate
+(hit 47:44:17 by Oct22, an obviously-wrong multi-day figure masquerading
+as a daily average). Kriti caught it ("it is sum"). Fixed to a proper
+weighted average: `sum(talk time across all days) / sum(daily active-agent
+counts across all days)` — i.e. total team output ÷ total agent-days
+worked, which stays in the same units as the daily columns (~2.5-3.5h).
+**This is now the permanent formula for row 12's October Avg** — any
+script/person reverting to "divide by 9" is wrong.
+
+## 2026-10-23 — New tab: Booking Analysis
+
+New tab, not part of the original 9+3. Built for the 4 Booking-team agents
+(Dhanush S, Alan Joel, Abdul Rahman, Mohammed Roohulla) specifically.
+Three sections per month (October built first, then September added same
+session): **Per-Agent Funnel** (Called = Bangalore/UCJ-Booking-Campaign
+tickets the agent personally dialled any time; Connected = that SAME
+agent's own call >=30s, deliberately NOT "did anyone connect," to avoid
+double-counting one ticket across multiple agents' buckets; Booked =
+Appts Created from the Clinic Dashboard, Month-to-date, per agent),
+**Daily Bangalore Connect % by date** (team-wide, any-caller basis —
+matches Main Dashboard's Connect definition, NOT the per-agent funnel's
+stricter definition), and **Overall Funnel Summary** (team totals +
+Booked % of Connected / of Total). A later addition (same week) appended
+a **Leadership One-Pager, Section 1 (Booking)** block — Bangalore
+Customers/Connect/Booking abs+pct plus a new FRT-adherence rule (first
+call within 12h of ticket creation; second call within 3h of the first,
+but ONLY when that first call didn't connect) — this block is a point-in-
+time snapshot (Oct1-16) for a specific leadership presentation, NOT
+re-run on every refresh like the 3 sections above it.
+
+Refreshed alongside the main pipeline on most days through Oct25 (full
+`ws.clear()` + rewrite each time, preserving the September section and
+the Leadership snapshot by reading them back before clearing and writing
+them back unchanged at the new row offset — the October section's row
+count grows by ~1 row per day added, so every tracked date shifts
+everything below it down by one row each time).
+
+## 2026-10-25/26 — Clinic Dashboard per-agent breakdown broke
+
+The Clinic Dashboard sheet's `Agent_Perf_V2` tab (external team, read-only
+access) stopped listing the 4 Booking-team agents (Dhanush S / Alan Joel /
+Abdul Rahman / Mohammed Roohulla) by email in its per-agent detail
+section as of the Oct25/26 refresh — column A now shows a completely
+different ~26-name set that reads as Clinic-side staff, not this calling
+team. The team-wide `TOTAL (UCJ only)` Appts Created row is UNAFFECTED and
+still updates live. Per Kriti's call ("leave that right now"), Booking
+Analysis's per-agent **Booked** column is currently frozen at its last-
+known Oct24 values (41/44/26/11), explicitly labeled "STALE, Oct24" in
+the sheet, while Called/Connected (sourced from Nugget+Ameyo, unaffected)
+keep refreshing normally and the TEAM TOTAL Booked keeps pulling the live
+Clinic Dashboard total. **Open issue, not resolved** — if the per-agent
+section doesn't come back, this needs a different re-sourcing approach
+(ask the Clinic Dashboard team, or derive Booked per-agent some other
+way) before the per-agent Booking%/Booked-of-Connected% columns in
+Booking Analysis can be trusted as current again.
+
+## 2026-10-23/25 — Chat Volume/FRT can be self-computed from the Nugget export; stop waiting on "Chat - Agent Summary"
+
+Discovered the regular Nugget ticket export (the same one pulled every
+single refresh for the main funnel) already includes the `UCJ SC Chat
+Assistance` channel — previously only ever filtered OUT, never used for
+anything. It carries everything needed to compute the dashboard artifact's
+Chat Volume / Chat FRT tiles directly, without depending on the
+separately-maintained "Chat - Agent Summary" sheet tab (which has lagged
+1-3 days behind on most refreshes this whole engagement).
+
+**Method** (validated against 5 known-correct days, Oct18-22, before
+trusting it): filter to `channel_name == 'UCJ SC Chat Assistance'` AND
+`agent_name` in the 4 day-shift chat agents (`Daksha K`, `Ganashree D`,
+`Salman Pasha`, `Shazali Sanober` — NOT the Agent Productivity roster,
+a separate team), AND `agent_assigned_at`'s time-of-day within
+9:00-20:45 (the "Day" shift window, matching the sheet's own scope).
+Chat Volume = count of such tickets per day. Chat FRT = average of
+`agent_frt_response_at - agent_assigned_at` in seconds (NOT the raw
+`agent_frt_response_seconds` field, which is computed from a different
+anchor and does not match) for tickets with a valid FRT timestamp.
+Matched the sheet's real numbers almost exactly on 4 of 5 validation
+days (exact on 3, off by 1 ticket on Oct18, off by 3 on Oct21 — small,
+acceptable noise).
+
+**This is now the default method going forward** — don't wait on the
+Chat sheet being current; self-compute from the already-pulled Nugget
+file every refresh. Only fall back to reading "Chat - Agent Summary"
+directly if the Nugget export is ever missing the chat channel rows.
+
+## 2026-10-25 — Agent Productivity Table 6: added AHT column
+
+Added a 7th column to Table 6 (`Agent | Tickets Dialled | Connected |
+Connect % | Transferred | Transfer % | AHT`). Same ticket-level
+single-owner model as the existing columns: every call >=60s talk time on
+a ticket's phone (any caller, not just the owner's own calls) is
+attributed to that ticket's owner and averaged. Team total AHT
+reconciled exactly against Main Dashboard's row 11 (00:04:51) on first
+write — strong validation that the attribution model generalizes cleanly
+to a metric it wasn't originally designed for.
+
+## 2026-10-22/23 — Three new reporting artifacts explored; one is now primary
+
+Explored three different visual treatments for a leadership/founder-facing
+"what I track day to day" one-pager, in response to escalating feedback
+each round (see HANDOFF.md section 4 for live URLs):
+1. **"October Daily Tracker"** (https://claude.ai/artifact/XR7CVuUgysJUpM5LkkRPcB)
+   — built from the platform's Dashboard Artifact Type (chart-first, `dash`
+   API, Sources panel). Superseded same day — the type's live-query/Sources
+   model doesn't fit a manually-refreshed Google Sheet data source well.
+2. **"CX Review Hub"** (https://claude.ai/artifact/Vge81CQaFiWXcYJ9voGZr3)
+   — plain HTML hub with tabbed nav + an October report inside an iframe,
+   styled as an editorial magazine piece (Fraunces serif, hand-coded SVG
+   charts), with Q3/Q4 placeholder cards for future reports. Superseded
+   when Kriti handed over a different reference file mid-build ("wait wait
+   no not this").
+3. **"October UCJ Tracker"** (https://claude.ai/artifact/Ggro9haJWDK12JGApzYXJb)
+   — **current/active one.** Matches a dense print-style 2-pager reference
+   Kriti supplied (dark-navy header bars, teal accent, monospace section
+   tags, pill status badges, collapsible "explain" dropdowns). Iterated
+   down from a full day-by-day breakdown to a single October-average
+   scorecard, grouped into "Tracked Against a Goal" (metrics with an
+   established target: Transfer%/Connect%/Booking%/AHT/Chat Volume/Chat
+   FRT/Bot Error%/Bot Chats Passed) vs "Volume & Context" (everything else,
+   no Goal column at all — a blank/dash Goal cell read as "missing data,"
+   so metrics with no target are fully separated instead).
+
+None of these three are wired into the daily refresh pipeline — they get
+updated only when Kriti explicitly asks, same rule as any other one-off
+artifact.

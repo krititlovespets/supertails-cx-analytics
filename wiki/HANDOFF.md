@@ -101,9 +101,10 @@ These are hard-won, from real incidents in this engagement. Follow them exactly.
 | Project repo (this wiki + scripts) | `~/Claude/supertails-cx-analytics/` |
 | GitHub repo (public, process docs only) | `krititlovespets/supertails-cx-analytics` |
 | Live dashboard artifact ("Supertails CX Pulse") | https://claude.ai/artifact/MGn5rtRUyLPn1v8g2P6bXo |
-| Clinic Dashboard sheet (Booking Done source, external team) | `1EyTmbBSkZMvL5JolKuo8xxOkguYGUKpTJTzlN68n5hM`, tab `Agent_Perf_V2` |
+| Clinic Dashboard sheet (Booking Done source, external team) | `1EyTmbBSkZMvL5JolKuo8xxOkguYGUKpTJTzlN68n5hM`, tab `Agent_Perf_V2` — team-wide total still live; per-agent breakdown broke 2026-10-25/26, see `external-sources.md` |
 | UCJ Incentive Eligibility Criteria — living doc | https://claude.ai/artifact/LDXMmvqtbbPDHrmq4eHqCc |
 | UCJ Incentive Eligibility Criteria — standalone HTML | https://claude.ai/artifact/RSEp1sK3MJqq919ncPqwXe |
+| "October UCJ Tracker" — **current** founder/leadership one-pager | https://claude.ai/artifact/Ggro9haJWDK12JGApzYXJb (dense print-style scorecard; two earlier attempts — "October Daily Tracker" XR7CVuUgysJUpM5LkkRPcB and "CX Review Hub" Vge81CQaFiWXcYJ9voGZr3 — are superseded, left as-is, not updated) |
 
 ## 5. Roster
 
@@ -209,6 +210,17 @@ with ≥1 Ameyo call that date.
 actually active). Both are daily-only, computable from a single day's Ameyo
 file, no history needed — but **not yet wired into `compute_main_dashboard.py`**,
 still computed by hand each refresh (see section 8).
+**October Avg (col D) for row 12 specifically** = `sum(team talk time across
+ALL tracked days) / sum(daily active-agent counts across ALL tracked days)` —
+total output ÷ total agent-days, NOT the daily row's per-day divisor applied
+to a multi-day sum. (Was wrong — divided by a flat 9 — until caught and fixed
+2026-10-22/23; see `definitions.md`.)
+
+**Chat Volume / Chat FRT**: as of 2026-10-23/25, self-compute these from the
+regular Nugget export's `UCJ SC Chat Assistance` channel rows instead of
+reading the "Chat - Agent Summary" sheet (which lags). See `definitions.md`
+for the exact filter/formula. This is now the default — only read the Chat
+sheet directly if the Nugget export is ever missing these rows.
 
 **Agent Productivity "Table 6" — single-owner ticket-level model** (built
 2026-10-15, the current/best version): each October valid-lead ticket is
@@ -268,9 +280,16 @@ renames tabs directly in the UI. Current tabs (grows over time):
 - **Chat - Daily Summary / Chat - Agent Summary / Chat - Raw Dump** — a
   separate chat-platform data source (not Nugget/Ameyo). "Chat - Agent
   Summary" has an "Average FRT — Agent x Date [Day 9AM–8:45PM]" table (Team
-  Average row) and a "Tickets Handled — Agent x Date" table (Team Total row) —
-  these feed the dashboard's Chat Volume/Chat FRT metrics. This sheet tab lags
-  by a day or two sometimes; check its last date column before assuming it's current.
+  Average row) and a "Tickets Handled — Agent x Date" table (Team Total row).
+  **As of 2026-10-23/25, the dashboard's Chat Volume/Chat FRT metrics are
+  self-computed from the Nugget export instead** (see section 6) — this tab
+  lags routinely and is no longer the primary source; only fall back to it if
+  the Nugget export's chat-channel rows are ever missing.
+- **Booking Analysis** (new 2026-10-23) — Per-Agent Funnel / Daily Bangalore
+  Connect% / Overall Funnel Summary for the 4 Booking-team agents, October +
+  September sections, plus a frozen Leadership-one-pager snapshot block. See
+  `sheet-structure.md` for the full layout. Refreshed alongside the main
+  pipeline most days; per-agent Booked currently stale (section 4/9).
 
 ## 8. The actual current refresh workflow
 
@@ -342,19 +361,30 @@ When Kriti attaches a fresh Nugget CSV + Ameyo CSV and asks to update:
 **Google Sheets API rate limits**: writing to ~8 tabs back-to-back routinely
 hits `APIError 429`. Routine, not a bug — just retry with a short backoff.
 
-## 9. Known current gaps (as of 2026-10-16)
+## 9. Known current gaps (as of 2026-10-26)
 
-- **Vet Follow-up (Main Dashboard rows 20-22) is stale** — hasn't been rebuilt
-  since the one-time Sept-data run earlier in this engagement, because recent
-  refreshes haven't had a fresh Sept1→latest Nugget pull available. Flag this
-  explicitly whenever asked to "update everything" — don't silently skip it
-  without saying so.
-- **Chat Volume / Chat FRT** (dashboard artifact's "Other metrics" tiles) come
-  from the "Chat - Agent Summary" sheet tab, which has its own lag — check its
-  last date column each time rather than assuming it's caught up to Main
-  Dashboard's latest tracked date.
+- **Vet Follow-up is no longer stale** — a full Sept1→latest Ameyo history
+  file (`/tmp/merged_full_ameyo_sept_octNN.csv`) has been successfully
+  extended and rebuilt on every refresh through Oct25. Keep extending it the
+  same way (append the new day's rows to the previous full-history file,
+  don't re-pull from scratch).
+- **Clinic Dashboard per-agent breakdown is broken** (2026-10-25/26 on) — see
+  section 4 and `external-sources.md`. Booking Analysis's per-agent Booked
+  column is frozen at Oct24 values until this is resolved.
 - **"Table6 Raw Dump (Oct)"** audit tab is not refreshed as part of the core
   pipeline — only rebuild it if specifically asked.
+- **The wiki itself went 10 days stale** (last ingest before this one:
+  2026-10-16) — the standing "commit+push after every ingest" instruction
+  wasn't followed during that stretch. Caught and backfilled 2026-10-26 (see
+  `log.md`). If you're reading this in yet another fresh session, check
+  `git log` against today's date before assuming the wiki is current.
+- **5 untracked HTML/PDF files sit in the repo root** (`call-timing-report.html`,
+  `october_pulse.html`, `october_pulse.pdf`, `transfer-rate-roadmap.html`,
+  `ucj-sc-q3-plan.html`) — deliverables from past sessions, never committed.
+  **Do not commit them** without first checking whether they contain real
+  business numbers (the privacy rule in section 3 bans that from this public
+  repo) — `october_pulse.html`/`.pdf` almost certainly do. Leave them
+  untracked until Kriti says what to do with them.
 
 ## 10. Incentive scheme (built 2026-10-15/16)
 

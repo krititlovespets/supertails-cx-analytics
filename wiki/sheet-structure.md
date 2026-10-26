@@ -71,3 +71,31 @@ See `vet-followup.md` for the metric definition. Summary tab: NOTE row, header,
 15 date rows (rolling last-15-days view, NOT the full history), TOTAL row,
 `=== BY CATEGORY ===` block (6 rows). Dump tab: one row per transferred ticket
 across the FULL Sept1-latest history (not just the rolling 15 days) — ~4,700 rows.
+
+## Agent Productivity — Table 6 now has 7 columns (AHT added 2026-10-25)
+
+Table 6 (rows 84-99, see `definitions.md`'s single-owner model): `Agent |
+Tickets Dialled | Connected | Connect % | Transferred | Transfer % | AHT`.
+Still a tab with multiple stacked historical tables (1-5) above it — scope
+any row search to start after Table 6's own header row, never by label alone.
+
+## Booking Analysis (new tab, 2026-10-23)
+
+Not part of the original 9+3 — built specifically for the 4 Booking-team
+agents. Per month (October first, September appended same session), 3
+sections stacked top to bottom: **Per-Agent Funnel** (Called/Connected/
+Connect%/Booked/Booking%/Booked-of-Connected%, one row per agent + TEAM
+TOTAL), **Daily Bangalore Connect % by date** (team-wide any-caller basis,
+one row per date + TOTAL), **Overall Funnel Summary** (one row: tickets,
+connected, connect%, booked, booked-%-of-connected, booked-%-of-total). A
+**Leadership One-Pager, Section 1 (Booking)** block was appended after the
+September section — a frozen Oct1-16 snapshot for a specific presentation,
+never re-run on refresh (unlike the 3 sections above it, which are).
+
+Full `ws.clear()` + rewrite every refresh: read the September section +
+Leadership block back first, clear, write the new (longer, by ~1 row/day)
+October section, then write the unchanged tail back at its new offset.
+
+**Booked (per-agent) is currently STALE as of Oct24** — see
+`external-sources.md`'s Clinic Dashboard entry for why. Called/Connected
+and the team-wide tables are unaffected and keep refreshing normally.

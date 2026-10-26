@@ -9,7 +9,20 @@ number, it can shift if the clinic team edits their sheet. Daily columns start
 after a block of month/week totals; find each target date's column by scanning
 row 4 for its `DD/MM/YYYY` string, don't hardcode the column index either.
 "Appts created" on this row IS what this workbook calls "Booking Done" (confirmed
-exact match against a manually-pasted reference set on 2026-10-02).
+exact match against a manually-pasted reference set on 2026-10-02). This
+team-wide TOTAL row is unaffected by the per-agent breakage below and still
+updates live — use it with confidence.
+
+**Per-agent breakdown BROKE 2026-10-25/26** — previously (confirmed working
+2026-10-15, used throughout for the incentive scheme's Booking% and for
+Booking Analysis's per-agent Booked column) the same tab had per-agent rows
+findable by scanning column A for an agent's email + `UCJ` + `Appts created`
+in columns B/C. As of Oct25/26 those 4 emails (Dhanush S / Alan Joel / Abdul
+Rahman / Mohammed Roohulla) no longer appear in column A at all — the
+per-agent detail section now lists a different ~26-name set that reads as
+Clinic-side staff, not this calling team. **Open issue** — if you need fresh
+per-agent Booked numbers and this hasn't been fixed, flag it to Kriti rather
+than silently falling back to a stale number or guessing at a new location.
 
 ## Nugget admin ticket export (manual UI flow, documented by Kriti 2026-10-08)
 

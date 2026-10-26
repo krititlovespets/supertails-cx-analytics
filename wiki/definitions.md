@@ -141,3 +141,39 @@ iterations (15-min-after-first-touch threshold, not calendar-day).
 - "Attendance %" = adjusted days present / 25 expected working days (30 - 4
   weekly-off - 1 Ganesh Chaturthi holiday), capped at 100% display-wise for
   agents who exceed it (e.g. "room"/Mohammed Roohulla).
+- **"Avg Talk Time per Agent" October Avg (col D) — corrected 2026-10-22/23**:
+  the October-aggregate column is `sum(team talk time across ALL tracked
+  days) / sum(daily active-agent counts across ALL tracked days)` — i.e.
+  total team output ÷ total agent-days worked, NOT divided by a flat 9. The
+  flat-9 version grows unbounded as more days accumulate (hit 47:44:17 by
+  Oct22, an obvious sum masquerading as an average) — if you ever see that
+  bug again, it's stale logic, fix it to the weighted version.
+- **Table 6 AHT column** (added 2026-10-25): every call >=60s talk time on
+  a ticket's phone (any caller, same ticket-level single-owner model as
+  Connected/Transferred) attributed to the ticket's owner and averaged.
+  Team total reconciles exactly with Main Dashboard row 11.
+
+## Chat Volume / Chat FRT — self-computed from the Nugget export (2026-10-23/25)
+
+The regular Nugget export (pulled every refresh anyway) includes a 3rd
+channel, `UCJ SC Chat Assistance`, that's normally filtered out everywhere
+else in this workbook — but it has everything needed to compute the
+dashboard artifact's Chat Volume/Chat FRT tiles directly, without waiting
+on the separately-maintained "Chat - Agent Summary" sheet tab (which lags
+1-3 days on most refreshes). **This is now the default method** — only
+fall back to reading the Chat sheet if the Nugget export is ever missing
+these rows.
+
+- Filter: `channel_name == 'UCJ SC Chat Assistance'` AND `agent_name` in
+  the 4 day-shift chat agents — `Daksha K`, `Ganashree D`, `Salman Pasha`,
+  `Shazali Sanober` (a different, smaller roster than Agent
+  Productivity's 12-agent `NAME_TO_EMAIL` — don't conflate the two) — AND
+  `agent_assigned_at`'s time-of-day within 9:00-20:45 (the "Day" shift,
+  matching the sheet's own scope; excludes OBH 8:45pm-9am).
+- **Chat Volume** = count of such tickets per day.
+- **Chat FRT** = average of `agent_frt_response_at - agent_assigned_at` in
+  seconds, for tickets with a valid FRT timestamp. **Not** the raw
+  `agent_frt_response_seconds` field — that's computed from a different
+  anchor and does not match the sheet's own numbers.
+- Validated against 5 known-correct Chat-sheet days (Oct18-22): exact on 3,
+  off by 1 ticket on Oct18, off by 3 on Oct21 — acceptable noise.
