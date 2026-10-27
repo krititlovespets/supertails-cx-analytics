@@ -1414,3 +1414,38 @@ Kriti asked for transfer rules for "Dashboard || Extra". The call-side rules
 from the local chat-dashboard wiki, including that chat has no transfer
 metric (no bot-vs-manual field; reassignment negatives excluded). The local
 chat wiki got a matching `11-Transfer-Rules.md` pointing back here.
+
+## 2026-10-27 — Oct26 added (Main Dashboard + Chat tabs); Oct18 chat gap filled
+
+**Inputs** (Kriti attached): Nugget `dbg485o6taus7386m4dg.csv` (Oct23 13:32 → Oct27 11:55) +
+Ameyo `CALL_Details_2026-10-27_12_12_59…csv` (Oct20 00:18 → Oct27 12:10). Neither covers Oct1 on
+its own (daily exports are rolling slices), so **an Oct-to-date base was rebuilt by merging every
+Nugget/Ameyo CSV in ~/Downloads since Oct 1** — Nugget newest-file-wins per `ticket_id` (46 files,
+19,131 tickets), Ameyo de-duped on `Call ID` (49 files, 66,159 calls). Every Oct day present
+(UCJ 470-605/day, Ameyo 2,097-2,880/day; Oct26 = 576 UCJ / 2,508 calls → full day).
+
+**Main Dashboard**: `compute_main_dashboard.py` over Oct1→Oct26 + `write_main_dashboard.py` with
+Booking Done from Clinic Dashboard (Oct1-25 identical to sheet; **Oct26 = 1**, looks low — likely
+Clinic-side lag, recheck next refresh). Oct1-25 reproduced the live sheet within normal drift (VL −1/−2
+on 4 days = UCJ→Booking channel drift; Transfer +1 on 6 days = any-time matching; Oct25 Transfer
+101→116 as its first full Ameyo day landed). Rows 12/15 hand-computed from TEAM10 (matched all 25
+existing days exactly after rounding to nearest second); D12 = sum talk ÷ sum agent-days.
+Oct26: VL 419, Transfer 93 (**22.2%**, fresh-day low — will climb), Done 78 / Doctor 15, Connect 47.0%,
+AHT 00:04:50, FRT 01:24:34, Agents 6, Talk/agent 02:21:51, Bangalore 99, Booking 1.
+October Avg: VL 10,248, Transfer 2,900 = 28.3%, Connect 60.7%, Booking 4.3%.
+All formula checks pass (Done+Doctor=Total, %, To-Do, Connect Needed, Booking%, Bookings Needed;
+Oct/Sept columns = sum of days). **Not refreshed this run**: Vet Follow-up rows 20-22 (needs full
+Sept→ pull), Ticket Categories, Valid Leads Log, Prediction Model, Callback Adherence, Agent
+Productivity Table 6, Booking Analysis (their scratch scripts no longer exist).
+**Open**: row 15 "Agents Available" Sept col = 232 and Oct col = 9 match neither sum (206/169) nor
+daily average (7.6/6.8) of the day columns — needs a decision before it's "fixed".
+Label "Avg Talk Time per Agent (10 agents)" is stale (divides by active agents, of 9).
+
+**Chat tabs** (separate script, see `chat-tabs.md`): Nugget file cut at Oct26 23:59 so the chat tabs
+stop at the same date → 5,942 tickets. Then the long-open **Oct18 morning gap** was filled: two older
+exports already in Downloads held the 20 missing chat tickets (06:00-12:21); only those 20 IDs were
+passed (the script lets the last file win, so feeding a whole older export would overwrite newer
+rows). 5,962 tickets; re-dry-run = 0 differing cells on both tabs.
+
+**Standing instruction (Kriti, 2026-10-27): "always rewrite in wiki"** — every refresh ends with a
+wiki update: this log (+ any changed page) here, and the local chat-dashboard wiki when chat tabs change.

@@ -173,6 +173,15 @@ them yourself:
   Prediction Model's `banked_dates` until it's actually complete (folding a
   half-day count into the forecast average distorts it).
 
+## Building the Oct-to-date inputs from rolling exports (2026-10-27)
+
+Kriti's attached exports are usually **rolling 2-5 day slices**, not month-to-date, but
+`compute_main_dashboard.py` needs Oct1→latest (any-time phone matching + the October Avg column).
+Merge every `~/Downloads/*.csv` first: Nugget files (have `ticket_id`) → keep `created_at >= month
+start`, newest file (by mtime) wins per `ticket_id`; Ameyo files (have `Call Time`) → keep calls
+>= month start, de-dupe on `Call ID`. Then print per-day counts (UCJ/Bangalore/Chat tickets, Ameyo
+calls) and confirm no day is missing before computing. Recompute the full range every time.
+
 ## Script pipeline
 
 **As of 2026-10-08, the Main Dashboard pipeline scripts live in this repo**,
