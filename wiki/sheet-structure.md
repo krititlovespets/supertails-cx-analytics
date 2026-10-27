@@ -96,6 +96,5 @@ Full `ws.clear()` + rewrite every refresh: read the September section +
 Leadership block back first, clear, write the new (longer, by ~1 row/day)
 October section, then write the unchanged tail back at its new offset.
 
-**Booked (per-agent) is currently STALE as of Oct24** — see
-`external-sources.md`'s Clinic Dashboard entry for why. Called/Connected
-and the team-wide tables are unaffected and keep refreshing normally.
+Per-agent Booked is **live again since 2026-10-27** (Clinic Dashboard per-agent rows came back).
+New days are added by inserting a row before the daily TOTAL row — the tail moves down with its formatting.

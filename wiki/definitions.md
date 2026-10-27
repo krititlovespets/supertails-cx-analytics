@@ -108,6 +108,16 @@ A freshly-tracked day will show an artificially LOW Transfer % for its first
 on 2026-10-08 for Oct 7 — the raw doctor/transfer call volume was completely
 normal, only the backward-matching hadn't had time to accumulate yet).
 
+## Callback Adherence (rules re-derived and verified 2026-10-27)
+
+Population (October onward) = in-scope tickets that **ever** carried a `cf_callback_ucj` value in any
+export (latest non-empty value wins) — Nugget **clears** the field once a callback is handled, so
+"newest row only" silently drops completed callbacks. Month = month of the scheduled time.
+attempted / connected / transferred are all within **±30 min** of the scheduled time: any call /
+a call with User Talk Time **>= 30s** / a Transfer Done call (doctor-called NOT counted).
+"Anytime" = any call at/after the scheduled time. July–September rows are frozen (closed months).
+Verified on 847 overlapping callbacks: 0-2 mismatches per flag.
+
 ## AHT (Average Handling Time)
 
 Average `User Talk Time` across phone-matched calls with `User Talk Time >= 60s`

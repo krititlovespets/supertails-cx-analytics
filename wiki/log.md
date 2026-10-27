@@ -1455,3 +1455,41 @@ wiki update: this log (+ any changed page) here, and the local chat-dashboard wi
 Kriti: "yes use daily average". Main Dashboard row 15: Sept 232 → **7.6** (206 agent-days / 27 days),
 Sep16-30 114 → **7.6** (114/15), October 9 → **6.7** (175/26, through Oct26). Format `0.0`.
 Rule added to `definitions.md`; recompute D15 on every refresh. (Row 12's label "(10 agents)" is still stale — not changed.)
+
+## 2026-10-27 — ALL secondary tabs rebuilt through Oct26 with new persisted scripts
+
+Kriti: "can you try doing for all". The scratch scripts from earlier sessions were gone, so every tab
+got a script in `scripts/` (see `daily-workflow.md` "Full refresh, ALL tabs"). Each was validated
+against the live tab BEFORE writing, usually by re-running with only the Ameyo calls that existed at
+the previous refresh (cutoff Oct26 10:30 or Oct25 09:24) — that reproduces the old values almost
+exactly, proving the rules match; the remaining gaps are UCJ→Booking channel drift (±1-2 tickets).
+
+**Big finding: most secondary tabs were frozen per day.** Valid Leads Log rows, Ticket Categories day
+columns, and the Vet Followup tabs kept the values from the day each date was first added; any-time
+matching never flowed back. Now every October value is recomputed each run.
+
+- **Valid Leads Log**: Sept block untouched (12,168); Oct block rebuilt newest-first = 10,248 rows,
+  2,900 transferred, 6,221 connected (= Main Dashboard exactly; was 9,852 rows / 2,330 transferred,
+  25 stale tickets since reclassified). last_checked = 2026-10-27 for every Oct row.
+- **Ticket Categories**: Oct col + all Oct day cols recomputed, Oct26 column added (format copied).
+  October: 15,701 tickets, connect 66.1%, transfer 3,227 (20.6%). E.g. Oct25 transfers 106 → 122.
+- **Agent Productivity Table 6 + Table6 Raw Dump**: Oct1-26; team 10,207 + 41 no-roster = 10,248;
+  2,880 transferred (28.2%). Dump fully rewritten (10,248 rows, was 5,349).
+- **Booking Analysis**: Oct section rewritten, Oct26 daily row INSERTED (Sept section + Leadership
+  snapshot moved down 1 row intact, verified identical). **Clinic Dashboard per-agent rows are back**
+  (Agent_Perf_V2 ~row 6915) → per-agent Booked live again: Dhanush 44, Alan 45, Abdul 26, Roohulla 11
+  (Oct1-26 daily sum; team TOTAL row 127). "STALE" labels removed.
+- **Prediction Model**: banked Oct1-26 from live Main Dashboard: 10,248 leads / 2,900 = 28.3%;
+  remaining 5 days need **38.9%** (153 transfers/day on 394 leads) to close at 30%. Fixed stale
+  "Connect = User Talk Time > 30s" text to ">= 30s".
+- **Callback Adherence + Dump**: Jul-Sep frozen; Oct+ rebuilt with the "ever scheduled" population
+  (see `definitions.md`) → October **854 → 1,449** scheduled, anytime 62.9%, ±30 min 33.8%,
+  transferred 50. Method change — flag to Kriti; backup of the old tabs exists in that session's scratch.
+- **Vet Follow-up**: Main Dashboard rows 20-22 Oct cols + D (Oct 3,762 transferred / 255 repeat = 6.8%;
+  Oct1-11 closed windows matched the live values exactly). Vet Followup Callback summary had been
+  stuck on Sep23-Oct7 — now rolling **Oct12-26**: 9,946 candidates, 2,123 transferred, 124 repeat (5.8%).
+  Dump had stopped at Oct7 tickets. September exports DO exist in ~/Downloads (37 Nugget / 94 Ameyo
+  files) — merged them and rebuilt the dump over the full Sept1→Oct26 history: **7,390 rows = 3,628 Sept
+  + 3,762 Oct, repeats 371 + 255 — identical to Main Dashboard rows 20-21**. Rolling Oct12-26 repeat = 124
+  (5.8%). Main Dashboard Sept vet columns re-checked against the full history: already exact, untouched.
+  (Repeat rule must use exact second-level touch times; minute-rounding lost 5 Sept repeats.)

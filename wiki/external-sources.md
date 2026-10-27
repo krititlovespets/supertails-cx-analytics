@@ -24,6 +24,9 @@ Clinic-side staff, not this calling team. **Open issue** — if you need fresh
 per-agent Booked numbers and this hasn't been fixed, flag it to Kriti rather
 than silently falling back to a stale number or guessing at a new location.
 
+**Resolved 2026-10-27:** the 4 agents are back (around row ~6915, same A/B/C pattern). The "Month 10"
+column is month-to-date; for a "through day X" figure sum the agent's daily `DD/10/2026` columns.
+
 ## Nugget admin ticket export (manual UI flow, documented by Kriti 2026-10-08)
 
 URL: `https://supertails.nugget.com/#/admin/tickets`

@@ -182,6 +182,35 @@ start`, newest file (by mtime) wins per `ticket_id`; Ameyo files (have `Call Tim
 >= month start, de-dupe on `Call ID`. Then print per-day counts (UCJ/Bangalore/Chat tickets, Ameyo
 calls) and confirm no day is missing before computing. Recompute the full range every time.
 
+## Full refresh, ALL tabs — persisted scripts (2026-10-27, use these)
+
+The old per-session scratch scripts (`01_merge.py` … `28_…`) are gone. Every tab now has a script in
+`scripts/`, all sharing `oct_core.py` (same rules as `compute_main_dashboard.py`). Run from a scratch dir
+(the merge writes CSVs there; never commit them). `LAST` = the day being added.
+
+```
+python3 scripts/merge_month_exports.py                                   # -> oct_nugget.csv, oct_ameyo.csv + per-day counts
+python3 scripts/compute_main_dashboard.py oct_nugget.csv oct_ameyo.csv 2026-10-{01..LAST}
+python3 scripts/write_main_dashboard.py booking.json                     # Booking Done per day from Clinic Dashboard
+#   rows 12/15 (Avg Talk Time per Agent / Agents Available) still by hand -- see log 2026-10-27
+python3 scripts/compute_vet_followup.py empty_sept.csv oct_nugget.csv oct_ameyo.csv LAST   # Oct-only is valid for Oct dates
+#   then write Oct day cols + D of rows 20-22 (NOT write_vet_followup.py -- it would overwrite Sept cols with blanks)
+python3 scripts/write_valid_leads_log.py   oct_nugget.csv oct_ameyo.csv LAST
+python3 scripts/write_ticket_categories.py oct_nugget.csv oct_ameyo.csv LAST
+python3 scripts/write_table6.py            oct_nugget.csv oct_ameyo.csv LAST   # + Table6 Raw Dump
+python3 scripts/write_booking_analysis.py  oct_nugget.csv oct_ameyo.csv LAST
+python3 scripts/write_prediction_model.py  LAST                               # reads the LIVE Main Dashboard -> run after it
+python3 scripts/write_callback_adherence.py oct_nugget.csv oct_ameyo.csv
+python3 scripts/write_vet_tabs.py          sepoct_nugget.csv sepoct_ameyo.csv LAST   # summary + dump; Sept+Oct merge (Sept files are in ~/Downloads)
+```
+Every writer takes `--dry-run` (prints totals, writes nothing). **Every October column/row is recomputed
+on every run** — any-time matching means older days keep rising; until 2026-10-27 most secondary tabs
+had been frozen at the value each day had when it was first added. Cross-checks that must hold:
+Valid Leads Log Oct count/transfers/connects = Main Dashboard Oct; Table 6 team + "(no roster agent call)"
+= Main Dashboard Oct valid leads; Booking Analysis Bangalore total = Main Dashboard UCJ Bangalore;
+Vet dump Oct rows = Main Dashboard row 20 Oct; Vet rolling TOTAL = sum of row 20 over the same 15 days.
+`merge_month_exports.py` has October hard-coded — change the month constants at the next month rollover.
+
 ## Script pipeline
 
 **As of 2026-10-08, the Main Dashboard pipeline scripts live in this repo**,
