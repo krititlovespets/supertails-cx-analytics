@@ -1405,3 +1405,12 @@ each round (see HANDOFF.md section 4 for live URLs):
 None of these three are wired into the daily refresh pipeline — they get
 updated only when Kriti explicitly asks, same rule as any other one-off
 artifact.
+
+## 2026-10-27 — Added chat-tabs.md (chat rules + transfer cross-reference)
+
+Kriti asked for transfer rules for "Dashboard || Extra". The call-side rules
+(Transfer Done / Doctor Called / Transfer Total, 30% target) already live in
+`definitions.md`. Added `chat-tabs.md` summarising the separate chat-tab rules
+from the local chat-dashboard wiki, including that chat has no transfer
+metric (no bot-vs-manual field; reassignment negatives excluded). The local
+chat wiki got a matching `11-Transfer-Rules.md` pointing back here.

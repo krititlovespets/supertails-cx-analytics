@@ -20,6 +20,8 @@ of them.
   Done) + the manual Nugget ticket-export UI flow
 - [vet-followup.md](vet-followup.md) — the 15-Day Repeat metric's definition
   history and current rule (15-minute threshold, not calendar-day)
+- [chat-tabs.md](chat-tabs.md) — rules for the `Chat - *` tabs and why the chat
+  side has no transfer metric (vs Transfer Done/Doctor Called on the call side)
 
 ## Fallback / historical detail
 

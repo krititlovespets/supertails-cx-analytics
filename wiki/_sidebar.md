@@ -6,4 +6,5 @@
 - [Bug Patterns](bug-patterns.md)
 - [External Sources](external-sources.md)
 - [Vet Follow-up](vet-followup.md)
+- [Chat Tabs](chat-tabs.md)
 - [Log](log.md)
