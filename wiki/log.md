@@ -1449,3 +1449,9 @@ rows). 5,962 tickets; re-dry-run = 0 differing cells on both tabs.
 
 **Standing instruction (Kriti, 2026-10-27): "always rewrite in wiki"** — every refresh ends with a
 wiki update: this log (+ any changed page) here, and the local chat-dashboard wiki when chat tabs change.
+
+## 2026-10-27 — Agents Available month columns → daily average
+
+Kriti: "yes use daily average". Main Dashboard row 15: Sept 232 → **7.6** (206 agent-days / 27 days),
+Sep16-30 114 → **7.6** (114/15), October 9 → **6.7** (175/26, through Oct26). Format `0.0`.
+Rule added to `definitions.md`; recompute D15 on every refresh. (Row 12's label "(10 agents)" is still stale — not changed.)

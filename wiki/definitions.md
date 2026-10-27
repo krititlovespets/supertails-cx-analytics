@@ -138,6 +138,11 @@ iterations (15-min-after-first-touch threshold, not calendar-day).
   2026-10-11 the same way, exact match on all 7 known dates. Both are daily
   metrics computed straight from a single day's Ameyo file — no September
   history needed, unlike Vet Follow-up.
+- **Agents Available — month/window columns (B/C/D)** = **daily average** of the
+  day columns in that window (sum of daily counts ÷ number of days with a value),
+  1 decimal. Decided by Kriti 2026-10-27; before that B/C/D held inconsistent
+  values (Sept 232, Oct 9) that matched neither sum nor average. Recompute D15
+  every refresh.
 - "Attendance %" = adjusted days present / 25 expected working days (30 - 4
   weekly-off - 1 Ganesh Chaturthi holiday), capped at 100% display-wise for
   agents who exceed it (e.g. "room"/Mohammed Roohulla).
