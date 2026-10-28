@@ -1493,3 +1493,18 @@ matching never flowed back. Now every October value is recomputed each run.
   + 3,762 Oct, repeats 371 + 255 — identical to Main Dashboard rows 20-21**. Rolling Oct12-26 repeat = 124
   (5.8%). Main Dashboard Sept vet columns re-checked against the full history: already exact, untouched.
   (Repeat rule must use exact second-level touch times; minute-rounding lost 5 Sept repeats.)
+
+## 2026-10-28 — Oct27 added, every tab (first run of the persisted all-tab pipeline)
+
+Inputs: Nugget `dbgo3fsd5ofs73d0r3tg.csv` (Oct23 13:32 → Oct28 10:31), Ameyo `CALL_Details_2026-10-28_10_33_00…`.
+Merged Oct = full day Oct27 (529 UCJ / 106 Bangalore / 2,699 calls). New scripts this run:
+`write_team_rows.py` (rows 12/15, no more hand-computing) and `write_vet_rows.py` (rows 20-22 Oct only).
+**Oct27**: VL 403, Transfer 100 (24.8%, fresh-day low), Connect 51.4%, AHT 4:54, FRT 0:45:16, agents 6,
+talk/agent 3:23:23, Bangalore 106, Booking 7 (6.6%), Vet transferred 123.
+Oct26 climbed as expected: transfers 93 → 118 (28.2%), connect 197 → 251. Oct26 Booking Done still 1 on Clinic Dashboard.
+**October to date**: 10,651 leads, 3,034 transfers = **28.5%**, Connect 60.9%, Booking 134 (4.4%), Vet repeat 6.8%.
+Prediction Model: remaining 4 days need **40.2%** (158/day) to close at 30%.
+Secondary tabs (all cross-checks hold): Valid Leads Log 10,651; Ticket Categories Oct 16,289 tickets / 20.7%
+transferred; Table 6 team 28.4%; Booking Analysis Bangalore 3,038, per-agent Booked 44/49/26/14 (team 134);
+Callback Oct 1,496 scheduled; Vet rolling Oct13-27 2,128 transferred / 119 repeat (5.6%); Vet dump 7,551.
+Chat tabs: cut at Oct27 23:59 → 6,009 tickets, re-dry-run 0 diffs. Sept vet aggregates re-checked unchanged (3,628/371).

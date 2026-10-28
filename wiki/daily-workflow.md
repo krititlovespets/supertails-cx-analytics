@@ -190,11 +190,12 @@ The old per-session scratch scripts (`01_merge.py` … `28_…`) are gone. Every
 
 ```
 python3 scripts/merge_month_exports.py                                   # -> oct_nugget.csv, oct_ameyo.csv + per-day counts
+#   sepoct_* = Sept merge (frozen, kept from 2026-10-27) + the fresh Oct files; Sept files are in ~/Downloads
 python3 scripts/compute_main_dashboard.py oct_nugget.csv oct_ameyo.csv 2026-10-{01..LAST}
 python3 scripts/write_main_dashboard.py booking.json                     # Booking Done per day from Clinic Dashboard
-#   rows 12/15 (Avg Talk Time per Agent / Agents Available) still by hand -- see log 2026-10-27
-python3 scripts/compute_vet_followup.py empty_sept.csv oct_nugget.csv oct_ameyo.csv LAST   # Oct-only is valid for Oct dates
-#   then write Oct day cols + D of rows 20-22 (NOT write_vet_followup.py -- it would overwrite Sept cols with blanks)
+python3 scripts/write_team_rows.py oct_ameyo.csv LAST                     # rows 12/15 + their month columns
+python3 scripts/compute_vet_followup.py sepoct_nugget.csv empty.csv sepoct_ameyo.csv LAST   # Sept+Oct merged
+python3 scripts/write_vet_rows.py LAST                                   # rows 20-22 Oct cols + D (NOT write_vet_followup.py)
 python3 scripts/write_valid_leads_log.py   oct_nugget.csv oct_ameyo.csv LAST
 python3 scripts/write_ticket_categories.py oct_nugget.csv oct_ameyo.csv LAST
 python3 scripts/write_table6.py            oct_nugget.csv oct_ameyo.csv LAST   # + Table6 Raw Dump
