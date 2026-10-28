@@ -1508,3 +1508,11 @@ Secondary tabs (all cross-checks hold): Valid Leads Log 10,651; Ticket Categorie
 transferred; Table 6 team 28.4%; Booking Analysis Bangalore 3,038, per-agent Booked 44/49/26/14 (team 134);
 Callback Oct 1,496 scheduled; Vet rolling Oct13-27 2,128 transferred / 119 repeat (5.6%); Vet dump 7,551.
 Chat tabs: cut at Oct27 23:59 → 6,009 tickets, re-dry-run 0 diffs. Sept vet aggregates re-checked unchanged (3,628/371).
+
+## 2026-10-28 — Table 6: October agent talk time added
+
+Kriti picked "columns in Table 6". Added H/I/J: Total Talk Time (agent's own calls, Oct1-27), Days Worked,
+Avg Talk Time / Working Day. Highest total: Mohammed Roohulla 83:21:54 (3:58:11/day); lowest Ganashree D
+16:01:22 (0:43:41/day — chat team, few calls). Team (11) 585:34:50 / 225 agent-days = 2:36:09/day.
+Validated: TEAM10 subset = 532:13:36 / 181 = 2:56:26 = Main Dashboard row 12 October. Built into
+`write_table6.py`, so it refreshes with every run; Table 6 NOTE updated.

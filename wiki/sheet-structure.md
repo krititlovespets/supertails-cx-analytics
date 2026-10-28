@@ -72,7 +72,7 @@ See `vet-followup.md` for the metric definition. Summary tab: NOTE row, header,
 `=== BY CATEGORY ===` block (6 rows). Dump tab: one row per transferred ticket
 across the FULL Sept1-latest history (not just the rolling 15 days) — ~4,700 rows.
 
-## Agent Productivity — Table 6 now has 7 columns (AHT added 2026-10-25)
+## Agent Productivity — Table 6 now has 10 columns (AHT added 2026-10-25, talk time 2026-10-28)
 
 Table 6 (rows 84-99, see `definitions.md`'s single-owner model): `Agent |
 Tickets Dialled | Connected | Connect % | Transferred | Transfer % | AHT`.

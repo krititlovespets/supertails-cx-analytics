@@ -16,14 +16,27 @@ def main():
     T, C, D, TG = oc.load(nug, ame)
     per, dump = t6.build(T, C, D, TG, last)
     pct = lambda a, b: f"{100 * a / b:.1f}%" if b else "0.0%"
+    # agent's OWN October talk time (all their calls, not just valid leads), through last
+    talk = {k: 0 for k in t6.ROSTER}; days = {k: set() for k in t6.ROSTER}
+    for calls in C.values():
+        for c in calls:
+            d = c["call_time"].strftime("%Y-%m-%d")
+            if c["user_id"] in t6.ROSTER and "2026-10-01" <= d <= last:
+                talk[c["user_id"]] += c["user_talk"]; days[c["user_id"]].add(d)
+    email = lambda label: label.rsplit("(", 1)[1].rstrip(")")
+    longhms = lambda x: f"{int(x) // 3600:02d}:{int(x) % 3600 // 60:02d}:{int(x) % 60:02d}"
     hms = lambda xs: oc.sec_to_hms(sum(xs) / len(xs)) if xs else "00:00:00"
     agents = sorted((k for k in per if k != t6.NONE), key=lambda k: -per[k]["n"])
     rows = [[k, str(per[k]["n"]), str(per[k]["con"]), pct(per[k]["con"], per[k]["n"]), str(per[k]["tr"]),
-             pct(per[k]["tr"], per[k]["n"]), hms(per[k]["aht"])] for k in agents]
+             pct(per[k]["tr"], per[k]["n"]), hms(per[k]["aht"]),
+             longhms(talk[email(k)]), str(len(days[email(k)])),
+             longhms(talk[email(k)] / len(days[email(k)])) if days[email(k)] else "00:00:00"] for k in agents]
+    TT = sum(talk[email(k)] for k in agents); TD = sum(len(days[email(k)]) for k in agents)
     N = sum(per[k]["n"] for k in agents); CN = sum(per[k]["con"] for k in agents); TR = sum(per[k]["tr"] for k in agents)
     rows.append(["TEAM TOTAL (sum / sum -- matches Main Dashboard)", str(N), str(CN), pct(CN, N), str(TR), pct(TR, N),
-                 hms([x for k in agents for x in per[k]["aht"]])])
+                 hms([x for k in agents for x in per[k]["aht"]]), longhms(TT), str(TD), longhms(TT / TD) if TD else "00:00:00"])
     none = per.get(t6.NONE, {"n": 0})["n"]
+    print("talk:", "; ".join(f"{r[0].split(' (')[0]} {r[7]} / {r[8]}d / {r[9]}" for r in rows))
     print(f"Table 6: {len(agents)} agents, team {N} tickets, {CN} connected, {TR} transferred ({pct(TR, N)}); no-roster {none}; dump {len(dump)} rows")
     if dry:
         print("dry run - nothing written"); return
@@ -31,14 +44,17 @@ def main():
     ws = sh.worksheet("Agent Productivity"); col = ws.col_values(1)
     h = next(i for i, x in enumerate(col, 1) if x.startswith("TABLE 6:"))
     assert col[h] == "Agent", col[h]
+    ws.update(range_name=f"A{h + 1}:J{h + 1}", values=[["Agent", "Tickets Dialled", "Connected", "Connect %", "Transferred",
+              "Transfer %", "AHT", "Total Talk Time (own calls, Oct)", "Days Worked (>=1 call)", "Avg Talk Time / Working Day"]],
+              value_input_option="RAW")
     note_r = next(i for i in range(h, 0, -1) if col[i - 1].startswith("NOTE (Table 6"))
     note = re.sub(r"refreshed through Oct\d+", f"refreshed through Oct{int(last[-2:])}", col[note_r - 1])
     start = h + 2; end = start + len(rows) - 1
     old_end = max(i for i, x in enumerate(col, 1) if i >= start and x) if len(col) >= start else start
-    ws.update(range_name=f"A{start}:G{end}", values=rows, value_input_option="RAW")
+    ws.update(range_name=f"A{start}:J{end}", values=rows, value_input_option="RAW")
     ws.update(range_name=f"A{note_r}", values=[[note]], value_input_option="RAW")
     if old_end > end:
-        ws.batch_clear([f"A{end + 1}:G{old_end}"])
+        ws.batch_clear([f"A{end + 1}:J{old_end}"])
     dws = sh.worksheet("Table6 Raw Dump (Oct)")
     hdr = dws.row_values(1); old_n = len(dws.col_values(1))
     dump.sort(key=lambda r: r[2], reverse=True)

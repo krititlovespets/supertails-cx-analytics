@@ -163,6 +163,11 @@ iterations (15-min-after-first-touch threshold, not calendar-day).
   flat-9 version grows unbounded as more days accumulate (hit 47:44:17 by
   Oct22, an obvious sum masquerading as an average) — if you ever see that
   bug again, it's stale logic, fix it to the weighted version.
+- **Table 6 talk-time columns** (added 2026-10-28, Kriti: "add in the agent talk time in oct"):
+  `Total Talk Time (own calls, Oct)` = sum of the agent's OWN `User Talk Time` over ALL their October
+  Ameyo calls (not ticket-level, not valid-lead-only); `Days Worked` = days with >=1 call;
+  `Avg Talk Time / Working Day` = total / days. TEAM TOTAL = sum / sum over the 11 agents. Check: the
+  9 TEAM10 agents' sum / sum equals Main Dashboard row 12's October value exactly (2:56:26 on Oct27).
 - **Table 6 AHT column** (added 2026-10-25): every call >=60s talk time on
   a ticket's phone (any caller, same ticket-level single-owner model as
   Connected/Transferred) attributed to the ticket's owner and averaged.
