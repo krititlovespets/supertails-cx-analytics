@@ -1530,3 +1530,4 @@ Prediction Model (banked Oct1-28: 11,101 leads, 3,165 = 28.5%): remaining 3 days
 All tabs refreshed via the persisted pipeline; cross-checks hold (VLL 11,272 = MD; Table 6 11,154 + 118 no-roster —
 high no-roster count is the partial day's not-yet-called tickets; Bangalore 3,181; Vet Oct 4,112 / 275).
 Chat tabs: uncut through Oct29 10:52 → 6,059 tickets, 0 diffs. `merge_month_exports.py` now prints days 1-31.
+- 2026-10-29 fix: Vet Followup Callback NOTE had stayed at "2026-10-12 to 2026-10-26" on later runs (regex only matched the original wording). Fixed in `write_vet_tabs.py`; note now Oct15-29.

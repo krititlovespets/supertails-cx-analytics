@@ -111,12 +111,12 @@ def main():
     A = [r[0] for r in v]
     note = v[0][0]
     import re
-    note = re.sub(r"rolling last-15-days view \([\d-]+ to [\d-]+, since the latest tracked Ameyo date is [\d-]+\)",
+    note = re.sub(r"rolling last-15-days view \([\d-]+ to [\d-]+, since the latest tracked (?:Ameyo )?date is [\d-]+\)",
                   f"rolling last-15-days view ({dates[0]} to {dates[-1]}, since the latest tracked date is {last})", note)
     note = re.sub(r"Tickets created on/before [\d-]+ are fully resolved; everything from [\d-]+ onward \(all 15 dates in the table below\)",
                   f"Tickets created on/before {resolved} are fully resolved; everything from "
                   f"{(datetime.strptime(resolved, '%Y-%m-%d') + timedelta(days=1)):%Y-%m-%d} onward (all 15 dates in the table below)", note)
-    note = note.replace("the full Sept1-Oct4 history", f"the full Sept1-Oct{int(last[-2:])} history")
+    note = re.sub(r"the full Sept1-Oct\d+ history", f"the full Sept1-Oct{int(last[-2:])} history", note)
     t0 = A.index("TOTAL"); first = t0 - 15; assert A[first - 1] == "Created Date"
     c0 = A.index("=== BY CATEGORY ===")
     data = [{"range": "'Vet Followup Callback'!A1", "values": [[note]]},
