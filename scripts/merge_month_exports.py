@@ -34,6 +34,6 @@ for name, d, cols in [("oct_nugget.csv", tick, NCOLS), ("oct_ameyo.csv", calls, 
 print("nugget files used", len(nsrc), "tickets", len(tick)); print("ameyo files used", len(asrc), "calls", len(calls))
 nd = Counter((v["created_at"][:10], v["channel_name"]) for v in tick.values())
 ad = Counter(datetime.strptime(v["Call Time"], "%d/%m/%Y %I:%M:%S %p").strftime("%Y-%m-%d") for v in calls.values())
-for i in range(1, 28):
+for i in range(1, 32):
     d = f"2026-10-{i:02d}"
     print(d, "UCJ", nd[(d,"Unified Customer Journey")], "Blr", nd[(d,"UCJ Booking Campaigns")], "Chat", nd[(d,"UCJ SC Chat Assistance")], "| ameyo", ad[d])

@@ -1516,3 +1516,17 @@ Avg Talk Time / Working Day. Highest total: Mohammed Roohulla 83:21:54 (3:58:11/
 16:01:22 (0:43:41/day — chat team, few calls). Team (11) 585:34:50 / 225 agent-days = 2:36:09/day.
 Validated: TEAM10 subset = 532:13:36 / 181 = 2:56:26 = Main Dashboard row 12 October. Built into
 `write_table6.py`, so it refreshes with every run; Table 6 NOTE updated.
+
+## 2026-10-29 — Oct28 full + Oct29 PARTIAL ("update the dashboard till today")
+
+Inputs: Nugget `dbhdnvgvjvjs738oqs0g.csv` (Oct25 13:30 → Oct29 11:06), Ameyo `CALL_Details_2026-10-29_11_10_02…`
+(last call 11:03). Oct28 full (595 UCJ / 2,549 calls); **Oct29 partial (208 UCJ / 552 calls, to ~11:05)** —
+tracked on Kriti's request, held OUT of Prediction Model banked days (banked = Oct1-28).
+Note: Main Dashboard col D (October) and the Oct totals on every tab now INCLUDE the partial Oct29, which drags
+October % down slightly (Transfer 28.2% with it vs 28.5% banked-only). Corrects itself on the next refresh.
+**Oct28**: VL 452, Transfer 107 (23.7%, fresh-day low), Connect 47.3%, AHT 4:56, FRT 1:06:40, agents 6, Booking 7.
+Oct27 climbed 100 → 121 (30.1%). Oct26 Booking Done still 1 on the Clinic Dashboard.
+Prediction Model (banked Oct1-28: 11,101 leads, 3,165 = 28.5%): remaining 3 days need **43.9%** (174/day).
+All tabs refreshed via the persisted pipeline; cross-checks hold (VLL 11,272 = MD; Table 6 11,154 + 118 no-roster —
+high no-roster count is the partial day's not-yet-called tickets; Bangalore 3,181; Vet Oct 4,112 / 275).
+Chat tabs: uncut through Oct29 10:52 → 6,059 tickets, 0 diffs. `merge_month_exports.py` now prints days 1-31.
