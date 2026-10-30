@@ -204,6 +204,14 @@ python3 scripts/write_prediction_model.py  LAST                               # 
 python3 scripts/write_callback_adherence.py oct_nugget.csv oct_ameyo.csv
 python3 scripts/write_vet_tabs.py          sepoct_nugget.csv sepoct_ameyo.csv LAST   # summary + dump; Sept+Oct merge (Sept files are in ~/Downloads)
 ```
+**Last step — the two claude.ai pages (new account, rebuilt 2026-10-30):**
+`python3 scripts/export_pulse_data.py <dir>` (reads the LIVE sheet → daily.csv, months.csv, chat.csv), then for EACH page
+upload the 3 CSVs as assets (Artifact publish `url` + `asset: true`) and `ArtifactData update` `datasets/daily|months|chat`
+with the new `source.url` + `updated {at, by}` (read each doc first for `if_version`).
+- Supertails CX Pulse — https://claude.ai/artifact/6CtMvgBY69qfLofu1SQx8c
+- October UCJ Tracker — https://claude.ai/artifact/9AqvMDAuHWWfyG9UopkDJp
+(The old-account pages MGn5rtRUyLPn1v8g2P6bXo / Ggro9haJWDK12JGApzYXJb are unreachable from this account — frozen.)
+
 Every writer takes `--dry-run` (prints totals, writes nothing). **Every October column/row is recomputed
 on every run** — any-time matching means older days keep rising; until 2026-10-27 most secondary tabs
 had been frozen at the value each day had when it was first added. Cross-checks that must hold:

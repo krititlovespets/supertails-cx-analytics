@@ -1545,3 +1545,16 @@ Prediction Model: remaining 2 days need **48.3%** (192/day) to close at 30%.
 Tabs: VLL 11,532; Ticket Categories 17,532 / 21.0%; Table 6 28.6%; Booking Analysis 3,265 Bangalore / 151 booked
 (Dhanush 49, Alan 56, Abdul 26, Roohulla 19); Callback Oct 1,580; Vet rolling Oct15-29 2,202 / 119 (5.4%).
 Chat tabs cut at Oct29 23:59 → 6,108 tickets, 0 diffs.
+
+## 2026-10-30 — Both claude.ai pages rebuilt on the new Claude account
+
+The old "Supertails CX Pulse" and "October UCJ Tracker" artifacts live on the OLD account (not found from this one).
+Kriti chose "rebuild both here". Built on the Dashboard artifact type, data = 3 CSVs exported from the live sheet
+(`scripts/export_pulse_data.py`), so the pages always equal the sheet.
+- **Supertails CX Pulse** https://claude.ai/artifact/6CtMvgBY69qfLofu1SQx8c — Oct-to-date tiles vs September (Transfer,
+  Connect, Booking, AHT, first call, vet repeat), daily Transfer/Connect/Booking % lines with goal lines, day chats + first
+  reply, last-14-days table with misses in red.
+- **October UCJ Tracker** https://claude.ai/artifact/9AqvMDAuHWWfyG9UopkDJp — goal scorecard (Transfer 30 / Connect 60 /
+  Booking 6.5, Sept vs Oct vs latest day, On goal / Within 10% / Behind pills, "how it's counted" dropdowns), month close-out
+  (same formula as Prediction Model: 2 days left, 384 transfers, 48.3%, 192/day), and a volume-and-context table incl. chat.
+Bot error % / bot chats passed from the old tracker are NOT included (no bot data in this pipeline).
