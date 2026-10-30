@@ -1531,3 +1531,17 @@ All tabs refreshed via the persisted pipeline; cross-checks hold (VLL 11,272 = M
 high no-roster count is the partial day's not-yet-called tickets; Bangalore 3,181; Vet Oct 4,112 / 275).
 Chat tabs: uncut through Oct29 10:52 → 6,059 tickets, 0 diffs. `merge_month_exports.py` now prints days 1-31.
 - 2026-10-29 fix: Vet Followup Callback NOTE had stayed at "2026-10-12 to 2026-10-26" on later runs (regex only matched the original wording). Fixed in `write_vet_tabs.py`; note now Oct15-29.
+
+## 2026-10-30 — Oct29 completed (was partial)
+
+Inputs: Nugget `dbi29bovjvjs73c0c980.csv` (Oct25 13:30 → Oct30 10:31), Ameyo `CALL_Details_2026-10-30_10_32_40…`.
+Tracked through Oct29 (Oct30 morning held back). **Clinic Dashboard header quirk**: days 1-12 headers became date
+serials → first `write_main_dashboard.py` run stopped (KeyError '2026-10-01', nothing written). Added `scripts/clinic.py`
+(swap-back parser), validated against known values, switched `write_booking_analysis.py` to it.
+**Oct29 (full)**: VL 432, Transfer 123 (28.5%), Connect 58.6%, AHT 4:38, FRT 0:38:17, agents 8, Bangalore 118,
+Booking 10 (8.5%), Vet transferred 150. Oct28 climbed 107 → 127 (28.2%).
+**October to date (Oct1-29)**: 11,532 leads, 3,314 transfers = **28.7%**, Connect 61.2%, Booking 151 (4.6%), Vet repeat 6.7%.
+Prediction Model: remaining 2 days need **48.3%** (192/day) to close at 30%.
+Tabs: VLL 11,532; Ticket Categories 17,532 / 21.0%; Table 6 28.6%; Booking Analysis 3,265 Bangalore / 151 booked
+(Dhanush 49, Alan 56, Abdul 26, Roohulla 19); Callback Oct 1,580; Vet rolling Oct15-29 2,202 / 119 (5.4%).
+Chat tabs cut at Oct29 23:59 → 6,108 tickets, 0 diffs.

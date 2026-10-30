@@ -27,6 +27,11 @@ than silently falling back to a stale number or guessing at a new location.
 **Resolved 2026-10-27:** the 4 agents are back (around row ~6915, same A/B/C pattern). The "Month 10"
 column is month-to-date; for a "through day X" figure sum the agent's daily `DD/10/2026` columns.
 
+**Header quirk (2026-10-30):** row 4's date headers for days 1-12 of each month now come back as Sheets
+date serials (e.g. `46296`) — "01/10/2026" got auto-parsed US-style (Jan 10). `scripts/clinic.py` converts
+them back with day/month swapped; validated: Oct 1-28 identical to Main Dashboard Booking Done, Sept = 142.
+Always read Booking Done through `clinic.py`, never by matching the `DD/MM/YYYY` string alone.
+
 ## Nugget admin ticket export (manual UI flow, documented by Kriti 2026-10-08)
 
 URL: `https://supertails.nugget.com/#/admin/tickets`

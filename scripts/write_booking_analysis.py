@@ -20,12 +20,12 @@ pct = lambda a, b: f"{100 * a / b:.1f}%" if b else "0.0%"
 
 
 def clinic_booked(gc, last):
-    v = gc.open_by_key(CLINIC_ID).worksheet("Agent_Perf_V2").get_all_values()
-    h = v[3]; day = int(last[-2:])
-    cols = [i for i, x in enumerate(h) if x.endswith("/10/2026") and int(x[:2]) <= day]
-    s = lambda r: sum(int(r[i] or 0) for i in cols)
-    per = {ba.AGENTS[r[0]]: s(r) for r in v if r[0] in ba.AGENTS and r[2] == "Appts created"}
-    team = s(next(r for r in v if r[:3] == ["TOTAL (UCJ only)", "UCJ", "Appts created"]))
+    import clinic  # handles the day/month-swapped date headers (2026-10-30)
+    v = clinic.open_sheet(gc); month = last[:7]
+    s = lambda rows: sum(n for d, n in rows.items() if d.startswith(month) and d <= last)
+    per = {ba.AGENTS[r[0]]: s(clinic.daily(v, lambda x, e=r[0]: x[0] == e and x[2] == "Appts created"))
+           for r in v if r[0] in ba.AGENTS and r[2] == "Appts created"}
+    team = s(clinic.daily(v, lambda x: x[:3] == ["TOTAL (UCJ only)", "UCJ", "Appts created"]))
     return per, team
 
 
