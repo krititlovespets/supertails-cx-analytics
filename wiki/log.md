@@ -1558,3 +1558,14 @@ Kriti chose "rebuild both here". Built on the Dashboard artifact type, data = 3 
   Booking 6.5, Sept vs Oct vs latest day, On goal / Within 10% / Behind pills, "how it's counted" dropdowns), month close-out
   (same formula as Prediction Model: 2 days left, 384 transfers, 48.3%, 192/day), and a volume-and-context table incl. chat.
 Bot error % / bot chats passed from the old tracker are NOT included (no bot data in this pipeline).
+
+## 2026-10-31 — Oct30 added; one-command refresh
+
+Inputs: Nugget `dbio251m8a4s73cqk490.csv`, Ameyo `CALL_Details_2026-10-31_11_20_12…`. Added `scripts/refresh_all.sh`.
+**Oct30**: VL 444, Transfer 93 (20.9%, fresh-day low), Connect 49.5%, AHT 4:27, FRT 0:48:45, agents 7, Bangalore 137,
+Booking 10 (7.3%), Vet transferred 115. Oct29 climbed 123 → 136 (31.7%).
+**October (Oct1-30)**: 11,973 leads, 3,425 transfers = **28.6%**, Connect 61.0%, Booking 161 (4.7%), Vet repeat 6.7%.
+Prediction Model: Oct31 alone would need 71.9% (287 transfers) to close at 30% — not reachable; October will close ~28.6%+.
+Tabs: VLL 11,973; Ticket Categories 18,185 / 21.0%; Table 6 28.5%; Booking Analysis 3,405 / 161 (Dhanush 53, Alan 60,
+Abdul 26, Roohulla 21); Callback Oct 1,605; Vet rolling Oct16-30 2,237 / 125 (5.6%). Chat 6,166 tickets, 0 diffs.
+Both claude.ai pages updated (3 CSVs re-uploaded, datasets v2).

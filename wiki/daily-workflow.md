@@ -184,6 +184,11 @@ calls) and confirm no day is missing before computing. Recompute the full range 
 
 ## Full refresh, ALL tabs — persisted scripts (2026-10-27, use these)
 
+**One command (2026-10-31):** from a scratch dir, `python3 scripts/merge_month_exports.py`, check the per-day counts, then
+`scripts/refresh_all.sh <LAST> <latest_nugget_csv> <dir with sep_nugget.csv + sepoct_ameyo.csv>`. It runs every step below
+including the chat tabs (cut at LAST 23:59) and stops at the first failure; takes ~4 min, so run it in the background.
+Rebuild the Sept files with the merge script's month constants changed if the scratch dir is gone. Pages step stays manual.
+
 The old per-session scratch scripts (`01_merge.py` … `28_…`) are gone. Every tab now has a script in
 `scripts/`, all sharing `oct_core.py` (same rules as `compute_main_dashboard.py`). Run from a scratch dir
 (the merge writes CSVs there; never commit them). `LAST` = the day being added.
