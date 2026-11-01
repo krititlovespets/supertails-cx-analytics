@@ -44,7 +44,7 @@ python3 "$P/write_vet_rows.py" "$LAST" 2>&1 | q
 for s in write_valid_leads_log write_ticket_categories write_table6 write_booking_analysis; do
   python3 "$P/$s.py" oct_nugget.csv oct_ameyo.csv "$LAST" 2>&1 | q; sleep 5
 done
-python3 "$P/write_prediction_model.py" "$LAST" 2>&1 | q
+python3 "$P/write_prediction_model.py" "${PRED_LAST:-$LAST}" 2>&1 | q   # PRED_LAST: last COMPLETE day, when LAST is partial
 python3 "$P/write_callback_adherence.py" oct_nugget.csv oct_ameyo.csv 2>&1 | q
 python3 "$P/write_vet_tabs.py" sepoct_nugget.csv sepoct_ameyo.csv "$LAST" 2>&1 | q
 

@@ -187,7 +187,7 @@ calls) and confirm no day is missing before computing. Recompute the full range 
 **One command (2026-10-31):** from a scratch dir, `python3 scripts/merge_month_exports.py`, check the per-day counts, then
 `scripts/refresh_all.sh <LAST> <latest_nugget_csv> <dir with sep_nugget.csv + sepoct_ameyo.csv>`. It runs every step below
 including the chat tabs (cut at LAST 23:59) and stops at the first failure; takes ~4 min, so run it in the background.
-Rebuild the Sept files with the merge script's month constants changed if the scratch dir is gone. Pages step stays manual.
+Sept base now lives permanently in `~/Documents/Supertails work/sept_base/` (outside git; scratch dirs get wiped — that broke a run on 2026-11-01). Pass that as the 3rd arg. Set `PRED_LAST=<last complete day>` when LAST is partial. Check with `scripts/verify_main_dashboard.py`. Pages step stays manual.
 
 The old per-session scratch scripts (`01_merge.py` … `28_…`) are gone. Every tab now has a script in
 `scripts/`, all sharing `oct_core.py` (same rules as `compute_main_dashboard.py`). Run from a scratch dir

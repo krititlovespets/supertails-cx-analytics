@@ -1569,3 +1569,16 @@ Prediction Model: Oct31 alone would need 71.9% (287 transfers) to close at 30% �
 Tabs: VLL 11,973; Ticket Categories 18,185 / 21.0%; Table 6 28.5%; Booking Analysis 3,405 / 161 (Dhanush 53, Alan 60,
 Abdul 26, Roohulla 21); Callback Oct 1,605; Vet rolling Oct16-30 2,237 / 125 (5.6%). Chat 6,166 tickets, 0 diffs.
 Both claude.ai pages updated (3 CSVs re-uploaded, datasets v2).
+
+## 2026-11-01 — Full October rebuilt from full-month exports ("update the whole october a to z")
+
+Inputs: Nugget `dbjb1q9m8a4s738tkfpg.csv` (22,212 tickets, Oct1 00:05 → **Oct31 11:55**), Ameyo `CALL_Details_2026-11-01_08_55_43…`
+(78,399 calls, Oct1 → Nov1 08:52). The Nugget export was the source of truth for October: 8 chat tickets the daily files had missed
+were added (Oct16-18, Oct30), 2 tickets absent from it were dropped, 2 moved UCJ→Booking. No calls differed.
+**Oct31 is PARTIAL**: tickets only to 11:55 (407 vs ~750/day), though its calls are complete. Prediction Model stays banked Oct1-30.
+**October (Oct1-31 partial)**: 12,255 leads, 3,503 transfers = **28.6%**, Connect 60.9%, AHT 4:49, Bookings 166 (4.8%), Vet 4,508 / 303 (6.7%).
+Oct1-30 complete: 11,971 leads, 3,444 = **28.8%**. Oct29 136 (31.7%), Oct30 93 → 108 (24.4%).
+Tabs: VLL 12,255; Ticket Categories 18,549 / 21.1%; Table 6 28.5% (team talk 677:41:39, 2:37:36/day); Booking Analysis 3,457 / 166
+(Dhanush 53, Alan 60, Abdul 28, Roohulla 24); Callback Oct 1,624 (Nov future 40); Vet rolling Oct17-31 2,221 / 126 (5.7%); Chat 6,202, 0 diffs.
+`verify_main_dashboard.py`: 0 problems. Both claude.ai pages updated.
+First run stopped after rows 12/15: scratch `sepoct_ameyo.csv` had been wiped. Sept base moved to `~/Documents/Supertails work/sept_base/`.
