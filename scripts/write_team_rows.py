@@ -5,12 +5,12 @@ wiki/definitions.md), every day of <last_date>'s month in the Ameyo file, plus t
   - Agents Available, month column = daily average of the days (Kriti, 2026-10-27), 0.0 format
 Usage: python3 write_team_rows.py <merged_ameyo_csv> <last_date> [--dry-run]
 """
-import sys, csv, gspread
+import sys, csv, gspread, os
 from datetime import datetime
 from collections import defaultdict
 
 SHEET_ID = "1aomm6s_NfpX_PFdyAdiNSj4ZGXq8l9bCRAxN09koWmw"
-KEY = "/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"
+KEY = os.path.expanduser("~/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json")
 TEAM = {"raisa.qlovespets@supertails.in", "hammad.shaikhlovespets@supertails.in", "shazali.snlovespets@supertails.in",
         "arjun.llovespets@supertails.in", "riddi.plovespets@supertails.in", "alan.jlovespets@supertails.in",
         "dhanush.slovespets@supertails.com", "abdul.rahmanlovespets@supertails.in", "mohammed.rolovespets@supertails.in"}

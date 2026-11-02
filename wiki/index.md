@@ -7,6 +7,7 @@ of them.
 
 ## Pages
 
+- **[START-HERE.md](START-HERE.md) — read this first: what the dashboard is, setup, and the update routine**
 - [schema.md](schema.md) — how this wiki is structured and maintained (ingest/lint)
 - [definitions.md](definitions.md) — canonical metric definitions (Valid Lead,
   Connect, Transfer Done/Doctor Called, AHT, FRT, Vet Follow-up, etc.)

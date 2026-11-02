@@ -1601,3 +1601,8 @@ A rename slip (`sepoct_nugget` → `sepnugget`) stopped the first Nov run after 
 Kriti spotted agent Called (4,337) ≠ Bangalore total (3,560). Cause: a ticket counted for every agent who called it (759 tickets, +800), and own-call
 Connected vs team any-caller Connected. Now one owner per ticket (see `definitions.md`). October: Dhanush 817/483, Alan 1,017/631, Abdul 857/525, Roohulla 846/499,
 Not called 23/8 = 3,560/2,146. November (Nov 1): Abdul 8/5, Roohulla 20/9, Not called 172/30 = 200/44. September section unchanged (old method).
+
+## 2026-11-02 — Handover guide for a colleague
+
+New `wiki/START-HERE.md`: one current guide for a person or Claude. Scripts no longer carry /Users/kritituteja paths (use ~). Chat script copied to `chat/update_chat_dashboard.py`
+(refresh_all.sh now runs that copy; key path = ~/Documents/Supertails work/) and chat wiki to `wiki/chat/` (minus page 10). The repo returns 404 to anonymous visitors, so it is private, not public as older pages say.

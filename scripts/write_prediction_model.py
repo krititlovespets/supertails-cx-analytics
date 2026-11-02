@@ -6,11 +6,11 @@ average leads/day; remaining days get a FLAT daily quota (design choice 2026-09-
 Rows are located by label; one day row per day of the month, TOTAL right below.
 Usage: python3 write_prediction_model.py <last_banked_date> [--dry-run]
 """
-import sys, re, calendar, gspread
+import sys, re, calendar, gspread, os
 from datetime import datetime
 
 SHEET_ID = "1aomm6s_NfpX_PFdyAdiNSj4ZGXq8l9bCRAxN09koWmw"
-KEY = "/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"
+KEY = os.path.expanduser("~/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json")
 TARGET = 0.30
 
 

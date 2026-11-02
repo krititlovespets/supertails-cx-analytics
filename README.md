@@ -20,6 +20,8 @@ Four times a day (8am, 12pm, 5pm, 10pm), Claude:
 
 ## Start here
 
+➡️ **[wiki/START-HERE.md](wiki/START-HERE.md)** — the one guide for a new person or a new Claude session: what the dashboard is, setup, and how to update it.
+
 ➡️ **[wiki/index.md](wiki/index.md)** — the full wiki index: metric
 definitions, the refresh workflow, tab-by-tab sheet structure, known bug
 patterns, and the export-automation flow.

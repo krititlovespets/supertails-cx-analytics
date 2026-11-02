@@ -2,9 +2,9 @@
 Reads the LIVE Main Dashboard and checks every formula row, date continuity and month-column sums.
 Prints only problems plus a summary. Usage: python3 verify_main_dashboard.py
 """
-import datetime as dt, gspread
+import datetime as dt, gspread, os
 SHEET_ID = "1aomm6s_NfpX_PFdyAdiNSj4ZGXq8l9bCRAxN09koWmw"
-KEY = "/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"
+KEY = os.path.expanduser("~/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json")
 v = gspread.service_account(filename=KEY).open_by_key(SHEET_ID).worksheet("Main Dashboard").get_all_values(); H = v[0]
 R = {r[0].split(" (")[0].strip(): r for r in v[1:] if r and r[0]}
 k = lambda s: R[next(n for n in R if n.startswith(s))]

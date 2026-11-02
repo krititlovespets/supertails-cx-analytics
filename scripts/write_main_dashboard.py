@@ -21,7 +21,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 SHEET_ID = "1aomm6s_NfpX_PFdyAdiNSj4ZGXq8l9bCRAxN09koWmw"
-SERVICE_ACCOUNT_FILE = "/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"
+SERVICE_ACCOUNT_FILE = os.path.expanduser("~/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 PINK = {"red": 0.972549, "green": 0.77254903, "blue": 0.81960785}

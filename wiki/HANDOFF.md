@@ -1,3 +1,5 @@
+> **Older document (Oct 16). Start with [START-HERE.md](START-HERE.md); it wins wherever the two differ.**
+
 # Supertails CX Analytics — Full Handoff / Onboarding Doc
 
 **Purpose**: this one file is meant to be handed to a fresh Claude session (e.g. on

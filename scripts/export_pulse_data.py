@@ -10,7 +10,7 @@ Usage: python3 export_pulse_data.py <out_dir>
 import sys, os, csv, gspread
 
 SHEET_ID = "1aomm6s_NfpX_PFdyAdiNSj4ZGXq8l9bCRAxN09koWmw"
-KEY = "/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"
+KEY = os.path.expanduser("~/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json")
 ROWS = [("Valid Leads", "valid_leads", "n"), ("Transfer Total", "transfers", "n"), ("Transfer %", "transfer_pct", "p"),
         ("Transfer Done", "transfer_done", "n"), ("Doctor Called", "doctor_called", "n"), ("Connect (Numerator)", "connects", "n"),
         ("Connect %", "connect_pct", "p"), ("AHT", "aht_sec", "t"), ("Avg Talk Time per Agent", "talk_per_agent_sec", "t"),

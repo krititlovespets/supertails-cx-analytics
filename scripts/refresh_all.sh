@@ -14,9 +14,9 @@ q() { grep -v -i -E "warn|^talk" || true; }
 
 python3 "$P/compute_main_dashboard.py" nugget.csv ameyo.csv $DATES > /dev/null
 python3 - "$LAST" "$P" <<'PY' 2>&1 | q
-import sys, json, gspread
+import sys, os, json, gspread
 last, p = sys.argv[1:3]; sys.path.insert(0, p); import clinic
-gc = gspread.service_account(filename="/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json")
+gc = gspread.service_account(filename=os.path.expanduser("~/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"))
 b = clinic.daily(clinic.open_sheet(gc), lambda x: x[:3] == ["TOTAL (UCJ only)", "UCJ", "Appts created"])
 o = {d: n for d, n in b.items() if d[:7] == last[:7] and d <= last}
 assert len(o) == int(last[-2:]), f"Clinic Dashboard: expected {last[-2:]} days, got {len(o)}"
@@ -47,7 +47,7 @@ r = csv.DictReader(open(nug, encoding="utf-8-sig"))
 w = csv.DictWriter(open("chat_cut.csv", "w", newline=""), fieldnames=r.fieldnames); w.writeheader()
 w.writerows(x for x in r if x["created_at"] < cut)
 PY
-cd ~/Downloads/chat-dashboard-wiki
+cd "$P/../chat"
 F="$OLDPWD/chat_cut.csv"
 python3 update_chat_dashboard.py "$F" 2>&1 | grep -E "merged|done|Done|WARNING" || true
 python3 update_chat_dashboard.py "$F" --dry-run 2>&1 | grep differing

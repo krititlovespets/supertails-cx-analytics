@@ -1,4 +1,5 @@
 - [Home / Index](index.md)
+- [Start Here](START-HERE.md)
 - [Schema (how this wiki works)](schema.md)
 - [Definitions](definitions.md)
 - [Daily Workflow](daily-workflow.md)

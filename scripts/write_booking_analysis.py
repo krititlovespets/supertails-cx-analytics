@@ -14,7 +14,7 @@ import oct_core as oc, booking_analysis as ba
 
 SHEET_ID = "1aomm6s_NfpX_PFdyAdiNSj4ZGXq8l9bCRAxN09koWmw"
 CLINIC_ID = "1EyTmbBSkZMvL5JolKuo8xxOkguYGUKpTJTzlN68n5hM"
-KEY = "/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"
+KEY = os.path.expanduser("~/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json")
 TAB = "Booking Analysis"
 ORDER = ["Dhanush S", "Alan Joel", "Abdul Rahman", "Mohammed Roohulla"]
 pct = lambda a, b: f"{100 * a / b:.1f}%" if b else "0.0%"
