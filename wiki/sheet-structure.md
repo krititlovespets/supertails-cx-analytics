@@ -83,8 +83,8 @@ any row search to start after Table 6's own header row, never by label alone.
 
 Not part of the original 9+3 — built specifically for the 4 Booking-team
 agents. Per month (October first, September appended same session), 3
-sections stacked top to bottom: **Per-Agent Funnel** (Called/Connected/
-Connect%/Booked/Booking%/Booked-of-Connected%, one row per agent + TEAM
+sections stacked top to bottom: **Per-Agent Funnel** (single owner: Tickets Owned/Connected/
+Connect%/Booked/Booking%/Booked-of-Connected%, one row per agent + 'Not called by these 4' + TEAM
 TOTAL), **Daily Bangalore Connect % by date** (team-wide any-caller basis,
 one row per date + TOTAL), **Overall Funnel Summary** (one row: tickets,
 connected, connect%, booked, booked-%-of-connected, booked-%-of-total). A

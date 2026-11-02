@@ -1595,3 +1595,9 @@ Booking Analysis Nov section on top; Prediction Model now November (30 day rows,
 `November` row (88 sched) above `December (future-scheduled)`; Vet rolling Oct18-Nov1. All scripts month-generic now; history in `sept_base/hist_*.csv`.
 Pages: Pulse = November vs October; October UCJ Tracker = final; new November UCJ Tracker https://claude.ai/artifact/HH5BjcV1zt5dCZNwevYTGS. verify: 0 problems.
 A rename slip (`sepoct_nugget` → `sepnugget`) stopped the first Nov run after rows 12/15; fixed, rerun clean, vet compute errors no longer hidden.
+
+## 2026-11-02 — Booking Analysis funnel: single owner, agents add up to the team
+
+Kriti spotted agent Called (4,337) ≠ Bangalore total (3,560). Cause: a ticket counted for every agent who called it (759 tickets, +800), and own-call
+Connected vs team any-caller Connected. Now one owner per ticket (see `definitions.md`). October: Dhanush 817/483, Alan 1,017/631, Abdul 857/525, Roohulla 846/499,
+Not called 23/8 = 3,560/2,146. November (Nov 1): Abdul 8/5, Roohulla 20/9, Not called 172/30 = 200/44. September section unchanged (old method).

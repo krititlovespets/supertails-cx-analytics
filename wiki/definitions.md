@@ -118,6 +118,14 @@ a call with User Talk Time **>= 30s** / a Transfer Done call (doctor-called NOT 
 "Anytime" = any call at/after the scheduled time. July–September rows are frozen (closed months).
 Verified on 847 overlapping callbacks: 0-2 mismatches per flag.
 
+## Booking Analysis per-agent funnel — single owner (changed 2026-11-02)
+
+Kriti: agent denominators must add up to the team's. Each Bangalore ticket has ONE owner: the last of the 4 Booking agents with
+their own call >=30s; else the last of the 4 who called; else the row "Not called by these 4". Connected = any caller >=30s, credited
+to the owner (same as Main Dashboard). Agents + that row = team tickets and connects exactly (asserted in `write_booking_analysis.py`).
+Booked comes from the Clinic Dashboard per agent and is not ticket-linked, so per-agent Booking % is an approximation. September's
+section still uses the old method (ticket counted per agent, own connects). Applied to October and November.
+
 ## AHT (Average Handling Time)
 
 Average `User Talk Time` across phone-matched calls with `User Talk Time >= 60s`

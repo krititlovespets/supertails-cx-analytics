@@ -41,20 +41,22 @@ def main():
     L = f"{Mon} 1-{int(last[-2:])}"
     dates = sorted(daily)
     top = [
-        [f"NOTE: Booking team analysis, {L} (full day). \"Called\" = Bangalore (UCJ Booking Campaigns) tickets the agent dialled any time; "
-         "\"Connected\" = that agent's OWN call >=30s (per-agent funnel, from the Nugget+Ameyo exports). \"Booked\" per agent = that agent's "
-         "Appts created in the Clinic Dashboard (Agent_Perf_V2), summed over the same days. TEAM TOTAL Booked comes from the Clinic Dashboard's "
-         "TOTAL (UCJ only) Appts Created row, so it can exceed the 4-agent sum. The daily Bangalore Connect% table uses the TEAM-WIDE "
-         "definition (any caller, >=30s), same as Main Dashboard; recent days keep rising on future refreshes (any-time phone matching)."],
+        [f"NOTE: Booking team analysis, {L} (full day). Every Bangalore (UCJ Booking Campaigns) ticket has ONE owner, so the agent rows add up exactly "
+         "to the team total: the last of the 4 agents with their own call >=30s; if none connected, the last of the 4 who called; if none of the 4 called, "
+         "the 'Not called by these 4' row (no call yet, or called only by others). Connected = any caller >=30s (same as Main Dashboard), credited to the owner. "
+         "Booked per agent = that agent's Appts created in the Clinic Dashboard (Agent_Perf_V2), which is not tied to a ticket, so Booking % per agent is an approximation; "
+         "the 'Not called' row's Booked is UCJ bookings by anyone outside the 4. The daily table uses the same team-wide Connect basis; recent days keep rising on "
+         "future refreshes (any-time phone matching)."],
         [""],
         [f"=== PER-AGENT FUNNEL ({L}) ==="],
-        ["Agent", "Called", "Connected (own call)", "Connect %", "Booked", "Booking % (Booked/Called)", "Booked/Connected %"]]
+        ["Agent", "Tickets Owned", "Connected", "Connect %", "Booked", "Booking % (Booked/Tickets)", "Booked/Connected %"]]
     for n in ORDER:
         a = per[n]; b = booked[n]
         top.append([n, str(a["called"]), str(a["conn"]), pct(a["conn"], a["called"]), str(b), pct(b, a["called"]), pct(b, a["conn"])])
-    tc = sum(per[n]["called"] for n in ORDER); tn = sum(per[n]["conn"] for n in ORDER)
-    top.append(["TEAM TOTAL (Called/Connected live; Booked = live Clinic Dashboard total, not agent sum)",
-                str(tc), str(tn), pct(tn, tc), str(team_booked), pct(team_booked, tc), pct(team_booked, tn)])
+    x = per[ba.NONE]; ob = team_booked - sum(booked[n] for n in ORDER)
+    top.append([ba.NONE, str(x["called"]), str(x["conn"]), pct(x["conn"], x["called"]), str(ob), pct(ob, x["called"]), pct(ob, x["conn"])])
+    tc = sum(a["called"] for a in per.values()); tn = sum(a["conn"] for a in per.values())
+    top.append(["TEAM TOTAL (matches the Bangalore total below)", str(tc), str(tn), pct(tn, tc), str(team_booked), pct(team_booked, tc), pct(team_booked, tn)])
     top += [[""], ["=== BANGALORE CONNECT % BY DATE (team-wide, any caller) ==="], ["Date", "Bangalore Tickets", "Connected", "Connect %"]]
     for d in dates:
         x = daily[d]; top.append([d, str(x["n"]), str(x["conn"]), pct(x["conn"], x["n"])])
@@ -63,8 +65,9 @@ def main():
             ["Bangalore Tickets", "Connected", "Connect %", "Booked (team, live)", "Booked % of Connected", "Booked % of Total"],
             [str(N), str(CN), pct(CN, N), str(team_booked), pct(team_booked, CN), pct(team_booked, N)]]
     top = [r + [""] * (7 - len(r)) for r in top]
+    assert tc == sum(x["n"] for x in daily.values()) and tn == sum(x["conn"] for x in daily.values()), "agents do not add up to the team"
     print(f"{L}: agents " + ", ".join(f"{n} {per[n]['called']}/{per[n]['conn']}/{booked[n]}" for n in ORDER)
-          + f"; Bangalore {N} tickets, {CN} connected ({pct(CN, N)}), booked {team_booked}; {len(dates)} daily rows")
+          + f"; not called {per[ba.NONE]['called']}/{per[ba.NONE]['conn']}/{team_booked - sum(booked.values())}; Bangalore {N} tickets, {CN} connected ({pct(CN, N)}), booked {team_booked}; {len(dates)} daily rows")
     if dry:
         print("dry run - nothing written"); return
     sh = gc.open_by_key(SHEET_ID); ws = sh.worksheet(TAB)
@@ -73,19 +76,25 @@ def main():
     if this_note is None:   # first run of the month: open space at the very top
         sh.batch_update({"requests": [{"insertDimension": {"range": {"sheetId": ws.id, "dimension": "ROWS",
                          "startIndex": 0, "endIndex": len(top) + 3}, "inheritFromBefore": False}}]})
-        add = 0
+        start = 1; add = 0
     else:
-        tot_row = next(i for i, x in enumerate(col, 1) if x.startswith(f"TOTAL ({Mon}"))
-        old_days = tot_row - (next(i for i, x in enumerate(col, 1) if x == "Date") + 1)
+        start = this_note
+        insert = lambda at, n: sh.batch_update({"requests": [{"insertDimension": {"range": {"sheetId": ws.id, "dimension": "ROWS",
+                                                "startIndex": at - 1, "endIndex": at - 1 + n}, "inheritFromBefore": True}}]})
+        find = lambda pred: next(i for i, x in enumerate(col, 1) if i >= start and pred(x))
+        tot_row = find(lambda x: x.startswith(f"TOTAL ({Mon}"))
+        old_days = tot_row - (find(lambda x: x == "Date") + 1)
         add = len(dates) - old_days
         assert add >= 0, "fewer days than before -- not handled"
         if add > 0:
-            sh.batch_update({"requests": [{"insertDimension": {"range": {"sheetId": ws.id, "dimension": "ROWS",
-                             "startIndex": tot_row - 1, "endIndex": tot_row - 1 + add}, "inheritFromBefore": True}}]})
-    ws.update(range_name=f"A1:G{len(top)}", values=top, value_input_option="RAW")
-    sh.batch_update({"requests": [{"repeatCell": {"range": {"sheetId": ws.id, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex": 1},
+            insert(tot_row, add)
+        team_row = find(lambda x: x.startswith("TEAM TOTAL"))
+        if col[team_row - 2] != ba.NONE:   # sections written before the single-owner change lack this row
+            insert(team_row, 1); add += 1
+    ws.update(range_name=f"A{start}:G{start + len(top) - 1}", values=top, value_input_option="RAW")
+    sh.batch_update({"requests": [{"repeatCell": {"range": {"sheetId": ws.id, "startRowIndex": start - 1, "endRowIndex": start, "startColumnIndex": 0, "endColumnIndex": 1},
                      "cell": {"userEnteredFormat": {"wrapStrategy": "WRAP"}}, "fields": "userEnteredFormat.wrapStrategy"}}]})
-    print(f"written: {Mon} section rows 1-{len(top)} ({add} row(s) inserted)")
+    print(f"written: {Mon} section rows {start}-{start + len(top) - 1} ({add} row(s) inserted)")
 
 
 if __name__ == "__main__":
