@@ -56,7 +56,7 @@ Full formulas are in [definitions.md](definitions.md). Chat rules are in [chat/4
 
 Only someone with access can do this. **Never commit the key, the doctor list or any CSV.** `.gitignore` blocks them.
 
-1. Get this repo: `git clone https://github.com/krititlovespets/supertails-cx-analytics.git`. It is private, so the owner must add you as a collaborator first.
+1. Get the code one of two ways. **No GitHub account:** unzip `supertails-dashboard-kit.zip` so you have the folder `~/supertails-cx-analytics`. **With access to the private repo:** `git clone https://github.com/krititlovespets/supertails-cx-analytics.git`.
 2. Install: `pip3 install gspread pandas`
 3. Create the folder `~/Documents/Supertails work/`. Ask the owner, by a private channel, for:
 
@@ -94,7 +94,7 @@ Adjust the paths if you cloned elsewhere. It takes about 5 minutes and stops at 
 python3 ~/supertails-cx-analytics/scripts/verify_main_dashboard.py
 ```
 
-5. **Update the wiki and push.** Add an entry to [log.md](log.md) with the date, files used, key numbers and anything odd.
+5. **Update the wiki.** Add an entry to [log.md](log.md) with the date, files used, key numbers and anything odd. With repo access, commit and push. From the zip, there is nothing to push: send Kriti the new log entry so the main copy stays current, and ask for a fresh zip when scripts change.
 
 A new month has a checklist: [daily-workflow.md](daily-workflow.md), "Month rollover checklist".
 
