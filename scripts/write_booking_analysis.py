@@ -1,13 +1,14 @@
 """
-Rewrites the OCTOBER section of "Booking Analysis" (everything above the September
-NOTE). New days are added by INSERTING a row before the daily TOTAL row, so the
-September section and the frozen Leadership snapshot below move down with their
+Rewrites the current month's section at the top of "Booking Analysis" (newest month first; everything
+above the previous month's NOTE). On a month's first run the section is INSERTED at the top. New days
+are added by inserting a row before the daily TOTAL row, so older sections below move down with their
 formatting (no clear()/rewrite of the tail -- see bug-patterns.md #2).
 Per-agent Booked = sum of the agent's daily "Appts created" (Clinic Dashboard,
 Agent_Perf_V2) for Oct 1..last; TEAM TOTAL Booked = TOTAL (UCJ only) row.
 Usage: python3 write_booking_analysis.py <merged_nugget_csv> <merged_ameyo_csv> <last_date> [--dry-run]
 """
 import sys, os, gspread
+from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import oct_core as oc, booking_analysis as ba
 
@@ -36,13 +37,13 @@ def main():
     per, daily = ba.build(T, C, last)
     booked, team_booked = clinic_booked(gc, last)
     assert set(booked) == set(ORDER), f"Clinic Dashboard per-agent rows missing: {set(ORDER) - set(booked)}"
-    L = f"Oct 1-{int(last[-2:])}"
+    Mon = datetime.strptime(last, "%Y-%m-%d").strftime("%b")
+    L = f"{Mon} 1-{int(last[-2:])}"
     dates = sorted(daily)
     top = [
         [f"NOTE: Booking team analysis, {L} (full day). \"Called\" = Bangalore (UCJ Booking Campaigns) tickets the agent dialled any time; "
          "\"Connected\" = that agent's OWN call >=30s (per-agent funnel, from the Nugget+Ameyo exports). \"Booked\" per agent = that agent's "
-         "Appts created in the Clinic Dashboard (Agent_Perf_V2), summed over the same days -- live again from 2026-10-27 (the per-agent rows "
-         "were missing Oct25-26, when this column was frozen at Oct24 values). TEAM TOTAL Booked comes from the Clinic Dashboard's "
+         "Appts created in the Clinic Dashboard (Agent_Perf_V2), summed over the same days. TEAM TOTAL Booked comes from the Clinic Dashboard's "
          "TOTAL (UCJ only) Appts Created row, so it can exceed the 4-agent sum. The daily Bangalore Connect% table uses the TEAM-WIDE "
          "definition (any caller, >=30s), same as Main Dashboard; recent days keep rising on future refreshes (any-time phone matching)."],
         [""],
@@ -68,18 +69,23 @@ def main():
         print("dry run - nothing written"); return
     sh = gc.open_by_key(SHEET_ID); ws = sh.worksheet(TAB)
     col = ws.col_values(1)
-    sept = next(i for i, x in enumerate(col, 1) if x.startswith("NOTE: Same definitions as the October section"))
-    tot_row = next(i for i, x in enumerate(col, 1) if x.startswith("TOTAL (Oct"))
-    old_days = tot_row - (next(i for i, x in enumerate(col, 1) if x == "Date") + 1)
-    add = len(dates) - old_days
-    if add > 0:
+    this_note = next((i for i, x in enumerate(col, 1) if x.startswith(f"NOTE: Booking team analysis, {Mon} ")), None)
+    if this_note is None:   # first run of the month: open space at the very top
         sh.batch_update({"requests": [{"insertDimension": {"range": {"sheetId": ws.id, "dimension": "ROWS",
-                         "startIndex": tot_row - 1, "endIndex": tot_row - 1 + add}, "inheritFromBefore": True}}]})
-    assert add >= 0, "fewer days than before -- not handled"
-    gap = (sept + add) - len(top) - 1  # blank rows kept between October section and the September NOTE
-    assert gap >= 1, gap
+                         "startIndex": 0, "endIndex": len(top) + 3}, "inheritFromBefore": False}}]})
+        add = 0
+    else:
+        tot_row = next(i for i, x in enumerate(col, 1) if x.startswith(f"TOTAL ({Mon}"))
+        old_days = tot_row - (next(i for i, x in enumerate(col, 1) if x == "Date") + 1)
+        add = len(dates) - old_days
+        assert add >= 0, "fewer days than before -- not handled"
+        if add > 0:
+            sh.batch_update({"requests": [{"insertDimension": {"range": {"sheetId": ws.id, "dimension": "ROWS",
+                             "startIndex": tot_row - 1, "endIndex": tot_row - 1 + add}, "inheritFromBefore": True}}]})
     ws.update(range_name=f"A1:G{len(top)}", values=top, value_input_option="RAW")
-    print(f"written: October section rows 1-{len(top)} ({add} row(s) inserted); September NOTE now at row {sept + add}")
+    sh.batch_update({"requests": [{"repeatCell": {"range": {"sheetId": ws.id, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex": 1},
+                     "cell": {"userEnteredFormat": {"wrapStrategy": "WRAP"}}, "fields": "userEnteredFormat.wrapStrategy"}}]})
+    print(f"written: {Mon} section rows 1-{len(top)} ({add} row(s) inserted)")
 
 
 if __name__ == "__main__":

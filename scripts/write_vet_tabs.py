@@ -116,7 +116,7 @@ def main():
     note = re.sub(r"Tickets created on/before [\d-]+ are fully resolved; everything from [\d-]+ onward \(all 15 dates in the table below\)",
                   f"Tickets created on/before {resolved} are fully resolved; everything from "
                   f"{(datetime.strptime(resolved, '%Y-%m-%d') + timedelta(days=1)):%Y-%m-%d} onward (all 15 dates in the table below)", note)
-    note = re.sub(r"the full Sept1-Oct\d+ history", f"the full Sept1-Oct{int(last[-2:])} history", note)
+    note = re.sub(r"the full Sept1-\w+ history", f"the full Sept1-{datetime.strptime(last, '%Y-%m-%d').strftime('%b')}{int(last[-2:])} history", note)
     t0 = A.index("TOTAL"); first = t0 - 15; assert A[first - 1] == "Created Date"
     c0 = A.index("=== BY CATEGORY ===")
     data = [{"range": "'Vet Followup Callback'!A1", "values": [[note]]},

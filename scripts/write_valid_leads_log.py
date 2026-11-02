@@ -1,7 +1,6 @@
 """
-Rebuilds the OCTOBER block of the "Valid Leads Log" tab (one row per Valid Lead).
-The September block (rows directly under the header, created_date 2026-09-*) is
-frozen and never touched. Every October row is re-checked on every run
+Rebuilds the block of <last_date>'s month in the "Valid Leads Log" tab (one row per Valid Lead).
+Earlier months' blocks are frozen and never touched. Every row of the month is re-checked on every run
 (transfer/connect flags only ever flip No->Yes as more Ameyo data lands), so
 last_checked = today for all of them.
 
@@ -13,10 +12,10 @@ import oct_core as oc
 
 SHEET_ID = "1aomm6s_NfpX_PFdyAdiNSj4ZGXq8l9bCRAxN09koWmw"
 KEY = "/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"
-MONTH = "2026-10"
 
 def main():
     nug, ame, last = sys.argv[1:4]; dry = "--dry-run" in sys.argv
+    MONTH = last[:7]
     T, C, D, TG = oc.load(nug, ame)
     yn = lambda b: "Yes" if b else "No"
     today = datetime.date.today().isoformat()
@@ -34,11 +33,11 @@ def main():
     rows.sort(key=lambda r: r[1], reverse=True)
     ws = gspread.service_account(filename=KEY).open_by_key(SHEET_ID).worksheet("Valid Leads Log")
     dates = ws.col_values(3)
-    first_oct = next(i for i, x in enumerate(dates, 1) if x.startswith(MONTH))
-    assert all(x.startswith("2026-09") for x in dates[1:first_oct - 1]), "unexpected rows above October block"
-    old_end = len(dates)
+    first_oct = next((i for i, x in enumerate(dates, 1) if x.startswith(MONTH)), len(dates) + 1)
+    assert all(x[:7] < MONTH for x in dates[1:first_oct - 1]), "unexpected rows above this month's block"
+    old_end = max(len(dates), first_oct - 1)
     new_end = first_oct + len(rows) - 1
-    print(f"October block: rows {first_oct}..{new_end} ({len(rows)} leads, was {old_end - first_oct + 1}); "
+    print(f"{MONTH} block: rows {first_oct}..{new_end} ({len(rows)} leads, was {max(old_end - first_oct + 1, 0)}); "
           f"transferred={sum(r[8]=='Yes' or r[9]=='Yes' for r in rows)} connected={sum(r[10]=='Yes' for r in rows)}")
     if dry:
         print("dry run - nothing written"); return

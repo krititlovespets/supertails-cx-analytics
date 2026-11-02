@@ -18,7 +18,7 @@ dates = [(i, h) for i, h in enumerate(H) if h[:4] == "2026"]
 ds = [dt.date.fromisoformat(h) for _, h in dates]
 print("dates", dates[0][1], "->", dates[-1][1], len(ds), "missing:", sorted({ds[0] + dt.timedelta(n) for n in range((ds[-1] - ds[0]).days + 1)} - set(ds)))
 bad = 0
-for i, h in [(1, "Sept"), (2, "Sep16-30"), (3, "Oct")] + dates:
+for i, h in [(1, "Sept"), (2, "Sep16-30"), (3, "Oct"), (4, "Nov")] + dates:
     g = lambda r: num(r[i]) if i < len(r) else None
     vl, tt, td, dc = g(VL), g(TT), g(TD), g(DC)
     if None in (vl, tt, td, dc): print(h, "blank"); bad += 1; continue
@@ -28,7 +28,7 @@ for i, h in [(1, "Sept"), (2, "Sep16-30"), (3, "Oct")] + dates:
     if g(VT): checks.append((g(VP), round(100 * g(VR) / g(VT), 1), "Vet%"))
     for a, b, n in checks:
         if a is None or abs(a - b) > 0.051: print(h, n, a, b); bad += 1
-for m, col in [("2026-09", 1), ("2026-10", 3)]:
+for m, col in [("2026-09", 1), ("2026-10", 3), ("2026-11", 4)]:
     for name, r in [("VL", VL), ("TT", TT), ("CN", CN), ("UB", UB), ("BD", BD), ("VT", VT), ("VR", VR)]:
         s = sum(num(r[i]) or 0 for i, h in dates if h.startswith(m) and i < len(r))
         if s != num(r[col]): print("month sum", m, name, r[col], s); bad += 1

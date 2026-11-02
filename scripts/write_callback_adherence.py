@@ -1,9 +1,8 @@
 """
 Callback Adherence + Callback Adherence Dump.
 
-July/August/September rows are FROZEN (closed months; their source exports are not in
-the October merge) and kept exactly as they are. October and later (future-scheduled)
-rows are rebuilt every run:
+July-October rows are FROZEN (closed months) and kept exactly as they are. Rows scheduled from
+November onward are rebuilt every run:
   population = in-scope tickets that EVER carried a cf_callback_ucj value in any export
   in ~/Downloads (latest non-empty value wins). Nugget CLEARS cf_callback_ucj once the
   callback is handled, so "newest row only" silently drops completed callbacks (found
@@ -22,10 +21,11 @@ import oct_core as oc
 
 SHEET_ID = "1aomm6s_NfpX_PFdyAdiNSj4ZGXq8l9bCRAxN09koWmw"
 KEY = "/Users/kritituteja/Documents/Supertails work/kriti-project-505208-8a2a4a798a5f.json"
-FROZEN = {"July", "August", "September"}
+FROZEN = {"July", "August", "September", "October"}
+REBUILD_FROM = datetime(2026, 11, 1)
 BASE = datetime(1899, 12, 30); W = timedelta(minutes=30)
 serial = lambda dt: round((dt - BASE).total_seconds() / 86400, 10)
-MONTHS = {10: "October", 11: "November", 12: "December"}
+MONTHS = {11: "November", 12: "December"}
 
 
 def callback_tickets():
@@ -48,17 +48,14 @@ def main():
     dws = sh.worksheet("Callback Adherence Dump")
     old = dws.get_all_values(value_render_option="UNFORMATTED_VALUE")
     hdr, frozen = old[0], [r for r in old[1:] if r and r[5] in FROZEN]
-    frozen_ids = {str(r[0]) for r in frozen}
     yn = lambda b: "Yes" if b else "No"
     new = []
     for k, t in callback_tickets().items():
-        if k in frozen_ids:
-            continue
         try:
             s = datetime.strptime(t["cf_callback_ucj"].strip()[:16], "%Y-%m-%d %H:%M")
         except ValueError:
             continue
-        if s < datetime(2026, 10, 1):
+        if s < REBUILD_FROM:
             continue
         ph = oc.norm_phone(t.get("user_phone", "")) or oc.norm_phone(t.get("cf_phone", ""))
         calls = C.get(ph, [])
@@ -77,9 +74,9 @@ def main():
         return [n, a, f(a), w, f(w), tr, f(tr)]
     by = lambda m: [r for r in rows if r[5] == m]
     gaps = [(r[4] - r[3]) * 86400 for r in rows if r[4] != ""]
-    out = {"October": summ(by("October")), "November (future-scheduled)": summ(by("November")),
+    out = {"November": summ(by("November")),
            "December (future-scheduled)": summ(by("December")), "TOTAL": summ(rows)}
-    print(f"frozen Jul-Sep rows {len(frozen)}; rebuilt Oct+ rows {len(new)}; " +
+    print(f"frozen Jul-Oct rows {len(frozen)}; rebuilt Nov+ rows {len(new)}; " +
           "; ".join(f"{k}: {v[0]} sched, anytime {v[2]:.1%}, +/-30 {v[4]:.1%}, transferred {v[5]}" for k, v in out.items()) +
           f"; avg gap {sum(gaps) / len(gaps):.1f}s")
     if dry:
@@ -99,6 +96,10 @@ def main():
                         "cell": {"userEnteredFormat": {"numberFormat": {"type": "DATE_TIME", "pattern": "yyyy-mm-dd hh:mm:ss"}}},
                         "fields": "userEnteredFormat.numberFormat"}}]})
     ws = sh.worksheet("Callback Adherence"); col = ws.col_values(1)
+    if "November" not in col:   # first November run: November is a live month now, and goes above December
+        a, b = col.index("December (future-scheduled)") + 1, col.index("November (future-scheduled)") + 1
+        ws.batch_update([{"range": f"A{a}", "values": [["November"]]}, {"range": f"A{b}", "values": [["December (future-scheduled)"]]}], value_input_option="RAW")
+        col = ws.col_values(1)
     data = []
     for label, vals in out.items():
         r = next((i for i, x in enumerate(col, 1) if x == label), None)

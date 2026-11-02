@@ -37,7 +37,8 @@ def owner(t, f, doctors, targets):
     return (label(roster_calls[-1]["user_id"]) if roster_calls else NONE), ""
 
 
-def build(T, C, D, TG, last, first="2026-10-01"):
+def build(T, C, D, TG, last, first=None):
+    first = first or last[:8] + "01"
     per, dump = {}, []
     for t in T:
         d = t["created_at"][:10]

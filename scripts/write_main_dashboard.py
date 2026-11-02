@@ -1,7 +1,7 @@
 """
 Writes computed.json (from compute_main_dashboard.py) into the "Main
-Dashboard" tab of the live sheet: October Avg column + one column per
-tracked October date. Adds a new date column if it doesn't exist yet.
+Dashboard" tab of the live sheet: the month's Avg column (found by header, e.g.
+"November Avg") + one column per tracked date of that month. Adds a new date column if it doesn't exist yet.
 
 Does NOT touch: Avg Talk Time per Agent / Agents Available (skipped --
 no persisted agent roster) or the Vet Follow-up rows (skipped -- needs
@@ -16,6 +16,7 @@ Usage:
     # days' values don't need to be re-pulled, only re-send what you have.
 """
 import json, os, sys
+from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -90,6 +91,8 @@ def main():
     sheet_id = ws.id
 
     header = ws.row_values(1)
+    month_label = datetime.strptime(dates[0], "%Y-%m-%d").strftime("%B Avg")
+    mc = col_letter(header.index(month_label) + 1)
     date_col0 = {d: i for i, d in enumerate(header)}  # 0-indexed
     new_dates = [d for d in dates if d not in date_col0]
     next_col0 = len(header)
@@ -102,7 +105,7 @@ def main():
     value_ranges = []
     for sheet_row, key, kind, _color in ROWS:
         oavg = oct_avg[key]
-        value_ranges.append({"range": f"Main Dashboard!D{sheet_row}",
+        value_ranges.append({"range": f"Main Dashboard!{mc}{sheet_row}",
                               "values": [[oavg / 100.0 if kind == "pct" else oavg]]})
         for d in dates:
             v = day[d][key]
@@ -135,7 +138,7 @@ def main():
     if format_requests:
         sh.batch_update({"requests": format_requests})
 
-    print(f"Wrote {len(dates)} date columns ({', '.join(new_dates) or 'none new'}) + October Avg.")
+    print(f"Wrote {len(dates)} date columns ({', '.join(new_dates) or 'none new'}) + {month_label}.")
 
 
 if __name__ == "__main__":

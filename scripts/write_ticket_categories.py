@@ -1,10 +1,9 @@
 """
-Recomputes the OCTOBER part of "Ticket Categories": the October period column (C)
-and every October day column (adding new ones at the right, formats copied from
-the previous column). September columns are frozen (no Sept data in the Oct
-merge) and never touched.
+Recomputes the current month of "Ticket Categories": its period column (found by header,
+e.g. "November") and every day column of that month (adding new ones at the right, formats
+copied from the previous column). Earlier months' columns are frozen and never touched.
 
-Every October column is recomputed from the current merged exports on every
+Every column of the month is recomputed from the current merged exports on every
 run -- connect/transfer are any-time phone matches, so older days keep rising
 (found 2026-10-27: until then each day column had been frozen at the value it
 had on the day it was first added).
@@ -18,6 +17,7 @@ the bucket's tickets / number of those agents with >=1 such call.
 Usage: python3 write_ticket_categories.py <merged_nugget_csv> <merged_ameyo_csv> <last_date> [--dry-run]
 """
 import sys, os, re, gspread
+from datetime import datetime
 from collections import defaultdict
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import oct_core as oc
@@ -69,18 +69,19 @@ def main():
     B = defaultdict(list)
     for t in T:
         s = sub(t); d = t["created_at"][:10]
-        if s and d.startswith("2026-10") and d <= last:
+        if s and d.startswith(last[:7]) and d <= last:
             B[(f"{s} ({CH[t['channel_name']]})", d)].append(oc.flags(t, C, D, TG))
     dates = sorted({d for _, d in B})
     sh = gspread.service_account(filename=KEY).open_by_key(SHEET_ID); ws = sh.worksheet(TAB)
     v = ws.get_all_values(); hdr = v[1]
-    assert hdr[2] == "October", hdr[:4]
+    month_name = datetime.strptime(last, "%Y-%m-%d").strftime("%B")
+    assert month_name in hdr, hdr[:5]
     col0 = {h: i for i, h in enumerate(hdr)}
     nxt = len(hdr); new = []
     for d in dates:
         if d not in col0:
             col0[d] = nxt; nxt += 1; new.append(d)
-    cols = [("October", dates)] + [(d, [d]) for d in dates]
+    cols = [(month_name, dates)] + [(d, [d]) for d in dates]
     data = []
     for r_i, row in enumerate(v[2:], start=3):
         lab = row[0]
@@ -94,7 +95,7 @@ def main():
             fl = [f for d in ds for c in (CATS if cat == "TOTAL" else [cat]) for f in B[(c, d)]]
             data.append({"range": f"'{TAB}'!{col_letter(col0[name] + 1)}{r_i}", "values": [[agg(fl)[key]]]})
     tot = agg([f for k, fl in B.items() for f in fl])
-    print(f"October: {tot['Count']} tickets, connect {tot['Connect %']:.1%}, transfer {tot['Transfer (abs)']} "
+    print(f"{month_name}: {tot['Count']} tickets, connect {tot['Connect %']:.1%}, transfer {tot['Transfer (abs)']} "
           f"({tot['Transfer %']:.1%}); {len(dates)} day columns, new: {new or 'none'}; {len(data)} cells")
     if dry:
         print("dry run - nothing written"); return
@@ -102,8 +103,8 @@ def main():
         ws.resize(cols=nxt)
     for d in new:
         data.append({"range": f"'{TAB}'!{col_letter(col0[d] + 1)}2", "values": [[d]]})
-    note = re.sub(r"day-by-day columns run Sept 1 - [A-Za-z]+ \d+", f"day-by-day columns run Sept 1 - Oct {int(last[-2:])}", v[0][0])
-    note = note.replace("Rebuilt from scratch 2026-10-02.", "Rebuilt from scratch 2026-10-02; October columns fully recomputed every refresh (any-time matching, older days keep rising).")
+    note = re.sub(r"day-by-day columns run Sept 1 - [A-Za-z]+ \d+", f"day-by-day columns run Sept 1 - {month_name[:3]} {int(last[-2:])}", v[0][0])
+    note = note.replace("Rebuilt from scratch 2026-10-02.", "Rebuilt from scratch 2026-10-02; current-month columns fully recomputed every refresh (any-time matching, older days keep rising).")
     data.append({"range": f"'{TAB}'!A1", "values": [[note]]})
     sh.values_batch_update({"valueInputOption": "RAW", "data": data})
     reqs = [{"copyPaste": {"source": {"sheetId": ws.id, "startRowIndex": 0, "endRowIndex": len(v),

@@ -1582,3 +1582,16 @@ Tabs: VLL 12,255; Ticket Categories 18,549 / 21.1%; Table 6 28.5% (team talk 677
 (Dhanush 53, Alan 60, Abdul 28, Roohulla 24); Callback Oct 1,624 (Nov future 40); Vet rolling Oct17-31 2,221 / 126 (5.7%); Chat 6,202, 0 diffs.
 `verify_main_dashboard.py`: 0 problems. Both claude.ai pages updated.
 First run stopped after rows 12/15: scratch `sepoct_ameyo.csv` had been wiped. Sept base moved to `~/Documents/Supertails work/sept_base/`.
+
+## 2026-11-02 — October closed; November started
+
+Inputs: Nugget `dbjusnpm8a4s738u7530.csv` (Oct29 → Nov2 07:25), Ameyo `CALL_Details_2026-11-02_07_29_45…`. Oct31 complete at last (795 tickets).
+**October FINAL**: 12,418 leads, 3,565 transfers = **28.7%** (160 short of 30%), Connect 61.4%, AHT 4:49, FRT 1:23:29, Bangalore 3,560, Booking 166 (4.7%).
+Oct31: 447 leads, 111 transfers (24.8%). Vet rows for Oct keep updating until Nov 15 (open windows): 4,587 / 309 (6.7%).
+Oct transfer/connect are frozen as of this run, so Oct30-31 won't pick up later any-time matches -- one more October run ~Nov 5 would catch them.
+**November start (Nov 1)**: 453 leads, 122 transfers (26.9%), Connect 51.9%, AHT 5:00, FRT 1:55:34, agents 8, Bangalore 200, Booking 2, talk 3:02:45.
+Layout: Main Dashboard `November Avg` col (E); Ticket Categories `November` col (D); Valid Leads Log Nov block after Oct; Table 7 + `Table7 Raw Dump (Nov)` tab;
+Booking Analysis Nov section on top; Prediction Model now November (30 day rows, 136/day at 30.1%; basis is one day, will settle); Callback: Oct frozen,
+`November` row (88 sched) above `December (future-scheduled)`; Vet rolling Oct18-Nov1. All scripts month-generic now; history in `sept_base/hist_*.csv`.
+Pages: Pulse = November vs October; October UCJ Tracker = final; new November UCJ Tracker https://claude.ai/artifact/HH5BjcV1zt5dCZNwevYTGS. verify: 0 problems.
+A rename slip (`sepoct_nugget` → `sepnugget`) stopped the first Nov run after rows 12/15; fixed, rerun clean, vet compute errors no longer hidden.

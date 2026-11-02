@@ -6,10 +6,10 @@ renames tabs directly in the UI.
 
 Real tabs (9) + 3 always-excluded "Chat - *" tabs:
 
-## Main Dashboard (22 rows, ~42 cols and growing by 1/day)
+## Main Dashboard (22 rows, growing by 1 col/day)
 
-Columns: Metric | September Avg | Avg(Sept16-30) | October Avg | blank | day-by-day
-(Sept 1 → latest tracked date).
+Columns: Metric | September Avg | Avg(Sept16-30) | October Avg | November Avg | blank | day-by-day
+(Sept 1 → latest tracked date). Scripts find month columns by header, never by letter.
 
 Row order (rows 2-19, core metrics — see `definitions.md` for each):
 Valid Leads, Transfer Total, **Transfer %** (pink), Transfer Done, Doctor Called,
@@ -72,7 +72,7 @@ See `vet-followup.md` for the metric definition. Summary tab: NOTE row, header,
 `=== BY CATEGORY ===` block (6 rows). Dump tab: one row per transferred ticket
 across the FULL Sept1-latest history (not just the rolling 15 days) — ~4,700 rows.
 
-## Agent Productivity — Table 6 now has 10 columns (AHT added 2026-10-25, talk time 2026-10-28)
+## Agent Productivity — Table 6 = October (frozen), Table 7 = November (rows ~102+, own raw dump tab). 10 columns (AHT added 2026-10-25, talk time 2026-10-28)
 
 Table 6 (rows 84-99, see `definitions.md`'s single-owner model): `Agent |
 Tickets Dialled | Connected | Connect % | Transferred | Transfer % | AHT`.

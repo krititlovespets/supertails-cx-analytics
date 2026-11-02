@@ -54,7 +54,7 @@ def main():
     with open(os.path.join(out, "months.csv"), "w", newline="") as f:
         w = csv.writer(f); w.writerow(["period", "label"] + [k for _, k, _ in ROWS])
         last = dates[-1]
-        for i, (p, lab) in enumerate([("2026-09", "September"), ("2026-09-16..30", "Sep 16-30"), ("2026-10", f"October (to {last[5:]})")], start=1):
+        for i, (p, lab) in enumerate([("2026-09", "September"), ("2026-09-16..30", "Sep 16-30"), ("2026-10", "October"), ("2026-11", f"November (to {last[5:]})")], start=1):
             w.writerow([p, lab] + [conv(rows[k][i], kind) for _, k, kind in ROWS])
     c = sh.worksheet("Chat - Daily Summary").get_all_values()
     hdr = c[1]; lab = lambda s: next(r for r in c[2:12] if r[0].startswith(s))

@@ -184,10 +184,19 @@ calls) and confirm no day is missing before computing. Recompute the full range 
 
 ## Full refresh, ALL tabs — persisted scripts (2026-10-27, use these)
 
-**One command (2026-10-31):** from a scratch dir, `python3 scripts/merge_month_exports.py`, check the per-day counts, then
-`scripts/refresh_all.sh <LAST> <latest_nugget_csv> <dir with sep_nugget.csv + sepoct_ameyo.csv>`. It runs every step below
-including the chat tabs (cut at LAST 23:59) and stops at the first failure; takes ~4 min, so run it in the background.
-Sept base now lives permanently in `~/Documents/Supertails work/sept_base/` (outside git; scratch dirs get wiped — that broke a run on 2026-11-01). Pass that as the 3rd arg. Set `PRED_LAST=<last complete day>` when LAST is partial. Check with `scripts/verify_main_dashboard.py`. Pages step stays manual.
+**One command (any month, from 2026-11-02):** from a scratch dir,
+`python3 scripts/merge_month_exports.py 2026-11`, check the per-day counts, then
+`VET_MONTHS="2026-10 2026-11" scripts/refresh_all.sh <LAST> <latest_nugget_csv> "$HOME/Documents/Supertails work/sept_base"`
+(LAST = last complete day; ~5 min, run in background; `PRED_LAST=<day>` if LAST is partial). Then `scripts/verify_main_dashboard.py`.
+The base dir's `hist_nugget.csv` + `hist_ameyo.csv` hold all CLOSED months (Sept+Oct). Set VET_MONTHS while a closed month still has open
+15-day windows: October until Nov 15, then drop it.
+
+**Month rollover checklist** (done for November 2026-11-02): 1) final run of the old month; 2) back up every tab to
+`~/Documents/Supertails work/backups/<date>/`; 3) append the closed month to hist_*.csv; 4) insert a `<Month> Avg` column right after the
+last month column on Main Dashboard and a `<Month>` column on Ticket Categories; 5) `write_callback_adherence.py`: add the closed month to
+FROZEN, bump REBUILD_FROM, extend MONTHS; 6) `export_pulse_data.py` period list + `verify_main_dashboard.py` month list; 7) Pulse page: point
+tiles at the new month; new `<Month> UCJ Tracker` page; old tracker → final. Everything else (Valid Leads block, Table N + raw dump tab,
+Booking Analysis section on top, Prediction Model) creates itself on the first run. October stays frozen except vet rows.
 
 The old per-session scratch scripts (`01_merge.py` … `28_…`) are gone. Every tab now has a script in
 `scripts/`, all sharing `oct_core.py` (same rules as `compute_main_dashboard.py`). Run from a scratch dir
@@ -210,11 +219,12 @@ python3 scripts/write_callback_adherence.py oct_nugget.csv oct_ameyo.csv
 python3 scripts/write_vet_tabs.py          sepoct_nugget.csv sepoct_ameyo.csv LAST   # summary + dump; Sept+Oct merge (Sept files are in ~/Downloads)
 ```
 **Last step — the two claude.ai pages (new account, rebuilt 2026-10-30):**
-`python3 scripts/export_pulse_data.py <dir>` (reads the LIVE sheet → daily.csv, months.csv, chat.csv), then for EACH page
+`python3 scripts/export_pulse_data.py <dir>` (reads the LIVE sheet → daily.csv, months.csv, chat.csv), then for EACH live page (Pulse + current month's Tracker)
 upload the 3 CSVs as assets (Artifact publish `url` + `asset: true`) and `ArtifactData update` `datasets/daily|months|chat`
 with the new `source.url` + `updated {at, by}` (read each doc first for `if_version`).
 - Supertails CX Pulse — https://claude.ai/artifact/6CtMvgBY69qfLofu1SQx8c
-- October UCJ Tracker — https://claude.ai/artifact/9AqvMDAuHWWfyG9UopkDJp
+- November UCJ Tracker — https://claude.ai/artifact/HH5BjcV1zt5dCZNwevYTGS
+- October UCJ Tracker — https://claude.ai/artifact/9AqvMDAuHWWfyG9UopkDJp (final, datasets marked fixed; do not update)
 (The old-account pages MGn5rtRUyLPn1v8g2P6bXo / Ggro9haJWDK12JGApzYXJb are unreachable from this account — frozen.)
 
 Every writer takes `--dry-run` (prints totals, writes nothing). **Every October column/row is recomputed

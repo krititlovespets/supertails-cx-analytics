@@ -1,5 +1,5 @@
 """
-Booking Analysis (October section) -- Bangalore = channel "UCJ Booking Campaigns".
+Booking Analysis (a month's section) -- Bangalore = channel "UCJ Booking Campaigns".
 Per-agent: Called = Bangalore tickets in range whose phone this agent dialled (any time);
 Connected = this agent's OWN call >=30s on that phone. Daily table + summary use the
 team-wide any-caller >=30s Connect basis (same as Main Dashboard).
@@ -12,7 +12,8 @@ AGENTS = {"dhanush.slovespets@supertails.com": "Dhanush S", "alan.jlovespets@sup
           "abdul.rahmanlovespets@supertails.in": "Abdul Rahman", "mohammed.rolovespets@supertails.in": "Mohammed Roohulla"}
 
 
-def build(T, C, last, first="2026-10-01"):
+def build(T, C, last, first=None):
+    first = first or last[:8] + "01"
     per = {n: {"called": 0, "conn": 0} for n in AGENTS.values()}
     daily = {}
     for t in T:
