@@ -1606,3 +1606,14 @@ Not called 23/8 = 3,560/2,146. November (Nov 1): Abdul 8/5, Roohulla 20/9, Not c
 
 New `wiki/START-HERE.md`: one current guide for a person or Claude. Scripts no longer carry /Users/kritituteja paths (use ~). Chat script copied to `chat/update_chat_dashboard.py`
 (refresh_all.sh now runs that copy; key path = ~/Documents/Supertails work/) and chat wiki to `wiki/chat/` (minus page 10). The repo returns 404 to anonymous visitors, so it is private, not public as older pages say.
+
+## 2026-11-03 — Nov 2 added
+
+Inputs: Nugget `dbkmbfj6er6c73ar2910.csv` (Nov 1 00:10 → Nov 3 10:10), Ameyo `CALL_Details_2026-11-03_10_13_48…` (Nov 1 03:43 → Nov 2 22:42; dialer
+stops ~22:30, so complete). Nov 2: 617 UCJ / 2,731 calls.
+**Nov 2**: VL 463, Transfer 103 (22.2%, fresh-day low), Connect 51.2%, AHT 5:09, FRT 0:56:51, agents 8, Bangalore 141, Booking 9 (6.4%), Vet 125.
+Nov 1 climbed 122 → 139 (30.6%), connect 51.9% → 60.6%.
+**November to date (Nov 1-2)**: 917 leads, 242 transfers = **26.4%**, Connect 55.8%, AHT 5:02, Booking 11 (3.2%), Vet repeat 1.7%.
+Prediction Model: rest of November needs 30.3% (139/day). October vet rows: 4,596 / 318 (6.9%).
+Tabs: VLL Nov block 917; Ticket Categories Nov 1,411 / 18.1%; Table 7 26.7%; Booking Analysis 339 Bangalore (Dhanush 72, Alan 3, Abdul 110, Roohulla 20,
+Not called 134), booked 11; Callback Nov 132 sched; Vet rolling Oct19-Nov2 2,284 / 115 (5.0%). Chat 6,365, 0 diffs. verify: 0 problems. Both live pages updated.
