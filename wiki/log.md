@@ -1617,3 +1617,20 @@ Nov 1 climbed 122 → 139 (30.6%), connect 51.9% → 60.6%.
 Prediction Model: rest of November needs 30.3% (139/day). October vet rows: 4,596 / 318 (6.9%).
 Tabs: VLL Nov block 917; Ticket Categories Nov 1,411 / 18.1%; Table 7 26.7%; Booking Analysis 339 Bangalore (Dhanush 72, Alan 3, Abdul 110, Roohulla 20,
 Not called 134), booked 11; Callback Nov 132 sched; Vet rolling Oct19-Nov2 2,284 / 115 (5.0%). Chat 6,365, 0 diffs. verify: 0 problems. Both live pages updated.
+
+## 2026-11-04 — Nov 3 added (Clinic Dashboard was briefly empty)
+
+Inputs: Nugget `dbldlqb6er6c738p5m40.csv` (Nov 1 → Nov 4 midday), Ameyo `CALL_Details_2026-11-04_12_44_25…`. Nov 3: 631 UCJ / 2,642 calls; Nov 4 partial, not added.
+**Clinic Dashboard `Agent_Perf_V2` was empty at 12:50–12:53 IST, then half-written (no date headers)** — the clinic team's own rebuild. First run stopped at the
+bookings step with nothing written. New switch: `BOOKING_JSON=<file> refresh_all.sh …` skips the Clinic Dashboard; days missing from the file are written BLANK
+(not 0) and left out of the month Booking %; Booking Analysis keeps the previous run's Booked (its NOTE says so). Ran that way, then the clinic tab recovered
+(Oct 166, Nov 1 = 2, Nov 2 = 9 matched) and Nov 1–3 bookings were written with write_main_dashboard / write_booking_analysis / write_prediction_model.
+Side effect fixed by hand: Nov 3 `% Booking` cell (BR18) lost its % format → reformatted; verify then 0 problems.
+**Nov 3**: VL 506, Transfer 122 (24.1%, fresh-day low; 103 done + 19 doctor), Connect 52.0%, AHT 4:55, FRT 1:44:23, agents 7, talk/agent 3:14:05,
+Bangalore 140, Booking 8 (5.7%), Vet 144 / 4.
+Nov 1 now 140 (30.8%), Nov 2 climbed 103 → 130 (28.1%).
+**November to date (Nov 1-3)**: 1,423 leads, 392 transfers = **27.5%**, Connect 58.1%, AHT 4:55, Booking 19 / 479 (4.0%), Vet 471 / 12 (2.5%).
+Prediction Model: rest of November needs 30.3% (144/day flat quota). October vet rows: 4,607 / 333 (7.2%).
+Tabs: VLL Nov block 1,423; Ticket Categories Nov 2,126 / 19.4%; Table 7 1,370 / 27.6%; Booking Analysis 479 Bangalore (Dhanush 50/30/4, Alan 108/67/4,
+Abdul 97/58/3, Roohulla 107/52/8, Not called 117/22/0), booked 19; Callback Nov 227 sched; Vet rolling Oct20-Nov3 2,317 / 125 (5.4%). Chat 6,420, 0 diffs.
+Both live pages updated (Pulse datasets v6, November Tracker v3).

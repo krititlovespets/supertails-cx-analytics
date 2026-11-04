@@ -70,15 +70,22 @@ def main():
     day, oct_avg = data["day"], data["oct_avg"]
     dates = sorted(day.keys())
 
+    # A day missing from booking_done (Clinic Dashboard unavailable) is written blank, not 0,
+    # and left out of the month booking % (numerator and denominator).
     for d in dates:
+        if d not in booking_done:
+            for k in ("booking_done", "booking_pct", "bookings_needed"):
+                day[d][k] = None
+            continue
         bd = booking_done[d]
         ucj_b = day[d]["ucj_bangalore_customer"]
         day[d]["booking_done"] = bd
         day[d]["booking_pct"] = round(100 * bd / ucj_b, 1) if ucj_b else 0
         day[d]["bookings_needed"] = round(ucj_b * 0.065) - bd
 
-    agg_booking = sum(booking_done[d] for d in dates)
-    agg_ucj_b = oct_avg["ucj_bangalore_customer"]
+    booked = [d for d in dates if d in booking_done]
+    agg_booking = sum(booking_done[d] for d in booked)
+    agg_ucj_b = sum(day[d]["ucj_bangalore_customer"] for d in booked)
     oct_avg["booking_done"] = agg_booking
     oct_avg["booking_pct"] = round(100 * agg_booking / agg_ucj_b, 1) if agg_ucj_b else 0
     oct_avg["bookings_needed"] = round(agg_ucj_b * 0.065) - agg_booking
@@ -111,7 +118,7 @@ def main():
             v = day[d][key]
             col1 = date_col0[d] + 1
             value_ranges.append({"range": f"Main Dashboard!{col_letter(col1)}{sheet_row}",
-                                  "values": [[v / 100.0 if kind == "pct" else v]]})
+                                  "values": [["" if v is None else v / 100.0 if kind == "pct" else v]]})
     sh.values_batch_update({"valueInputOption": "RAW", "data": value_ranges})
 
     for d in new_dates:

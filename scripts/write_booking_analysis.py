@@ -30,12 +30,24 @@ def clinic_booked(gc, last):
     return per, team
 
 
+def previous_booked(gc, last):
+    """Booked column (E) of this month's section as last written, keyed by agent; team from the TEAM TOTAL row."""
+    Mon = datetime.strptime(last, "%Y-%m-%d").strftime("%b")
+    v = gc.open_by_key(SHEET_ID).worksheet(TAB).get_values("A1:E60")
+    start = next(i for i, r in enumerate(v) if r and r[0].startswith(f"NOTE: Booking team analysis, {Mon} "))
+    end = next(i for i in range(start, len(v)) if v[i] and v[i][0].startswith("TEAM TOTAL"))   # older months sit below
+    rows = {r[0]: int(r[4]) for r in v[start:end] if len(r) > 4 and r[4].isdigit()}
+    team = int(v[end][4])
+    return {n: rows[n] for n in ORDER if n in rows}, team
+
+
 def main():
     nug, ame, last = sys.argv[1:4]; dry = "--dry-run" in sys.argv
     gc = gspread.service_account(filename=KEY)
     T, C, D, TG = oc.load(nug, ame)
     per, daily = ba.build(T, C, last)
-    booked, team_booked = clinic_booked(gc, last)
+    stale = bool(os.environ.get("BOOKING_JSON"))   # refresh_all.sh run with Clinic Dashboard skipped
+    booked, team_booked = previous_booked(gc, last) if stale else clinic_booked(gc, last)
     assert set(booked) == set(ORDER), f"Clinic Dashboard per-agent rows missing: {set(ORDER) - set(booked)}"
     Mon = datetime.strptime(last, "%Y-%m-%d").strftime("%b")
     L = f"{Mon} 1-{int(last[-2:])}"
@@ -46,7 +58,8 @@ def main():
          "the 'Not called by these 4' row (no call yet, or called only by others). Connected = any caller >=30s (same as Main Dashboard), credited to the owner. "
          "Booked per agent = that agent's Appts created in the Clinic Dashboard (Agent_Perf_V2), which is not tied to a ticket, so Booking % per agent is an approximation; "
          "the 'Not called' row's Booked is UCJ bookings by anyone outside the 4. The daily table uses the same team-wide Connect basis; recent days keep rising on "
-         "future refreshes (any-time phone matching)."],
+         "future refreshes (any-time phone matching)."
+         + (" Booked NOT refreshed this run (Clinic Dashboard was empty): Booked figures are from the previous run." if stale else "")],
         [""],
         [f"=== PER-AGENT FUNNEL ({L}) ==="],
         ["Agent", "Tickets Owned", "Connected", "Connect %", "Booked", "Booking % (Booked/Tickets)", "Booked/Connected %"]]

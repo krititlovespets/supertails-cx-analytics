@@ -13,6 +13,7 @@ DATES=$(python3 -c "print(' '.join(f'${LAST:0:8}{d:02d}' for d in range(1,$((10#
 q() { grep -v -i -E "warn|^talk" || true; }
 
 python3 "$P/compute_main_dashboard.py" nugget.csv ameyo.csv $DATES > /dev/null
+if [ -n "$BOOKING_JSON" ]; then cp "$BOOKING_JSON" booking.json; echo "bookings from $BOOKING_JSON (Clinic Dashboard skipped)"; else   # days missing from it are left blank
 python3 - "$LAST" "$P" <<'PY' 2>&1 | q
 import sys, os, json, gspread
 last, p = sys.argv[1:3]; sys.path.insert(0, p); import clinic
@@ -22,6 +23,7 @@ o = {d: n for d, n in b.items() if d[:7] == last[:7] and d <= last}
 assert len(o) == int(last[-2:]), f"Clinic Dashboard: expected {last[-2:]} days, got {len(o)}"
 json.dump(o, open("booking.json", "w")); print("bookings", sum(o.values()), "last day", o[last])
 PY
+fi
 python3 "$P/write_main_dashboard.py" booking.json 2>&1 | q
 python3 "$P/write_team_rows.py" ameyo.csv "$LAST" 2>&1 | q
 

@@ -188,6 +188,10 @@ calls) and confirm no day is missing before computing. Recompute the full range 
 `python3 scripts/merge_month_exports.py 2026-11`, check the per-day counts, then
 `VET_MONTHS="2026-10 2026-11" scripts/refresh_all.sh <LAST> <latest_nugget_csv> "$HOME/Documents/Supertails work/sept_base"`
 (LAST = last complete day; ~5 min, run in background; `PRED_LAST=<day>` if LAST is partial). Then `scripts/verify_main_dashboard.py`.
+**If the Clinic Dashboard is empty or half-written** (seen 2026-11-04 during the clinic team's rebuild): rerun with
+`BOOKING_JSON=<json of known days> VET_MONTHS=… scripts/refresh_all.sh …`. Days missing from the JSON are left blank (not 0) and out of the month
+Booking %; Booking Analysis keeps the previous run's Booked. When the clinic tab is back, fill the gap with `write_main_dashboard.py booking.json`,
+`write_booking_analysis.py nugget.csv ameyo.csv LAST`, `write_prediction_model.py LAST`, then check the new day's `% Booking` cell still has its % format.
 The base dir's `hist_nugget.csv` + `hist_ameyo.csv` hold all CLOSED months (Sept+Oct). Set VET_MONTHS while a closed month still has open
 15-day windows: October until Nov 15, then drop it.
 
