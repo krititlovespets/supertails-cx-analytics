@@ -1661,3 +1661,11 @@ status says "Not Transferred" — they are removed with the rest.
 **November (Nov 1-4)**: 2,057 leads, 562 transfers = **27.3%**, Connect 56.5%, Booking 23 / 575 (4.0%), Vet 674 / 20 (3.0%). Prediction: 30.4%, 156/day.
 Tabs: VLL Nov 2,057; Ticket Categories Nov 2,922 / 20.1%; Table 7 1,926 / 27.9%; Booking Analysis 575 Bangalore (Not called 187). verify 0 problems.
 Pages: Pulse datasets daily/months v8, November Tracker v5.
+
+## 2026-11-05 — The 4 doctor-called tickets counted back in
+
+Kriti: "count those 4 in". Removed 1114662, 1087804, 1122698, 249614 (valid UCJ, Doctor Called) from `exclusions/2026-11-04.txt` → 386 excluded.
+**Nov 4**: VL 638, Transfer 152 = **23.8%** (142 done + 10 doctor), Connect 43.6%. **November (Nov 1-4)**: 2,061 leads, 566 transfers = **27.5%**, Connect 56.6%.
+Prediction 30.4% (157/day). Table 7 1,929 / 28.0%; Ticket Categories Nov 2,926 / 20.2%; Vet Nov 678 / 20. Booking Analysis unchanged (the 4 are UCJ, not Bangalore).
+Clinic Dashboard went empty again mid-run (after the bookings step had read it), so Booking Analysis was written with `BOOKING_JSON=booking.json`
+(same 23 bookings; its NOTE says Booked not refreshed). verify 0 problems. Pages: Pulse v9, November Tracker v6.
