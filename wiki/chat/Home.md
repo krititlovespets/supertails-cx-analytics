@@ -40,7 +40,7 @@ how every number is defined, why it looks the way it does, and how to move it to
 | | |
 |---|---|
 | Tickets in sheet | **6,301** (Sep 1 00:31 → Nov 1 23:58) |
-| Day dates / OBH dates | 60 / 60 |
+| Day dates / OBH dates | 61 / 61 |
 | Agents shown | Day view: 4 · OBH view: 9 |
 | Last export applied | `dbjusnpm8a4s738u7530.csv`, cut at Nov 1 23:59 (Oct 29 00:10 → Nov 2 07:25 in the file) |
 | Update script | tested: `--dry-run` against the live sheet gives **0 differing cells** from both the sheet base and a from-scratch rebuild |

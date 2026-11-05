@@ -1634,3 +1634,17 @@ Prediction Model: rest of November needs 30.3% (144/day flat quota). October vet
 Tabs: VLL Nov block 1,423; Ticket Categories Nov 2,126 / 19.4%; Table 7 1,370 / 27.6%; Booking Analysis 479 Bangalore (Dhanush 50/30/4, Alan 108/67/4,
 Abdul 97/58/3, Roohulla 107/52/8, Not called 117/22/0), booked 19; Callback Nov 227 sched; Vet rolling Oct20-Nov3 2,317 / 125 (5.4%). Chat 6,420, 0 diffs.
 Both live pages updated (Pulse datasets v6, November Tracker v3).
+
+## 2026-11-05 — Nov 4 added (inflow spike)
+
+Inputs: Nugget `dbm0uf36er6c73bqdbng.csv`, Ameyo `CALL_Details_2026-11-05_10_42_26…`. Nov 5 partial, not added. Clinic Dashboard healthy (Nov 1-4 = 2/9/8/4).
+First run failed at once: `refresh_all.sh` uses `set -u`, and yesterday's `$BOOKING_JSON` check broke when the variable is unset -> now `${BOOKING_JSON:-}`. Nothing had been written.
+**Nov 4 inflow spike:** 1,079 UCJ tickets (usual ~620), spread over the whole day (85-99/hour 09-13h), no duplicates -> real volume, not an export glitch.
+**Nov 4**: VL 904, Transfer 152 (16.8%, fresh-day low and a big denominator), Connect 39.0%, AHT 5:21, FRT 1:29:33, agents 7, talk/agent 3:38:22,
+Bangalore 186, Booking 4 (2.2%), Vet 182 / 6.
+Earlier days rose: Nov 2 137 (29.6%), Nov 3 122 → 137 (27.1%).
+**November to date (Nov 1-4)**: 2,327 leads, 566 transfers = **24.3%**, Connect 53.4%, AHT 5:01, Booking 23 / 665 (3.5%), Vet 678 / 20 (2.9%).
+Prediction Model: basis jumped to 581.8 leads/day (spike) -> rest of November needs 30.9%, 180/day flat quota; will settle if volume returns to normal.
+October vet rows: 4,613 / 341 (7.4%). Tabs: VLL Nov 2,327; Ticket Categories Nov 3,312 / 17.8%; Table 7 2,152 / 25.1% (no-roster 175);
+Booking Analysis 665 Bangalore (Dhanush 49/29/4, Alan 139/83/8, Abdul 93/54/3, Roohulla 108/54/8, Not called 276/53/0), booked 23; Callback Nov 299 sched;
+Vet rolling Oct21-Nov4 2,384 / 132 (5.5%). Chat 6,490, 0 diffs. verify: 0 problems. Pages: Pulse datasets v7, November Tracker v4.
