@@ -44,4 +44,4 @@ Data: Nugget ticket export × Ameyo `CALL_Details` export, matched on phone (`no
 
 **Related call-tab rule (2026-10-27):** Main Dashboard "Agents Available" month columns = daily average of the day columns (Sept 7.6, Oct 6.7), not a sum.
 
-**Excluded tickets (2026-11-05):** ticket IDs Kriti lists in `~/Documents/Supertails work/exclusions/*.txt` are removed from every call-tab denominator (first list: 390 tickets of Nov 4). Chat tabs are not affected. Details in the repo `wiki/definitions.md`.
+**Excluded tickets (2026-11-05):** ticket IDs Kriti lists in `~/Documents/Supertails work/exclusions/*.txt` are removed from every call-tab denominator (first list: 386 tickets of Nov 4 — 390 sent, 4 doctor-called ones counted back in). Chat tabs are not affected. Details in the repo `wiki/definitions.md`.
