@@ -1648,3 +1648,16 @@ Prediction Model: basis jumped to 581.8 leads/day (spike) -> rest of November ne
 October vet rows: 4,613 / 341 (7.4%). Tabs: VLL Nov 2,327; Ticket Categories Nov 3,312 / 17.8%; Table 7 2,152 / 25.1% (no-roster 175);
 Booking Analysis 665 Bangalore (Dhanush 49/29/4, Alan 139/83/8, Abdul 93/54/3, Roohulla 108/54/8, Not called 276/53/0), booked 23; Callback Nov 299 sched;
 Vet rolling Oct21-Nov4 2,384 / 132 (5.5%). Chat 6,490, 0 diffs. verify: 0 problems. Pages: Pulse datasets v7, November Tracker v4.
+
+## 2026-11-05 — Kriti's 390 Nov 4 tickets taken out of every denominator
+
+Kriti pasted 390 ticket IDs (all created Nov 4; 300 UCJ + 90 Bangalore; Ameyo status "Not Transferred"; onhold/closed/reopen/open) to "consider out of the
+denominator throughout". Saved (IDs only, no PII) to `~/Documents/Supertails work/exclusions/2026-11-04.txt`; `merge_month_exports.py` now drops every ID
+in `exclusions/*.txt` from nugget.csv, so ALL call-side tabs (Main Dashboard, VLL, Ticket Categories, Table 7, Booking Analysis, Prediction, Callback, Vet)
+leave them out the same way. Chat tabs unaffected (none are chat tickets).
+Effect: Nov 4 VL 904 → **634** (270 of the 390 were Valid Leads), Transfer 152 → **148** = **23.3%** (16.8% before), Connect 43.2%, Bangalore 186 → 96,
+Booking 4 / 96 = 4.2%. Our rules still counted 4 of the excluded tickets as transfers (Doctor Called, e.g. 249614, 1114662, 1087804) although the pasted
+status says "Not Transferred" — they are removed with the rest.
+**November (Nov 1-4)**: 2,057 leads, 562 transfers = **27.3%**, Connect 56.5%, Booking 23 / 575 (4.0%), Vet 674 / 20 (3.0%). Prediction: 30.4%, 156/day.
+Tabs: VLL Nov 2,057; Ticket Categories Nov 2,922 / 20.1%; Table 7 1,926 / 27.9%; Booking Analysis 575 Bangalore (Not called 187). verify 0 problems.
+Pages: Pulse datasets daily/months v8, November Tracker v5.

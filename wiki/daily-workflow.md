@@ -192,6 +192,7 @@ calls) and confirm no day is missing before computing. Recompute the full range 
 `BOOKING_JSON=<json of known days> VET_MONTHS=… scripts/refresh_all.sh …`. Days missing from the JSON are left blank (not 0) and out of the month
 Booking %; Booking Analysis keeps the previous run's Booked. When the clinic tab is back, fill the gap with `write_main_dashboard.py booking.json`,
 `write_booking_analysis.py nugget.csv ameyo.csv LAST`, `write_prediction_model.py LAST`, then check the new day's `% Booking` cell still has its % format.
+**Excluded tickets:** the merge prints `excluded tickets {...}` — IDs in `~/Documents/Supertails work/exclusions/*.txt` are dropped from every call tab (see `definitions.md`). A new list from Kriti = a new file there, then a normal rerun.
 The base dir's `hist_nugget.csv` + `hist_ameyo.csv` hold all CLOSED months (Sept+Oct). Set VET_MONTHS while a closed month still has open
 15-day windows: October until Nov 15, then drop it.
 

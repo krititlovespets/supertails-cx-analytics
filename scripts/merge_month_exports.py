@@ -29,6 +29,13 @@ for f in files:
                 except: continue
                 if t >= START_DT:
                     calls[row["Call ID"]] = {c: row.get(c,"") for c in ACOLS}; asrc[os.path.basename(f)] += 1
+# Tickets Kriti asked to keep out of every denominator: one file per date of ticket IDs (whitespace-separated)
+# in ~/Documents/Supertails work/exclusions/. Dropped here so every call-side tab leaves them out the same way.
+excl = set()
+for f in glob.glob(os.path.expanduser("~/Documents/Supertails work/exclusions/*.txt")):
+    excl |= set(open(f).read().split())
+dropped = Counter(tick.pop(i)["created_at"][:10] for i in list(tick) if i in excl)
+print("excluded tickets", dict(sorted(dropped.items())) or "none")
 for name, d, cols in [("nugget.csv", tick, NCOLS), ("ameyo.csv", calls, ACOLS)]:
     with open(name, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols); w.writeheader(); w.writerows(d.values())

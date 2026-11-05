@@ -205,3 +205,10 @@ these rows.
   anchor and does not match the sheet's own numbers.
 - Validated against 5 known-correct Chat-sheet days (Oct18-22): exact on 3,
   off by 1 ticket on Oct18, off by 3 on Oct21 — acceptable noise.
+
+## Excluded tickets (Kriti's lists, from 2026-11-05)
+
+Ticket IDs Kriti asks to keep "out of the denominator throughout" live in `~/Documents/Supertails work/exclusions/<date>.txt` (whitespace-separated IDs, one
+file per date; private folder, never committed). `merge_month_exports.py` drops them from `nugget.csv`, so they are absent from every call-side tab —
+Valid Leads, transfers, connects, Bangalore/booking denominators, Table N, Booking Analysis, Callback, Vet. A rerun keeps them out automatically.
+First list: 390 tickets created 2026-11-04.
