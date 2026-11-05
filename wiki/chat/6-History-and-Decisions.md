@@ -97,3 +97,4 @@ inferred from the sequence of files. Read this before "simplifying" anything —
 
 - **2026-11-04** — Nov 3 added (`dbldlqb6er6c738p5m40.csv`, cut Nov 3 23:59): 6,420 tickets; Nov 3 Day 46 chats, Day Starting FRT avg 17 s / median 9 s, Actual FRT avg 8:29. Dry-run 0 differing cells. Same run as the call tabs (refresh_all.sh); a brief Clinic Dashboard outage affected only the bookings step, not chat.
 - **2026-11-05** — Nov 4 added (`dbm0uf36er6c73bqdbng.csv`, cut Nov 4 23:59): 6,490 tickets; Nov 4 Day 53 chats, Day Starting FRT avg 33 s / median 20 s. Dry-run 0 differing cells.
+- **2026-11-05 (midday)** — Nov 5 added as a part day (`dbm2k836er6c738ut300.csv`, to 12:19): 6,521 tickets; Nov 5 Day 26 chats so far. Dry-run 0 differing cells. Kriti's ticket exclusions do not touch chat tabs.

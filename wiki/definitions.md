@@ -211,4 +211,4 @@ these rows.
 Ticket IDs Kriti asks to keep "out of the denominator throughout" live in `~/Documents/Supertails work/exclusions/<date>.txt` (whitespace-separated IDs, one
 file per date; private folder, never committed). `merge_month_exports.py` drops them from `nugget.csv`, so they are absent from every call-side tab —
 Valid Leads, transfers, connects, Bangalore/booking denominators, Table N, Booking Analysis, Callback, Vet. A rerun keeps them out automatically.
-First list: 390 tickets created 2026-11-04, minus 4 doctor-called valid leads Kriti asked to count back in = 386.
+First list: 390 tickets created 2026-11-04, minus 4 doctor-called valid leads Kriti asked to count back in = 386. Second list (2026-11-05_list2.txt): 321 tickets of Nov 4–5, removed from numerators and denominators alike.

@@ -1669,3 +1669,15 @@ Kriti: "count those 4 in". Removed 1114662, 1087804, 1122698, 249614 (valid UCJ,
 Prediction 30.4% (157/day). Table 7 1,929 / 28.0%; Ticket Categories Nov 2,926 / 20.2%; Vet Nov 678 / 20. Booking Analysis unchanged (the 4 are UCJ, not Bangalore).
 Clinic Dashboard went empty again mid-run (after the bookings step had read it), so Booking Analysis was written with `BOOKING_JSON=booking.json`
 (same 23 bookings; its NOTE says Booked not refreshed). verify 0 problems. Pages: Pulse v9, November Tracker v6.
+
+## 2026-11-05 — Second exclusion list (321 tickets) + Nov 5 added as a part day
+
+Kriti pasted 321 more IDs: "remove these tickets also from any of the base denominator or any numerator". All UCJ; 222 created Nov 4, 99 Nov 5 (61 in the
+10:42 export, the rest in the 12:34 one). Saved to `exclusions/2026-11-05_list2.txt` (no overlap with list 1). Merge now drops 608 (Nov 4) + 99 (Nov 5).
+**Nov 4 final for now**: VL **436**, Transfer 157 = **36.0%** (147 done + 10 doctor; newer Ameyo export added late matches), Connect 52.8%, Bangalore 96, Booking 4.
+**Nov 5 (part day, to ~12:30, exports `dbm2k836er6c738ut300.csv` + `CALL_Details_2026-11-05_12_34_57…`)**: VL 264, Transfer 26 (9.8%), Connect 23.1%,
+agents 7, Bangalore 60, Booking 0 so far. Run with LAST=2026-11-05, PRED_LAST=2026-11-04. Next refresh completes it.
+**November (Nov 1-5)**: 2,123 leads, 597 transfers = 28.1% (Nov 1-4: 1,859 / 571 = 30.7%), Connect 55.6%, Booking 23 / 635. Prediction (Nov 1-4 basis): 29.9%, 139/day.
+Table 7 1,886 / 30.2%; Ticket Categories Nov 3,071 / 20.3%; Booking Analysis 635 Bangalore (Not called 243); Callback Nov 317; Vet Nov 718 / 22;
+rolling Oct22-Nov5. Chat 6,521 (to Nov 5 12:19), 0 diffs. verify 0 problems. Pages: Pulse daily/months v10, chat v8; Tracker v7 / v5.
+Month columns now include the Nov 5 half day, so month talk/agent (2:45) and Transfer % read low until Nov 5 completes.
