@@ -1681,3 +1681,19 @@ agents 7, Bangalore 60, Booking 0 so far. Run with LAST=2026-11-05, PRED_LAST=20
 Table 7 1,886 / 30.2%; Ticket Categories Nov 3,071 / 20.3%; Booking Analysis 635 Bangalore (Not called 243); Callback Nov 317; Vet Nov 718 / 22;
 rolling Oct22-Nov5. Chat 6,521 (to Nov 5 12:19), 0 diffs. verify 0 problems. Pages: Pulse daily/months v10, chat v8; Tracker v7 / v5.
 Month columns now include the Nov 5 half day, so month talk/agent (2:45) and Transfer % read low until Nov 5 completes.
+
+## 2026-11-06 — Bulk rules; Nov 5 complete, Nov 6 part day
+
+Kriti asked what marks a bulk ticket. Findings (no sheet change): no "bulk" text in any Nugget or Ameyo column through the 11:20 export; the closed-by column is
+`resolved_by` (+ `resolved_at`); the UCJ IB_OB Primary Disposition is `cf_primary_disposition` (+ `cf_cf_primary_disposition_secondary_disposition`,
+`cf_cf_primary_disposition_final_outcome`); 78% of her listed tickets were closed by akshaya.r in minute-bursts on Nov 5 12:04–13:42 (98 at 12:07, 98 at 13:34);
+"External API" also closes ~10-25 tickets/day. In the 11:57 export (`dbmn6fer7kms73ecmplg.csv`) **Primary Disposition = Bulk / Secondary price / Final Price**
+appeared on 147 tickets (Nov 5-6, 144 closed by External API, none on her lists).
+**Rules (Kriti, final):** Nov 4 = her two pasted lists only (as on Nov 5). Plus, kept out of every count: (1) Nov 5 tickets closed by akshaya.r, (2) any ticket
+with Primary Disposition = Bulk, any date. External API on its own does NOT exclude. Code: `EXCLUDED_CLOSERS` in `merge_month_exports.py` (prints
+`excluded bulk (...)`). Dropped this run: Nov 5 242, Nov 6 96 (on top of the lists: Nov 4 608, Nov 5 99).
+**Nov 4** unchanged at VL 436; transfers 157 → 170 (39.0%, late matches). **Nov 5 (complete)**: VL 567, Transfer 125 (22.0%), Connect 46.7%, Bangalore 162,
+Booking 2. **Nov 6 (to ~12:00)**: VL 239, Transfer 17. **November (Nov 1-6)**: 2,665 leads, 727 transfers = 27.3%; Nov 1-5: 2,426 / 710 = 29.3%.
+Prediction (Nov 1-5 basis): 30.1%, 146/day. Table 7 2,349 / 29.5%; Booking Analysis 801 Bangalore (Not called 340).
+Clinic Dashboard was mid-rebuild again (4,000 of ~7,950 rows, no headers) at the Booking Analysis step → written with BOOKING_JSON (Booked 23 kept;
+Main Dashboard read 25 before it emptied). Chat 6,599 (to Nov 6 11:54), 0 diffs. verify 0 problems. Pages: Pulse 11/11/9, Tracker 8/8/6.
