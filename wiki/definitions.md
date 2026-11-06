@@ -213,6 +213,6 @@ file per date; private folder, never committed). `merge_month_exports.py` drops 
 Valid Leads, transfers, connects, Bangalore/booking denominators, Table N, Booking Analysis, Callback, Vet. A rerun keeps them out automatically.
 First list: 390 tickets created 2026-11-04, minus 4 doctor-called valid leads Kriti asked to count back in = 386. Second list (2026-11-05_list2.txt): 321 tickets of Nov 4–5, removed from numerators and denominators alike.
 
-**Bulk closes (from 2026-11-06):** besides the pasted lists, every call tab leaves out (1) tickets created 2026-11-05 and closed by akshaya.r (the Nov 5 bulk
+**Bulk closes (from 2026-11-06):** besides the pasted lists, every call tab leaves out (1) tickets created 2026-11-05 or 2026-11-06 and closed by akshaya.r (the Nov 5–6 bulk
 close) and (2) any ticket whose UCJ IB_OB Primary Disposition (`cf_primary_disposition`) is `Bulk`, any date. Nov 4 uses the pasted lists only.
 Tickets closed by "External API" are NOT excluded unless they carry Bulk. Rule lives in `EXCLUDED_CLOSERS` in `merge_month_exports.py`.

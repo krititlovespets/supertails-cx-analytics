@@ -46,4 +46,4 @@ Data: Nugget ticket export × Ameyo `CALL_Details` export, matched on phone (`no
 
 **Excluded tickets (2026-11-05):** ticket IDs Kriti lists in `~/Documents/Supertails work/exclusions/*.txt` are removed from every call-tab denominator (386 tickets of Nov 4, plus a second list of 321 tickets of Nov 4–5). Chat tabs are not affected. Details in the repo `wiki/definitions.md`.
 
-**Bulk rules (2026-11-06):** call tabs also leave out any ticket with UCJ IB_OB Primary Disposition = Bulk, and Nov 5 tickets closed by akshaya.r. Chat tabs not affected.
+**Bulk rules (2026-11-06):** call tabs also leave out any ticket with UCJ IB_OB Primary Disposition = Bulk, and Nov 5–6 tickets closed by akshaya.r. Chat tabs not affected.

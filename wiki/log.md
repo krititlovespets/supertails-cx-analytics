@@ -1697,3 +1697,5 @@ Booking 2. **Nov 6 (to ~12:00)**: VL 239, Transfer 17. **November (Nov 1-6)**: 2
 Prediction (Nov 1-5 basis): 30.1%, 146/day. Table 7 2,349 / 29.5%; Booking Analysis 801 Bangalore (Not called 340).
 Clinic Dashboard was mid-rebuild again (4,000 of ~7,950 rows, no headers) at the Booking Analysis step → written with BOOKING_JSON (Booked 23 kept;
 Main Dashboard read 25 before it emptied). Chat 6,599 (to Nov 6 11:54), 0 diffs. verify 0 problems. Pages: Pulse 11/11/9, Tracker 8/8/6.
+**Same day, later:** Kriti: "same for nov 6th" → Nov 6 tickets closed by akshaya.r are excluded too (`EXCLUDED_CLOSERS`). In the 11:57 export the 9 such
+tickets are all chat-channel, so call tabs are unchanged (Nov 6 UCJ 289 / Bangalore 64); no rerun needed. It applies automatically on the next refresh.

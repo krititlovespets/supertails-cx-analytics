@@ -16,8 +16,8 @@ NCOLS = ["ticket_id","created_at","title","channel_name","ticket_source","user_p
 ACOLS = ["Call ID","Call Time","Phone","User ID","User Name","Transfer To Agent/Phone","Customer Talk Time","User Talk Time"]
 tick, calls, closer = {}, {}, {}
 # Bulk closes kept out of every count (Kriti, 2026-11-06): any ticket with Primary Disposition = Bulk, and
-# Nov 5 tickets closed by akshaya.r (the Nov 5 bulk close). akshaya.r closes of other days' tickets stay in.
-EXCLUDED_CLOSERS = {"bulk", ("akshaya.rlovespets@supertails.com", "2026-11-05")}
+# Nov 5 and Nov 6 tickets closed by akshaya.r (bulk closes). akshaya.r closes of other days' tickets stay in.
+EXCLUDED_CLOSERS = {"bulk", ("akshaya.rlovespets@supertails.com", "2026-11-05"), ("akshaya.rlovespets@supertails.com", "2026-11-06")}
 nsrc = Counter(); asrc = Counter()
 for f in files:
     with open(f, encoding="utf-8-sig") as fh:
@@ -43,7 +43,7 @@ for f in glob.glob(os.path.expanduser("~/Documents/Supertails work/exclusions/*.
 dropped = Counter(tick.pop(i)["created_at"][:10] for i in list(tick) if i in excl)
 print("excluded tickets", dict(sorted(dropped.items())) or "none")
 dropped = Counter(tick.pop(i)["created_at"][:10] for i in list(tick) if closer.get(i) in EXCLUDED_CLOSERS)
-print("excluded bulk (Primary Disposition Bulk, or Nov 5 ticket closed by akshaya.r)", dict(sorted(dropped.items())) or "none")
+print("excluded bulk (Primary Disposition Bulk, or Nov 5/6 ticket closed by akshaya.r)", dict(sorted(dropped.items())) or "none")
 for name, d, cols in [("nugget.csv", tick, NCOLS), ("ameyo.csv", calls, ACOLS)]:
     with open(name, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols); w.writeheader(); w.writerows(d.values())
