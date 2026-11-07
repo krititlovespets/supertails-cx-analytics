@@ -1699,3 +1699,14 @@ Clinic Dashboard was mid-rebuild again (4,000 of ~7,950 rows, no headers) at the
 Main Dashboard read 25 before it emptied). Chat 6,599 (to Nov 6 11:54), 0 diffs. verify 0 problems. Pages: Pulse 11/11/9, Tracker 8/8/6.
 **Same day, later:** Kriti: "same for nov 6th" → Nov 6 tickets closed by akshaya.r are excluded too (`EXCLUDED_CLOSERS`). In the 11:57 export the 9 such
 tickets are all chat-channel, so call tabs are unchanged (Nov 6 UCJ 289 / Bangalore 64); no rerun needed. It applies automatically on the next refresh.
+
+## 2026-11-07 — Nov 6 added (full day), Nov 5 rule applied
+
+Inputs: Nugget `dbn9535ng12s73dq8dl0.csv` (to Nov 7 08:20), Ameyo `CALL_Details_2026-11-07_08_22_11…`. Nov 7 partial, not added. Clinic healthy (Nov 6 = 1).
+Kriti: "use the nov 5th rule for nov 6th" (already in EXCLUDED_CLOSERS). Excluded: lists Nov 4 608 / Nov 5 99; bulk rule Nov 5 243, Nov 6 189, Nov 7 32 (Primary Disposition = Bulk).
+**Nov 6**: VL 401, Transfer 87 (21.7%, fresh-day low), Connect 56.4%, AHT 4:56, agents 7, talk/agent 2:56:49, Bangalore 203, Booking 1.
+Nov 5 rose 125 → 164 (29.0%), Connect 62.5%. Nov 4 170 (39.0%).
+**November (Nov 1-6)**: 2,825 leads, 836 transfers = **29.6%**, Connect 61.2%, AHT 5:02, Booking 26 / 941 (2.8%), Vet 1,020 / 38 (3.7%).
+Prediction: 30.1%, 142/day. Table 7 2,689 / 29.6%; Ticket Categories Nov 4,147 / 21.1%; Booking Analysis 941 Bangalore (Dhanush 89/50/4, Alan 192/113/9,
+Abdul 94/54/4, Roohulla 184/96/9, Not called 382/60/0), booked 26 (back in line with Main Dashboard); Callback Nov 440; Vet rolling Oct23-Nov6 2,440 / 133 (5.5%).
+Chat 6,671 (to Nov 6 23:51), 0 diffs; Nov 5 Day Actual FRT avg 1:04 (a few very late replies; median 3:28). verify 0 problems. Pages: Pulse 12/12/10, Tracker 9/9/7.
