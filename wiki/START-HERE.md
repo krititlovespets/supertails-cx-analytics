@@ -3,7 +3,7 @@
 One guide to understand the Supertails CX dashboard and keep it updated. Written for a person and for Claude.
 **If you are Claude: read this whole file before touching anything, then `wiki/definitions.md`.**
 
-*Last updated 2026-11-07. Sheet runs through Nov 6, 2026. October is closed.*
+*Last updated 2026-11-08. Sheet runs through Nov 7, 2026. October is closed.*
 
 ## 1. What this is
 

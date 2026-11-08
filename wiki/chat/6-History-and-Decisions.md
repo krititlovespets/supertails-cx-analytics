@@ -100,3 +100,4 @@ inferred from the sequence of files. Read this before "simplifying" anything —
 - **2026-11-05 (midday)** — Nov 5 added as a part day (`dbm2k836er6c738ut300.csv`, to 12:19): 6,521 tickets; Nov 5 Day 26 chats so far. Dry-run 0 differing cells. Kriti's ticket exclusions do not touch chat tabs.
 - **2026-11-06** — Nov 5 completed and Nov 6 added as a part day (`dbmn6fer7kms73ecmplg.csv`, to 11:54): 6,599 tickets; Nov 5 Day 70 chats, Nov 6 20 so far. Dry-run 0 differing cells. The call-tab bulk rules (Primary Disposition = Bulk; Nov 5 tickets closed by akshaya.r) do not touch chat tabs.
 - **2026-11-07** — Nov 6 completed (`dbn9535ng12s73dq8dl0.csv`, cut Nov 6 23:59): 6,671 tickets; Nov 6 Day 65 chats, Day Starting FRT avg 34 s / median 23 s. Dry-run 0 differing cells.
+- **2026-11-08** — Nov 7 added (`dbnua7lng12s738ptnug.csv`, cut Nov 7 23:59): 6,758 tickets; Nov 7 Day 79 chats, Day Starting FRT avg 30 s / median 19 s. Dry-run 0 differing cells.
