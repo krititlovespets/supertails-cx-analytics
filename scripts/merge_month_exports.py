@@ -15,8 +15,9 @@ files = sorted(glob.glob(os.path.expanduser("~/Downloads/*.csv")), key=os.path.g
 NCOLS = ["ticket_id","created_at","title","channel_name","ticket_source","user_phone","cf_phone","agent_name","agent_assigned_at","agent_frt_response_at"]
 ACOLS = ["Call ID","Call Time","Phone","User ID","User Name","Transfer To Agent/Phone","Customer Talk Time","User Talk Time"]
 tick, calls, closer = {}, {}, {}
-# Bulk closes kept out of every count (Kriti, 2026-11-06): any ticket with Primary Disposition = Bulk, and
+# Bulk closes kept out of every count (Kriti, 2026-11-06): tickets with Primary Disposition = Bulk created up to BULK_UNTIL, and
 # Nov 5 and Nov 6 tickets closed by akshaya.r (bulk closes). akshaya.r closes of other days' tickets stay in.
+BULK_UNTIL = "2026-11-07"   # Kriti 2026-11-09: from Nov 8 every ticket counts, Bulk ones too
 EXCLUDED_CLOSERS = {"bulk", ("akshaya.rlovespets@supertails.com", "2026-11-05"), ("akshaya.rlovespets@supertails.com", "2026-11-06")}
 nsrc = Counter(); asrc = Counter()
 for f in files:
@@ -28,6 +29,7 @@ for f in files:
                     tick[row["ticket_id"]] = {c: row.get(c,"") for c in NCOLS}; nsrc[os.path.basename(f)] += 1
                     # newest file wins: (closed by, created on), or "bulk" for UCJ IB_OB Primary Disposition = Bulk
                     closer[row["ticket_id"]] = ("bulk" if (row.get("cf_primary_disposition") or "").strip().lower() == "bulk"
+                                                and row["created_at"][:10] <= BULK_UNTIL
                                                 else ((row.get("resolved_by") or "").strip().lower(), row["created_at"][:10]))
         elif "Call Time" in h and "Call ID" in h:
             for row in r:
@@ -43,7 +45,7 @@ for f in glob.glob(os.path.expanduser("~/Documents/Supertails work/exclusions/*.
 dropped = Counter(tick.pop(i)["created_at"][:10] for i in list(tick) if i in excl)
 print("excluded tickets", dict(sorted(dropped.items())) or "none")
 dropped = Counter(tick.pop(i)["created_at"][:10] for i in list(tick) if closer.get(i) in EXCLUDED_CLOSERS)
-print("excluded bulk (Primary Disposition Bulk, or Nov 5/6 ticket closed by akshaya.r)", dict(sorted(dropped.items())) or "none")
+print("excluded bulk (Primary Disposition Bulk up to Nov 7, or Nov 5/6 ticket closed by akshaya.r)", dict(sorted(dropped.items())) or "none")
 for name, d, cols in [("nugget.csv", tick, NCOLS), ("ameyo.csv", calls, ACOLS)]:
     with open(name, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols); w.writeheader(); w.writerows(d.values())
