@@ -1733,3 +1733,16 @@ Nov 7 102 (27.8%), Nov 6 107 (26.6%).
 Prediction: 30.3%, 138/day. Table 7 3,513 / 29.0%; Ticket Categories Nov 5,502 / 20.3%; Booking Analysis 1,342 Bangalore (Dhanush 213/113/8,
 Alan 308/171/21, Abdul 231/121/6, Roohulla 315/153/10, Not called 275/43/0), booked 45; Callback Nov 569; Vet rolling Oct25-Nov8 2,416 / 127 (5.3%).
 Chat 6,829 (to Nov 8 22:05), 0 diffs. verify 0 problems. Pages: Pulse 14/14/12, Tracker 11/11/9.
+
+## 2026-11-12 — Nov 9, 10, 11 added
+
+Inputs: Nugget `dbqkrddng12s73dr4d7g.csv` (to Nov 12 10:55), Ameyo `CALL_Details_2026-11-12_10_56_18…`. Nov 12 partial, not added. Clinic healthy (Nov 9/10/11 = 8/5/4).
+No Bulk dispositions and no akshaya.r closes on Nov 9-11 → every ticket counted (rule since Nov 8). **Flag:** salman.p closed tickets in bursts
+(Nov 10 08:46 ×36, Nov 11 09:11 ×30, 12:10-12:11 ×31, Nov 12 08:37 ×35) — counted, per the "count all from Nov 8" rule; told Kriti.
+**Nov 9**: VL 426, Transfer 97 (22.8%), Connect 58.7%, agents 6, Bangalore 101, Booking 8. **Nov 10**: VL 401, Transfer 115 (28.7%), Connect 56.9%, agents 6,
+Bangalore 118, Booking 5. **Nov 11**: VL 410, Transfer 95 (23.2%, first count), Connect 49.3%, AHT 5:22, agents 7, talk/agent 3:06:38, Bangalore 104, Booking 4.
+**November (Nov 1-11)**: 4,888 leads, 1,378 transfers = **28.2%**, Connect 60.9%, AHT 4:56, Booking 62 / 1,666 (3.7%), Vet 1,723 / 88 (5.1%).
+Prediction: rest of month needs 31.0%, 138/day. Table 7 4,666 / 28.3%; Ticket Categories Nov 7,315 / 20.0%; Booking Analysis 1,666 Bangalore
+(Dhanush 325/176/12, Alan 347/206/26, Abdul 303/151/7, Roohulla 539/261/17, Not called 152/33/0), booked 62; Callback Nov 752; Vet rolling Oct28-Nov11 2,364 / 124 (5.2%).
+Chat 7,023 (to Nov 11 22:27), 0 diffs. verify 0 problems. Pages: the Dashboard type had a new release (page versions moved on their own); datasets
+unchanged since Nov 9 and updated as usual — Pulse 15/15/13, Tracker 12/12/10.
