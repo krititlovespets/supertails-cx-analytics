@@ -18,6 +18,9 @@ The dashboard is a Google Sheet, [Dashboard || Extra](https://docs.google.com/sp
 
 Three Nugget channels matter. **Unified Customer Journey** and **UCJ Booking Campaigns** (Bangalore) feed the call tabs. **UCJ SC Chat Assistance** feeds only the chat tabs.
 
+**Separate sheet for the vet chat team:** [Chat dashboard || Vets and Pharmacy](https://docs.google.com/spreadsheets/d/1MJG4WQmz8_fuZ8xvdnBJ59sznSyIfthvBF9pBsaRROw/edit) —
+its own rules and script, all in [vet-pharmacy-dashboard.md](vet-pharmacy-dashboard.md).
+
 ## 2. The tabs
 
 | Tab | Shows | Updates |

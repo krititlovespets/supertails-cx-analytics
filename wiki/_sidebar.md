@@ -8,4 +8,5 @@
 - [External Sources](external-sources.md)
 - [Vet Follow-up](vet-followup.md)
 - [Chat Tabs](chat-tabs.md)
+- [Vets & Pharmacy Dashboard](vet-pharmacy-dashboard.md)
 - [Log](log.md)

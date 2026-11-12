@@ -1746,3 +1746,10 @@ Prediction: rest of month needs 31.0%, 138/day. Table 7 4,666 / 28.3%; Ticket Ca
 (Dhanush 325/176/12, Alan 347/206/26, Abdul 303/151/7, Roohulla 539/261/17, Not called 152/33/0), booked 62; Callback Nov 752; Vet rolling Oct28-Nov11 2,364 / 124 (5.2%).
 Chat 7,023 (to Nov 11 22:27), 0 diffs. verify 0 problems. Pages: the Dashboard type had a new release (page versions moved on their own); datasets
 unchanged since Nov 9 and updated as usual — Pulse 15/15/13, Tracker 12/12/10.
+
+## 2026-11-12 — New sheet: Chat dashboard || Vets and Pharmacy
+
+Built with Kriti from Nugget export `dbqolndng12s739firl0.csv` (Nov 1 – Nov 12 12:13, 1,573 tickets; 1,478 after dropping Paid Tele Consultation Bookings).
+Six tabs: Vets & Pharmacy Dashboard, Doctor Chats, Doctor FRT, Doctor Response Time, Hourly Flow, Dispositions. FRT/response clock = first assignment into
+the vet channel (not created_at), chats created 9 AM–9 PM. New script `vets/update_vet_pharmacy_dashboard.py` rebuilds all tabs; rerun on the same file
+gave 0 differing cells vs the hand-built sheet. Full page: [vet-pharmacy-dashboard.md](vet-pharmacy-dashboard.md).

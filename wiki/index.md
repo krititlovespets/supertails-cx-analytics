@@ -23,6 +23,9 @@ of them.
   history and current rule (15-minute threshold, not calendar-day)
 - [chat-tabs.md](chat-tabs.md) — rules for the `Chat - *` tabs and why the chat
   side has no transfer metric (vs Transfer Done/Doctor Called on the call side)
+- [vet-pharmacy-dashboard.md](vet-pharmacy-dashboard.md) — the SEPARATE sheet
+  "Chat dashboard || Vets and Pharmacy" (Tele + Pharmacy vet chats): tabs, FRT /
+  response rules, update command
 
 ## Fallback / historical detail
 
