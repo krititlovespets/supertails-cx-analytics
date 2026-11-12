@@ -93,6 +93,28 @@ class Ctx:
         cur = self.months[-1]
         f = self.full[cur]
         self.span = f"({self.mlab[cur]}: {f[0][-2:]}–{f[-1][-2:]})" if f else ""
+        # Days where most 9-9 chats were answered first by a UCJ SC agent before the vet hand-off
+        # (Oct 1-4 2026 routing): the export keeps only that first reply, so vet FRT is mostly unknown.
+        b = df[df.biz]
+        tot = b.groupby("dd").size()
+        exc = b[b.agent_frt_response_at.notna() & b.frt.isna()].groupby("dd").size()
+        used = b[b.frt.notna()].groupby("dd").size()
+        self.frt_gap = {d: (int(exc.get(d, 0)), int(tot[d]), int(used.get(d, 0)))
+                        for d in tot.index if exc.get(d, 0) > 0.5 * tot[d]}
+
+    def frt_gap_note(self, d):
+        exc, tot, used = self.frt_gap[d]
+        tail = (f"The value shown is based on only {used} chat{'s' if used != 1 else ''}." if used
+                else "No chats left to measure, so it is blank.")
+        return (f"FRT not available for most chats on {d}: {exc} of {tot} chats (9 AM–9 PM) were first answered by a "
+                f"UCJ SC agent before reaching the vets, and the export keeps only that first reply. {tail}")
+
+    def frt_gap_text(self):
+        if not self.frt_gap:
+            return ""
+        ds = sorted(self.frt_gap)
+        return (f"  |  FRT on {ds[0][5:]} to {ds[-1][5:]} is blank/thin: chats went to a UCJ SC agent first, "
+                "so the vet's first reply is not in the export (hover the cell for details)")
 
     def sub(self, ch):
         return self.df if ch is None else self.df[self.df.channel_name == ch]
@@ -255,7 +277,18 @@ def tab_dispositions(cx):
 
 
 # ---------------------------------------------------------------- write
-def write_tab(sh, title, built, index, dry):
+def frt_notes(cx, body, every_row):
+    """(row, col, text) notes on FRT cells of low-data days. every_row=True for the Doctor FRT tab."""
+    hdr = body[3]
+    cols = [(i, d) for i, d in enumerate(hdr) if d in cx.frt_gap]
+    out = []
+    for r, row in enumerate(body[4:], start=5):
+        if row and row[0] and (every_row or row[0].startswith("Avg FRT")):
+            out += [(r, i + 1, cx.frt_gap_note(d)) for i, d in cols]
+    return out
+
+
+def write_tab(sh, title, built, index, dry, notes=()):
     body, fm, nfix, width0, heat = built
     hdr = body[3]
     n, R = len(hdr), len(body)
@@ -303,6 +336,10 @@ def write_tab(sh, title, built, index, dry):
                 "ranges": [{"sheetId": ws.id, "startRowIndex": a - 1, "endRowIndex": b, "startColumnIndex": startcol, "endColumnIndex": n}],
                 "gradientRule": {"minpoint": {"color": {"red": 1, "green": 1, "blue": 1}, "type": "MIN"},
                                  "maxpoint": {"color": {"red": .98, "green": .65, "blue": .45}, "type": "MAX"}}}}})
+    for r, c, text in notes:
+        reqs.append({"updateCells": {"range": {"sheetId": ws.id, "startRowIndex": r - 1, "endRowIndex": r,
+                                               "startColumnIndex": c - 1, "endColumnIndex": c},
+                                     "rows": [{"values": [{"note": text}]}], "fields": "note"}})
     sh.batch_update({"requests": reqs})
     print(f"wrote {title}: {R} rows x {n} cols")
 
@@ -324,8 +361,15 @@ def main():
     if not a.dry_run:
         gc = gspread.service_account(filename=os.path.expanduser(KEY_PATH))
         sh = gc.open_by_key(SHEET_ID)
+    frt_tabs = {"Vets & Pharmacy Dashboard": False, "Doctor FRT": True}
     for i, (title, built) in enumerate(tabs):
-        write_tab(sh, title, built, i, a.dry_run)
+        notes = ()
+        if title in frt_tabs:
+            built[0][1][0] += cx.frt_gap_text()
+            notes = frt_notes(cx, built[0], frt_tabs[title])
+            if a.dry_run and notes:
+                print(f"[dry-run] {title}: {len(notes)} FRT notes, e.g. {notes[0]}")
+        write_tab(sh, title, built, i, a.dry_run, notes)
 
 
 if __name__ == "__main__":

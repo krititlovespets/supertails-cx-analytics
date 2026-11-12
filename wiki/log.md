@@ -1759,3 +1759,7 @@ gave 0 differing cells vs the hand-built sheet. Full page: [vet-pharmacy-dashboa
 Input `dbqpeu5ng12s73egib50.csv` (Oct 1–31: Tele 1,748, Pharmacy 932, Paid 339 dropped) + the Nov file. `vets/update_vet_pharmacy_dashboard.py` now
 takes several CSVs and writes Oct Total/Avg then Nov Total/Avg, dates from Oct 1. October: 2,680 chats (86/day), FRT 0:01:17, Response 0:25:51.
 All six tabs rewritten; every November cell compared to the earlier snapshot, 0 differences. New doctors from October: Dr Nisha, Dr Vaishnavi.
+
+## 2026-11-12 — Vets & Pharmacy: FRT notes for Oct 1–4
+
+Oct 1–4 FRT blank/thin because UCJ SC agents replied before the vet hand-off (export keeps first reply only). Script now adds hover notes on those FRT cells (12 on Dashboard, 84 on Doctor FRT) and a line in row 2. No values changed.

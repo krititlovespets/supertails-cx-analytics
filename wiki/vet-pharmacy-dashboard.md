@@ -91,6 +91,7 @@ November detail:
 
 ## 6. Known gaps
 
+- **FRT is blank for Oct 1–3 and rests on 1 chat for Oct 4.** Until Oct 4 every chat went to a UCJ SC agent first, who replied before handing it to the vets; the export keeps only the first reply on a ticket, so the vet's own first reply is unknown (Oct 1: 38 of 38 chats, Oct 2: 51/52, Oct 3: 51/51, Oct 4: 44/45). Routing changed Oct 5. The script spots any day where over half the 9–9 chats are like this and puts a hover note on its FRT cells (Dashboard + Doctor FRT) plus a line in row 2. Response Time is unaffected.
 - The export's SLA-breach flags are `False` on every ticket — unusable, so there is no SLA metric yet. A target (e.g. FRT ≤ 1 min) would have to be set by us.
 - Averages swing on low-volume doctors: one chat open for a day (Dr Athira, Nov 2: 26:43:36) moves the whole month.
 - Response Time is time-to-close, not reply-to-reply; real per-message response time needs a message-level export.
